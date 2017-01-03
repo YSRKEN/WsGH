@@ -5,9 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WsGH"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-		<Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="277,103,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
-
+        Title="WarshipGirls Helper" Height="200" Width="300" ResizeMode="CanMinimize">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<Menu>
+			<MenuItem Header="File(_F)">
+				<MenuItem Header="Exit(_X)" Click="MenuItem_Click" />
+			</MenuItem>
+			<MenuItem Header="Action(_A)">
+				<MenuItem Header="Get Position(_G)" />
+				<MenuItem Header="Get Screenshot(_S)" IsEnabled="False" />
+			</MenuItem>
+			<MenuItem Header="Option(_O)">
+				<MenuItem IsCheckable="True" Header="for Twitter" />
+			</MenuItem>
+			<MenuItem Header="Help(_H)">
+				<MenuItem Header="About...(_A)" />
+			</MenuItem>
+		</Menu>
+		<Button x:Name="screenShotButton" Content="ScreenShot" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" IsEnabled="False"/>
 	</Grid>
 </Window>

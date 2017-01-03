@@ -23,15 +23,8 @@ namespace WsGH {
 			InitializeComponent();
 		}
 
-		private void button_Click(object sender, RoutedEventArgs e) {
-			using(var img = new IplImage(@"D:\lena.png")) {
-				Cv.SetImageROI(img, new CvRect(200, 200, 180, 200));
-				Cv.Not(img, img);
-				Cv.ResetImageROI(img);
-				using(new CvWindow(img)) {
-					Cv.WaitKey();
-				}
-			}
+		private void MenuItem_Click(object sender, RoutedEventArgs e) {
+			Close();
 		}
 	}
 }
