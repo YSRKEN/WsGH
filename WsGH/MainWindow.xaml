@@ -13,10 +13,10 @@
 		</Grid.RowDefinitions>
 		<Menu>
 			<MenuItem Header="File(_F)">
-				<MenuItem Header="Exit(_X)" Click="MenuItem_Click" />
+				<MenuItem Header="Exit(_X)" Click="ExitMenu_Click" />
 			</MenuItem>
 			<MenuItem Header="Action(_A)">
-				<MenuItem Header="Get Position(_G)" />
+				<MenuItem Header="Get Position(_G)" Click="GetPositionMenu_Click" />
 				<MenuItem Header="Get Screenshot(_S)" IsEnabled="False" />
 			</MenuItem>
 			<MenuItem Header="Option(_O)">

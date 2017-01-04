@@ -23,8 +23,12 @@ namespace WsGH {
 			InitializeComponent();
 		}
 
-		private void MenuItem_Click(object sender, RoutedEventArgs e) {
+		private void ExitMenu_Click(object sender, RoutedEventArgs e) {
 			Close();
+		}
+
+		private void GetPositionMenu_Click(object sender, RoutedEventArgs e) {
+			var sp = new ScreenshotProvider();
 		}
 	}
 }
