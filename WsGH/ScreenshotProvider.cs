@@ -13,9 +13,10 @@ namespace WsGH {
 	using cImage = System.Windows.Controls.Image;
 	using dPoint = System.Drawing.Point;
 	class ScreenshotProvider {
-		public bool getPosFlg = false;
-		public Rectangle screenshotRectangle;
+		Rectangle screenshotRectangle, virtualDisplayRectangle;
+		Bitmap virtualDisplayBmp;
 		public ScreenshotProvider() {
+			screenshotRectangle = new Rectangle(0, 0, 0, 0);
 			//! 全てのディスプレイにおけるスクリーンショットを取得
 			var screenshotList = new List<Bitmap>();
 			var displayRectangleList = new List<Rectangle>();
@@ -29,7 +30,7 @@ namespace WsGH {
 				screenshotList.Add(bmp);
 			}
 			// 全てのディスプレイを覆う仮想スクリーンを計算
-			var virtualDisplayRectangle = displayRectangleList[0];
+			virtualDisplayRectangle = displayRectangleList[0];
 			foreach(var dr in displayRectangleList) {
 				var X2 = Math.Max(virtualDisplayRectangle.Right, dr.Right);
 				var Y2 = Math.Max(virtualDisplayRectangle.Bottom, dr.Bottom);
@@ -38,7 +39,7 @@ namespace WsGH {
 				virtualDisplayRectangle.Width = X2 - virtualDisplayRectangle.X;
 				virtualDisplayRectangle.Height = Y2 - virtualDisplayRectangle.Y;
 			}
-			var virtualDisplayBmp = new Bitmap(virtualDisplayRectangle.Width, virtualDisplayRectangle.Height);
+			virtualDisplayBmp = new Bitmap(virtualDisplayRectangle.Width, virtualDisplayRectangle.Height);
 			for(int i = 0; i < screenshotList.Count(); ++i) {
 				using(var g = Graphics.FromImage(virtualDisplayBmp)) {
 					g.DrawImage(
@@ -50,42 +51,39 @@ namespace WsGH {
 			}
 			// ダミーとなるウィンドウを展開し、クリックさせる
 			//System.Windows.MessageBox.Show("Please click window of WarshipGirls.\n(Esc Key : Cancel)", "WsGH", MessageBoxButton.OK);
-			var cw = new ClickWindow(virtualDisplayBmp, virtualDisplayRectangle);
+			var cw = new ClickWindow(this);
 			cw.Show();
-		}
-		// ClickWindowでクリックした後の処理
-		static void AfterClickWindow(bool getPosFlg, dPoint mousePoint) {
-			//getPosFlg = getPosFlg_;
-			System.Windows.MessageBox.Show(mousePoint.ToString());
 		}
 		// ゲーム画面の座標をクリックさせるためのインナークラス
 		class ClickWindow : Window {
 			cImage ScreenshotImage;
+			ScreenshotProvider sp;
 
 			[System.Runtime.InteropServices.DllImport("gdi32.dll")]
 			public static extern bool DeleteObject(IntPtr hObject);
 
-			public ClickWindow(Bitmap bitmap, Rectangle rectangle) {
+			public ClickWindow(ScreenshotProvider sp) {
+				this.sp = sp;
 				// 縁無しに設定する
 				// (http://5000164.jp/2014-03-wpf_practice_1/)
 				WindowStyle = WindowStyle.None;
 				AllowsTransparency = true;
 
 				// 表示座標を決める
-				Left = rectangle.Left;
-				Top = rectangle.Top;
-				Height = rectangle.Height;
-				Width = rectangle.Width;
+				Left = sp.virtualDisplayRectangle.Left;
+				Top = sp.virtualDisplayRectangle.Top;
+				Height = sp.virtualDisplayRectangle.Height;
+				Width = sp.virtualDisplayRectangle.Width;
 
 				// 画像を表示するためImageコントロールを用意する
 				// (http://bacchus.ivory.ne.jp/gin/post-979/)
 				// BitmapからBitmapSourceに直接変換するメソッドを用意してないとか舐めてんのかM$
 				ScreenshotImage = new cImage();
-				var hbitmap = bitmap.GetHbitmap();
+				var hbitmap = sp.virtualDisplayBmp.GetHbitmap();
 				ScreenshotImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hbitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 				DeleteObject(hbitmap);
-				ScreenshotImage.Height = rectangle.Height;
-				ScreenshotImage.Width = rectangle.Width;
+				ScreenshotImage.Height = Height;
+				ScreenshotImage.Width = Width;
 
 				// Gridを作成し、Imageコントロールを乗せる
 				var grid = new Grid();
@@ -97,7 +95,9 @@ namespace WsGH {
 			}
 
 			private void ClickWindow_Click(object sender, RoutedEventArgs e) {
-				AfterClickWindow(true, System.Windows.Forms.Control.MousePosition);
+				var clickPoint = System.Windows.Forms.Control.MousePosition;
+
+				System.Windows.MessageBox.Show(clickPoint.ToString());
 				Close();
 			}
 		}
