@@ -11,8 +11,10 @@ namespace WsGH {
 	using System.Windows.Controls;
 	using System.Windows.Media.Imaging;
 	using cImage = System.Windows.Controls.Image;
+	using dPoint = System.Drawing.Point;
 	class ScreenshotProvider {
-		System.Drawing.Rectangle ScreenshotRectangle;
+		public bool getPosFlg = false;
+		public Rectangle screenshotRectangle;
 		public ScreenshotProvider() {
 			//! 全てのディスプレイにおけるスクリーンショットを取得
 			var screenshotList = new List<Bitmap>();
@@ -22,24 +24,39 @@ namespace WsGH {
 				displayRectangleList.Add(temp);
 				var bmp = new Bitmap(screen.Bounds.Width, screen.Bounds.Height);
 				using(var g = Graphics.FromImage(bmp)) {
-					g.CopyFromScreen(screen.Bounds.Location, new System.Drawing.Point(), bmp.Size);
+					g.CopyFromScreen(screen.Bounds.Location, new dPoint(), bmp.Size);
 				}
 				screenshotList.Add(bmp);
 			}
-			// ダミーとなるウィンドウを展開し、クリックさせる
-			System.Windows.MessageBox.Show("Please click window of WarshipGirls.\n(Esc Key : Cancel)", "WsGH", MessageBoxButton.OK);
-			var clickWindowList = new List<ClickWindow>();
-			for(int i = 0; i < screenshotList.Count(); ++i) {
-				var cw = new ClickWindow(screenshotList[i], displayRectangleList[i]);
-				cw.Show();
-				clickWindowList.Add(cw);
+			// 全てのディスプレイを覆う仮想スクリーンを計算
+			var virtualDisplayRectangle = displayRectangleList[0];
+			foreach(var dr in displayRectangleList) {
+				var X2 = Math.Max(virtualDisplayRectangle.Right, dr.Right);
+				var Y2 = Math.Max(virtualDisplayRectangle.Bottom, dr.Bottom);
+				virtualDisplayRectangle.X = Math.Min(virtualDisplayRectangle.X, dr.X);
+				virtualDisplayRectangle.Y = Math.Min(virtualDisplayRectangle.Y, dr.Y);
+				virtualDisplayRectangle.Width = X2 - virtualDisplayRectangle.X;
+				virtualDisplayRectangle.Height = Y2 - virtualDisplayRectangle.Y;
 			}
-			//! スクリーンショットを保存(テストコード)
-			/*int index = 0;
-			foreach(var screenshot in screenshotList) {
-				screenshot.Save("SS_" + index.ToString() + "_" + displayRectangleList[index].ToString() + ".png");
-				++index;
-			}*/
+			var virtualDisplayBmp = new Bitmap(virtualDisplayRectangle.Width, virtualDisplayRectangle.Height);
+			for(int i = 0; i < screenshotList.Count(); ++i) {
+				using(var g = Graphics.FromImage(virtualDisplayBmp)) {
+					g.DrawImage(
+						screenshotList[i],
+						displayRectangleList[i].X - virtualDisplayRectangle.X,
+						displayRectangleList[i].Y - virtualDisplayRectangle.Y
+					);
+				}
+			}
+			// ダミーとなるウィンドウを展開し、クリックさせる
+			//System.Windows.MessageBox.Show("Please click window of WarshipGirls.\n(Esc Key : Cancel)", "WsGH", MessageBoxButton.OK);
+			var cw = new ClickWindow(virtualDisplayBmp, virtualDisplayRectangle);
+			cw.Show();
+		}
+		// ClickWindowでクリックした後の処理
+		static void AfterClickWindow(bool getPosFlg, dPoint mousePoint) {
+			//getPosFlg = getPosFlg_;
+			System.Windows.MessageBox.Show(mousePoint.ToString());
 		}
 		// ゲーム画面の座標をクリックさせるためのインナークラス
 		class ClickWindow : Window {
@@ -80,7 +97,7 @@ namespace WsGH {
 			}
 
 			private void ClickWindow_Click(object sender, RoutedEventArgs e) {
-				System.Windows.MessageBox.Show(System.Windows.Forms.Control.MousePosition.ToString());
+				AfterClickWindow(true, System.Windows.Forms.Control.MousePosition);
 				Close();
 			}
 		}
