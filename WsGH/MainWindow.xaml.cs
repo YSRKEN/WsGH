@@ -30,6 +30,9 @@ namespace WsGH {
 
 		private void GetPositionMenu_Click(object sender, RoutedEventArgs e) {
 			sp = new ScreenshotProvider();
+			if(sp.isGetPosition()) {
+				
+			}
 		}
 	}
 }

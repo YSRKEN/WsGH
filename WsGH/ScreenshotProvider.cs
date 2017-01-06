@@ -54,6 +54,13 @@ namespace WsGH {
 			var cw = new ClickWindow(this);
 			cw.Show();
 		}
+		public bool isGetPosition() {
+			if(screenshotRectangle.Width <= 0)
+				return false;
+			if(screenshotRectangle.Height <= 0)
+				return false;
+			return true;
+		}
 		// ゲーム画面の座標をクリックさせるためのインナークラス
 		class ClickWindow : Window {
 			cImage ScreenshotImage;
@@ -95,9 +102,63 @@ namespace WsGH {
 			}
 
 			private void ClickWindow_Click(object sender, RoutedEventArgs e) {
-				var clickPoint = System.Windows.Forms.Control.MousePosition;
-
-				System.Windows.MessageBox.Show(clickPoint.ToString());
+				// クリックした座標を、画像基準で取得する
+				var clickPointX = System.Windows.Forms.Control.MousePosition.X
+				                - sp.virtualDisplayRectangle.X;
+				var clickPointY = System.Windows.Forms.Control.MousePosition.Y
+								- sp.virtualDisplayRectangle.Y;
+				// 上下左右の境界を取得する
+				var borderColor = Color.FromArgb(0, 0, 0);
+				const int borderDiff = 5;
+				// 左
+				for(int x = clickPointX - 1; x >= 0; --x) {
+					if(sp.virtualDisplayBmp.GetPixel(x, clickPointY) != borderColor)
+						continue;
+					if(sp.virtualDisplayBmp.GetPixel(x, clickPointY - borderDiff) != borderColor)
+						continue;
+					if(sp.virtualDisplayBmp.GetPixel(x, clickPointY + borderDiff) != borderColor)
+						continue;
+					sp.screenshotRectangle.X = x + 1;
+					break;
+				}
+				// 上
+				for(int y = clickPointY - 1; y >= 0; --y) {
+					if(sp.virtualDisplayBmp.GetPixel(clickPointX, y) != borderColor)
+						continue;
+					if(sp.virtualDisplayBmp.GetPixel(clickPointX - borderDiff, y) != borderColor)
+						continue;
+					if(sp.virtualDisplayBmp.GetPixel(clickPointX + borderDiff, y) != borderColor)
+						continue;
+					sp.screenshotRectangle.Y = y + 1;
+					break;
+				}
+				// 右
+				for(int x = clickPointX + 1; x < sp.virtualDisplayRectangle.Width; ++x) {
+					if(sp.virtualDisplayBmp.GetPixel(x, clickPointY) != borderColor)
+						continue;
+					if(sp.virtualDisplayBmp.GetPixel(x, clickPointY - borderDiff) != borderColor)
+						continue;
+					if(sp.virtualDisplayBmp.GetPixel(x, clickPointY + borderDiff) != borderColor)
+						continue;
+					sp.screenshotRectangle.Width = x - sp.screenshotRectangle.X;
+					break;
+				}
+				// 下
+				for(int y = clickPointY + 1; y < sp.virtualDisplayRectangle.Height; ++y) {
+					if(sp.virtualDisplayBmp.GetPixel(clickPointX, y) != borderColor)
+						continue;
+					if(sp.virtualDisplayBmp.GetPixel(clickPointX - borderDiff, y) != borderColor)
+						continue;
+					if(sp.virtualDisplayBmp.GetPixel(clickPointX + borderDiff, y) != borderColor)
+						continue;
+					sp.screenshotRectangle.Height = y - sp.screenshotRectangle.Y;
+					break;
+				}
+				sp.virtualDisplayBmp.Clone(sp.screenshotRectangle, sp.virtualDisplayBmp.PixelFormat).Save("hoge.png");
+				//
+				sp.screenshotRectangle.X += sp.virtualDisplayRectangle.X;
+				sp.screenshotRectangle.Y += sp.virtualDisplayRectangle.Y;
+				System.Windows.MessageBox.Show(sp.screenshotRectangle.ToString());
 				Close();
 			}
 		}
