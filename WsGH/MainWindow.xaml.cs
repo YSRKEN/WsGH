@@ -25,8 +25,12 @@ namespace WsGH {
 		// コンストラクタ
 		public MainWindow() {
 			InitializeComponent();
-			logger = new Logger() { LoggingText = "" };
-			DataContext = logger;
+			// フォルダの有無をチェック
+			if(!System.IO.Directory.Exists(@"pic\")) {
+				System.IO.Directory.CreateDirectory(@"pic\");
+			}
+			// ログ表示を初期化
+			DataContext = logger = new Logger() { LoggingText = "" };
 		}
 		// メニュー操作
 		private void ExitMenu_Click(object sender, RoutedEventArgs e) {
@@ -59,13 +63,28 @@ namespace WsGH {
 			var asmver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 			MessageBox.Show(asmttl + " Ver." + asmver + "\n" + asmcpy + "\n" + asmprd);
 		}
+		private void TwitterOption_Checked(object sender, RoutedEventArgs e) {
+			if(TwitterOptionMenu.IsChecked) {
+				addLog("for Twitter : True");
+			} else {
+				addLog("for Twitter : False");
+			}
+		}
+		private void TwitterOption_Unchecked(object sender, RoutedEventArgs e) {
+			if(TwitterOptionMenu.IsChecked) {
+				addLog("for Twitter : True");
+			} else {
+				addLog("for Twitter : False");
+			}
+		}
 		// ボタン操作
 		private void ScreenShotButton_Click(object sender, RoutedEventArgs e) {
 			saveScreenshot();
 		}
-		// Log追加
+		// ログに内容を追加
 		void addLog(string str) {
-			logger.LoggingText += str + "\n";
+			var dt = DateTime.Now;
+			logger.LoggingText += dt.ToString("hh:mm:ss ") + str + "\n";
 		}
 		// 座標取得後の画面更新処理
 		void getPosition() {
@@ -83,7 +102,7 @@ namespace WsGH {
 			var dt = DateTime.Now;
 			var fileName = dt.ToString("yyyy-MM-dd hh-mm-ss-fff") + ".png";
 			try {
-				sp.getScreenShot(TwitterOptionMenu.IsChecked).Save(fileName);
+				sp.getScreenShot(TwitterOptionMenu.IsChecked).Save(@"pic\" + fileName);
 				addLog("save Screenshot : Success");
 				addLog("  (" + fileName + ")");
 			} catch(Exception) {

@@ -23,7 +23,7 @@
 				<MenuItem x:Name="GetScreenshotMenu" Header="Get Screenshot(_S)" IsEnabled="False" Click="GetScreenshotMenu_Click" />
 			</MenuItem>
 			<MenuItem Header="Option(_O)">
-				<MenuItem x:Name="TwitterOptionMenu" IsCheckable="True" Header="for Twitter" />
+				<MenuItem x:Name="TwitterOptionMenu" IsCheckable="True" Header="for Twitter" Checked="TwitterOption_Unchecked" Unchecked="TwitterOption_Unchecked" />
 			</MenuItem>
 			<MenuItem Header="Help(_H)">
 				<MenuItem Header="About...(_A)" Click="AboutMenu_Click" />
