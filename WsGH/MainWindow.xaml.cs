@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using OpenCvSharp;
+using System.ComponentModel;
 
 namespace WsGH {
 	/// <summary>
@@ -20,9 +21,11 @@ namespace WsGH {
 	/// </summary>
 	public partial class MainWindow : Window {
 		ScreenshotProvider sp;
+		Logger logger;
 		// コンストラクタ
 		public MainWindow() {
 			InitializeComponent();
+			logger = new Logger();
 		}
 		// メニュー操作
 		private void ExitMenu_Click(object sender, RoutedEventArgs e) {
@@ -63,13 +66,37 @@ namespace WsGH {
 		void GetPosition() {
 			if(sp.isGetPosition()) {
 				GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = true;
+				logger.addLog("座標取得：成功");
 			} else {
 				GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = false;
+				logger.addLog("座標取得：失敗");
 			}
 		}
 		// 画像保存処理
 		void saveScreenshot() {
-			sp.getScreenShot().Save("test.png");
+			sp.getScreenShot(TwitterOptionMenu.IsChecked).Save("test.png");
+			logger.addLog("画像保存：成功");
+		}
+	}
+	// ログ管理用のクラス
+	class Logger : INotifyPropertyChanged {
+		public event PropertyChangedEventHandler PropertyChanged;
+		string loggingText;
+		public string LoggingText {
+			get {
+				return loggingText;
+			}
+			set {
+				loggingText = value;
+				NotifiyPropertyChanged("LoggingText");
+			}
+		}
+		public void addLog(string str) {
+			LoggingText += str + "\n";
+			NotifiyPropertyChanged("LoggingText");
+		}
+		private void NotifiyPropertyChanged(string propertyName) {
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }

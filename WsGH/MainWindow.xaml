@@ -20,12 +20,13 @@
 				<MenuItem x:Name="GetScreenshotMenu" Header="Get Screenshot(_S)" IsEnabled="False" Click="GetScreenshotMenu_Click" />
 			</MenuItem>
 			<MenuItem Header="Option(_O)">
-				<MenuItem IsCheckable="True" Header="for Twitter" />
+				<MenuItem x:Name="TwitterOptionMenu" IsCheckable="True" Header="for Twitter" />
 			</MenuItem>
 			<MenuItem Header="Help(_H)">
 				<MenuItem Header="About...(_A)" Click="AboutMenu_Click" />
 			</MenuItem>
 		</Menu>
 		<Button x:Name="ScreenShotButton" Content="ScreenShot" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="ScreenShotButton_Click"/>
+		<TextBox x:Name="LoggingTextBox" HorizontalAlignment="Left" Height="108" Margin="10,35,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="274" IsUndoEnabled="False" Text="{Binding LoggingText}" VerticalScrollBarVisibility="Disabled" IsReadOnly="True"/>
 	</Grid>
 </Window>

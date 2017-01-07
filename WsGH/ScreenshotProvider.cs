@@ -54,10 +54,19 @@ namespace WsGH {
 			return true;
 		}
 		// スクショを取得する
-		public Bitmap getScreenShot() {
+		public Bitmap getScreenShot(bool forTwitterFlg) {
 			var bitmap = new Bitmap(screenshotRectangle.Width, screenshotRectangle.Height);
 			using(var g = Graphics.FromImage(bitmap)) {
 				g.CopyFromScreen(screenshotRectangle.Location, new System.Drawing.Point(), bitmap.Size);
+			}
+			if(forTwitterFlg) {
+				// Twitter用に画像を少しだけ加工する
+				var color = bitmap.GetPixel(0, 0);
+				var color_a = (color.A == 0 ? 1 : color.A - 1);
+				var color_r = color.R;
+				var color_g = color.G;
+				var color_b = color.B;
+				bitmap.SetPixel(0, 0, Color.FromArgb(color_a, color_r, color_g, color_b));
 			}
 			return bitmap;
 		}
