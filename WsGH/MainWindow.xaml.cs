@@ -20,6 +20,7 @@ namespace WsGH {
 	/// </summary>
 	public partial class MainWindow : Window {
 		ScreenshotProvider sp;
+
 		public MainWindow() {
 			InitializeComponent();
 		}
@@ -29,10 +30,27 @@ namespace WsGH {
 		}
 
 		private void GetPositionMenu_Click(object sender, RoutedEventArgs e) {
-			sp = new ScreenshotProvider();
+			sp = new ScreenshotProvider(new AfterAction(GetPosition));
+		}
+
+		private void GetScreenshotMenu_Click(object sender, RoutedEventArgs e) {
+			saveScreenshot();
+		}
+
+		private void ScreenShotButton_Click(object sender, RoutedEventArgs e) {
+			saveScreenshot();
+		}
+
+		void GetPosition() {
 			if(sp.isGetPosition()) {
-				
+				GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = true;
+			} else {
+				GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = false;
 			}
+		}
+
+		void saveScreenshot() {
+			sp.getScreenShot().Save("test.png");
 		}
 	}
 }

@@ -17,7 +17,7 @@
 			</MenuItem>
 			<MenuItem Header="Action(_A)">
 				<MenuItem Header="Get Position(_G)" Click="GetPositionMenu_Click" />
-				<MenuItem Header="Get Screenshot(_S)" IsEnabled="False" />
+				<MenuItem x:Name="GetScreenshotMenu" Header="Get Screenshot(_S)" IsEnabled="False" Click="GetScreenshotMenu_Click" />
 			</MenuItem>
 			<MenuItem Header="Option(_O)">
 				<MenuItem IsCheckable="True" Header="for Twitter" />
@@ -26,6 +26,6 @@
 				<MenuItem Header="About...(_A)" />
 			</MenuItem>
 		</Menu>
-		<Button x:Name="screenShotButton" Content="ScreenShot" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" IsEnabled="False"/>
+		<Button x:Name="ScreenShotButton" Content="ScreenShot" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="ScreenShotButton_Click"/>
 	</Grid>
 </Window>
