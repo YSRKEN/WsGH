@@ -19,6 +19,7 @@ namespace WsGH {
 	/// MainWindow.xaml の相互作用ロジック
 	/// </summary>
 	public partial class MainWindow : Window {
+		ScreenshotProvider sp;
 		public MainWindow() {
 			InitializeComponent();
 		}
@@ -28,7 +29,10 @@ namespace WsGH {
 		}
 
 		private void GetPositionMenu_Click(object sender, RoutedEventArgs e) {
-			var sp = new ScreenshotProvider();
+			sp = new ScreenshotProvider();
+			if(sp.isGetPosition()) {
+				
+			}
 		}
 	}
 }
