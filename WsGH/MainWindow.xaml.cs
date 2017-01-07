@@ -31,6 +31,8 @@ namespace WsGH {
 			}
 			// ログ表示を初期化
 			DataContext = logger = new Logger() { LoggingText = "" };
+			// アプリの設定を初期化
+			TwitterOptionMenu.IsChecked = Properties.Settings.Default.ScreenshotForTwitterFlg;
 		}
 		// メニュー操作
 		private void ExitMenu_Click(object sender, RoutedEventArgs e) {
@@ -63,19 +65,14 @@ namespace WsGH {
 			var asmver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 			MessageBox.Show(asmttl + " Ver." + asmver + "\n" + asmcpy + "\n" + asmprd);
 		}
-		private void TwitterOption_Checked(object sender, RoutedEventArgs e) {
+		private void TwitterOption_Changed(object sender, RoutedEventArgs e) {
 			if(TwitterOptionMenu.IsChecked) {
 				addLog("for Twitter : True");
 			} else {
 				addLog("for Twitter : False");
 			}
-		}
-		private void TwitterOption_Unchecked(object sender, RoutedEventArgs e) {
-			if(TwitterOptionMenu.IsChecked) {
-				addLog("for Twitter : True");
-			} else {
-				addLog("for Twitter : False");
-			}
+			Properties.Settings.Default.ScreenshotForTwitterFlg = TwitterOptionMenu.IsChecked;
+			Properties.Settings.Default.Save();
 		}
 		// ボタン操作
 		private void ScreenShotButton_Click(object sender, RoutedEventArgs e) {
