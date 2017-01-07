@@ -71,17 +71,24 @@ namespace WsGH {
 		void getPosition() {
 			if(sp.isGetPosition()) {
 				GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = true;
-				addLog("座標取得：成功");
+				addLog("get Position : Success");
+				addLog("  " + sp.getPositionStr());
 			} else {
 				GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = false;
-				addLog("座標取得：失敗");
+				addLog("get Position : Failed");
 			}
 		}
 		// 画像保存処理
 		void saveScreenshot() {
-			sp.getScreenShot(TwitterOptionMenu.IsChecked).Save("test.png");
-			logger.addLog("画像保存：成功");
-			LoggingTextBox.Select(LoggingTextBox.Text.Length, 0);
+			var dt = DateTime.Now;
+			var fileName = dt.ToString("yyyy-MM-dd hh-mm-ss-fff") + ".png";
+			try {
+				sp.getScreenShot(TwitterOptionMenu.IsChecked).Save(fileName);
+				addLog("save Screenshot : Success");
+				addLog("  (" + fileName + ")");
+			} catch(Exception) {
+				addLog("save Screenshot : Failed");
+			}
 		}
 	}
 	// ログ管理用のクラス
@@ -96,9 +103,6 @@ namespace WsGH {
 				loggingText = value;
 				NotifiyPropertyChanged("LoggingText");
 			}
-		}
-		public void addLog(string str) {
-			LoggingText += str + "\n";
 		}
 		private void NotifiyPropertyChanged(string propertyName) {
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

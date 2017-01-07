@@ -53,6 +53,10 @@ namespace WsGH {
 				return false;
 			return true;
 		}
+		// 取得した座標を表示する
+		public string getPositionStr() {
+			return "(" + screenshotRectangle.X.ToString() + "," + screenshotRectangle.Y.ToString() + ") " + screenshotRectangle.Width.ToString() + "x" + screenshotRectangle.Height.ToString();
+		}
 		// スクショを取得する
 		public Bitmap getScreenShot(bool forTwitterFlg) {
 			var bitmap = new Bitmap(screenshotRectangle.Width, screenshotRectangle.Height);
