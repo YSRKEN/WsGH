@@ -25,14 +25,15 @@ namespace WsGH {
 		// コンストラクタ
 		public MainWindow() {
 			InitializeComponent();
-			logger = new Logger();
+			logger = new Logger() { LoggingText = "" };
+			DataContext = logger;
 		}
 		// メニュー操作
 		private void ExitMenu_Click(object sender, RoutedEventArgs e) {
 			Close();
 		}
 		private void GetPositionMenu_Click(object sender, RoutedEventArgs e) {
-			sp = new ScreenshotProvider(new AfterAction(GetPosition));
+			sp = new ScreenshotProvider(new AfterAction(getPosition));
 		}
 		private void GetScreenshotMenu_Click(object sender, RoutedEventArgs e) {
 			saveScreenshot();
@@ -62,20 +63,25 @@ namespace WsGH {
 		private void ScreenShotButton_Click(object sender, RoutedEventArgs e) {
 			saveScreenshot();
 		}
+		// Log追加
+		void addLog(string str) {
+			logger.LoggingText += str + "\n";
+		}
 		// 座標取得後の画面更新処理
-		void GetPosition() {
+		void getPosition() {
 			if(sp.isGetPosition()) {
 				GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = true;
-				logger.addLog("座標取得：成功");
+				addLog("座標取得：成功");
 			} else {
 				GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = false;
-				logger.addLog("座標取得：失敗");
+				addLog("座標取得：失敗");
 			}
 		}
 		// 画像保存処理
 		void saveScreenshot() {
 			sp.getScreenShot(TwitterOptionMenu.IsChecked).Save("test.png");
 			logger.addLog("画像保存：成功");
+			LoggingTextBox.Select(LoggingTextBox.Text.Length, 0);
 		}
 	}
 	// ログ管理用のクラス
@@ -93,7 +99,6 @@ namespace WsGH {
 		}
 		public void addLog(string str) {
 			LoggingText += str + "\n";
-			NotifiyPropertyChanged("LoggingText");
 		}
 		private void NotifiyPropertyChanged(string propertyName) {
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

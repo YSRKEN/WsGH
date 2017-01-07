@@ -6,7 +6,10 @@
         xmlns:local="clr-namespace:WsGH"
         mc:Ignorable="d"
         Title="WarshipGirls Helper" Height="200" Width="300" ResizeMode="CanMinimize">
-	<Grid>
+	<Grid Margin="0,0,0,0">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition />
@@ -27,6 +30,6 @@
 			</MenuItem>
 		</Menu>
 		<Button x:Name="ScreenShotButton" Content="ScreenShot" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="ScreenShotButton_Click"/>
-		<TextBox x:Name="LoggingTextBox" HorizontalAlignment="Left" Height="108" Margin="10,35,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="274" IsUndoEnabled="False" Text="{Binding LoggingText}" VerticalScrollBarVisibility="Disabled" IsReadOnly="True"/>
+		<TextBox x:Name="LoggingTextBox" Grid.Row="1" TextWrapping="NoWrap" IsUndoEnabled="False" Text="{Binding Path=LoggingText}" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Margin="10,44,10,10"/>
 	</Grid>
 </Window>
