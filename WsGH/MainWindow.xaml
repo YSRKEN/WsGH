@@ -23,7 +23,7 @@
 				<MenuItem IsCheckable="True" Header="for Twitter" />
 			</MenuItem>
 			<MenuItem Header="Help(_H)">
-				<MenuItem Header="About...(_A)" />
+				<MenuItem Header="About...(_A)" Click="AboutMenu_Click" />
 			</MenuItem>
 		</Menu>
 		<Button x:Name="ScreenShotButton" Content="ScreenShot" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="ScreenShotButton_Click"/>
