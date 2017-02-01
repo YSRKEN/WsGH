@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using OpenCvSharp;
 using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace WsGH {
 	/// <summary>
@@ -33,13 +34,14 @@ namespace WsGH {
 			DataContext = logger = new Logger() { LoggingText = "" };
 			// アプリの設定を初期化
 			TwitterOptionMenu.IsChecked = Properties.Settings.Default.ScreenshotForTwitterFlg;
+			BackgroundOptionMenu.Header = "Background : " + Utility.ColorToString(Properties.Settings.Default.BackgroundColor) + " ...";
 		}
 		// メニュー操作
 		private void ExitMenu_Click(object sender, RoutedEventArgs e) {
 			Close();
 		}
 		private void GetPositionMenu_Click(object sender, RoutedEventArgs e) {
-			sp = new ScreenshotProvider(new AfterAction(getPosition));
+			sp = new ScreenshotProvider(new AfterAction(getPosition), Properties.Settings.Default.BackgroundColor);
 		}
 		private void GetScreenshotMenu_Click(object sender, RoutedEventArgs e) {
 			saveScreenshot();
@@ -63,7 +65,7 @@ namespace WsGH {
 				System.Reflection.Assembly.GetExecutingAssembly(),
 				typeof(System.Reflection.AssemblyProductAttribute))).Product;
 			var asmver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-			MessageBox.Show(asmttl + " Ver." + asmver + "\n" + asmcpy + "\n" + asmprd);
+			System.Windows.MessageBox.Show(asmttl + " Ver." + asmver + "\n" + asmcpy + "\n" + asmprd);
 		}
 		private void TwitterOption_Changed(object sender, RoutedEventArgs e) {
 			if(TwitterOptionMenu.IsChecked) {
@@ -73,6 +75,15 @@ namespace WsGH {
 			}
 			Properties.Settings.Default.ScreenshotForTwitterFlg = TwitterOptionMenu.IsChecked;
 			Properties.Settings.Default.Save();
+		}
+		private void BackgroundOptionMenu_Click(object sender, RoutedEventArgs e) {
+			var cd = new ColorDialog();
+			if(cd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+				Properties.Settings.Default.BackgroundColor = cd.Color;
+				BackgroundOptionMenu.Header = "Background : " + Utility.ColorToString(Properties.Settings.Default.BackgroundColor) + " ...";
+				addLog("Background : " + Utility.ColorToString(Properties.Settings.Default.BackgroundColor));
+				Properties.Settings.Default.Save();
+			}
 		}
 		// ボタン操作
 		private void ScreenShotButton_Click(object sender, RoutedEventArgs e) {
@@ -122,6 +133,12 @@ namespace WsGH {
 		}
 		private void NotifiyPropertyChanged(string propertyName) {
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+	}
+	// ユーティリティ
+	static class Utility {
+		public static string ColorToString(System.Drawing.Color clr) {
+			return "#" + clr.R.ToString("X2") + clr.G.ToString("X2") + clr.B.ToString("X2");
 		}
 	}
 }

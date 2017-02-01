@@ -24,6 +24,7 @@
 			</MenuItem>
 			<MenuItem Header="Option(_O)">
 				<MenuItem x:Name="TwitterOptionMenu" IsCheckable="True" Header="for Twitter" Checked="TwitterOption_Changed" Unchecked="TwitterOption_Changed" />
+				<MenuItem x:Name="BackgroundOptionMenu" Header="Background : #000000" Click="BackgroundOptionMenu_Click"/>
 			</MenuItem>
 			<MenuItem Header="Help(_H)">
 				<MenuItem Header="About...(_A)" Click="AboutMenu_Click" />

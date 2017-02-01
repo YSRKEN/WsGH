@@ -11,10 +11,10 @@ namespace WsGH {
 	delegate void AfterAction();
 	class ScreenshotProvider {
 		Rectangle screenshotRectangle = new Rectangle(0, 0, 0, 0);
-		public ScreenshotProvider(AfterAction aa) {
+		public ScreenshotProvider(AfterAction aa, Color backgroundColor) {
 			Rectangle virtualDisplayRectangle = calcVirtualDisplayRectangle();
 			System.Windows.MessageBox.Show("Please click window of WarshipGirls.\n(Esc Key : Cancel)", "WsGH", MessageBoxButton.OK);
-			var cw = new ClickWindow(this, virtualDisplayRectangle, aa);
+			var cw = new ClickWindow(this, virtualDisplayRectangle, aa, backgroundColor);
 			cw.Show();
 		}
 		// 全てのディスプレイを覆う仮想スクリーンの位置および大きさを計算
@@ -82,16 +82,20 @@ namespace WsGH {
 			Bitmap vdb;
 			// 表示する座標
 			Rectangle vdr;
+			// ゲーム画面の背景色設定
+			Color backgroundColor;
 			// クリック完了時に何とかするための奴
 			AfterAction aa;
 			// BitmapSourceを引っ張るためにコレを使わざるを得ない現実
 			[System.Runtime.InteropServices.DllImport("gdi32.dll")]
 			public static extern bool DeleteObject(IntPtr hObject);
 			// コンストラクタ
-			public ClickWindow(ScreenshotProvider sp, Rectangle virtualDisplayRectangle, AfterAction aa) {
+			public ClickWindow(ScreenshotProvider sp, Rectangle virtualDisplayRectangle, AfterAction aa, Color bgColor) {
 				// 仕方ないね
 				this.sp = sp;
 				vdr = virtualDisplayRectangle;
+				// 背景色設定
+				backgroundColor = bgColor;
 				// クリック完了時にGUIに反映するための細工
 				this.aa = aa;
 				// 表示用に仮想スクリーンのビットマップを生成する
@@ -152,7 +156,7 @@ namespace WsGH {
 			Rectangle getGameWindowRectangle(Bitmap bitmap, int clickPointX, int clickPointY) {
 				var gwr = new Rectangle(clickPointX, clickPointY, 0, 0);
 				// 上下左右の境界を取得する
-				var borderColor = Color.FromArgb(0, 0, 0);
+				var borderColor = Color.FromArgb(backgroundColor.R, backgroundColor.G, backgroundColor.B);
 				const int borderDiff = 5;
 				// 左
 				for(int x = clickPointX - 1; x >= 0; --x) {
