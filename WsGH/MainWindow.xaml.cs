@@ -46,6 +46,9 @@ namespace WsGH {
 		private void GetScreenshotMenu_Click(object sender, RoutedEventArgs e) {
 			saveScreenshot();
 		}
+		private void ShowPicFolderMenu_Click(object sender, RoutedEventArgs e) {
+			System.Diagnostics.Process.Start(@"pic\");
+		}
 		private void AboutMenu_Click(object sender, RoutedEventArgs e) {
 			// 自分自身のバージョン情報を取得する
 			// (http://dobon.net/vb/dotnet/file/myversioninfo.html)

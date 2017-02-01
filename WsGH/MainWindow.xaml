@@ -21,6 +21,7 @@
 			<MenuItem Header="Action(_A)">
 				<MenuItem Header="Get Position(_G)" Click="GetPositionMenu_Click" />
 				<MenuItem x:Name="GetScreenshotMenu" Header="Get Screenshot(_S)" IsEnabled="False" Click="GetScreenshotMenu_Click" />
+				<MenuItem Header="Show pic Folder(_P)" Click="ShowPicFolderMenu_Click"/>
 			</MenuItem>
 			<MenuItem Header="Option(_O)">
 				<MenuItem x:Name="TwitterOptionMenu" IsCheckable="True" Header="for Twitter" Checked="TwitterOption_Changed" Unchecked="TwitterOption_Changed" />
