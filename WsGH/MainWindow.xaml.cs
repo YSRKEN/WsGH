@@ -15,14 +15,16 @@ using System.Windows.Shapes;
 using OpenCvSharp;
 using System.ComponentModel;
 using System.Windows.Forms;
+using System.Windows.Threading;
 
 namespace WsGH {
 	/// <summary>
 	/// MainWindow.xaml の相互作用ロジック
 	/// </summary>
 	public partial class MainWindow : Window {
-		ScreenshotProvider sp;
+		ScreenshotProvider sp = null;
 		Logger logger;
+		DispatcherTimer m_Timer = null;
 		// コンストラクタ
 		public MainWindow() {
 			InitializeComponent();
@@ -34,7 +36,13 @@ namespace WsGH {
 			DataContext = logger = new Logger() { LoggingText = "" };
 			// アプリの設定を初期化
 			TwitterOptionMenu.IsChecked = Properties.Settings.Default.ScreenshotForTwitterFlg;
-			BackgroundOptionMenu.Header = "Background : " + Utility.ColorToString(Properties.Settings.Default.BackgroundColor) + " ...";
+			BackgroundOptionMenu.Header = "Background : " + ColorToString(Properties.Settings.Default.BackgroundColor) + " ...";
+			// タイマーを作成する
+			m_Timer = new DispatcherTimer(DispatcherPriority.Normal, this.Dispatcher);
+			m_Timer.Interval = TimeSpan.FromMilliseconds(100.0);
+			m_Timer.Tick += new EventHandler(DispatcherTimer_Tick);
+			// タイマーの実行開始
+			m_Timer.Start();
 		}
 		// メニュー操作
 		private void ExitMenu_Click(object sender, RoutedEventArgs e) {
@@ -83,8 +91,8 @@ namespace WsGH {
 			var cd = new ColorDialog();
 			if(cd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
 				Properties.Settings.Default.BackgroundColor = cd.Color;
-				BackgroundOptionMenu.Header = "Background : " + Utility.ColorToString(Properties.Settings.Default.BackgroundColor) + " ...";
-				addLog("Background : " + Utility.ColorToString(Properties.Settings.Default.BackgroundColor));
+				BackgroundOptionMenu.Header = "Background : " + ColorToString(Properties.Settings.Default.BackgroundColor) + " ...";
+				addLog("Background : " + ColorToString(Properties.Settings.Default.BackgroundColor));
 				Properties.Settings.Default.Save();
 			}
 		}
@@ -93,12 +101,12 @@ namespace WsGH {
 			saveScreenshot();
 		}
 		// ログに内容を追加
-		void addLog(string str) {
+		private void addLog(string str) {
 			var dt = DateTime.Now;
 			logger.LoggingText += dt.ToString("hh:mm:ss ") + str + "\n";
 		}
 		// 座標取得後の画面更新処理
-		void getPosition() {
+		private void getPosition() {
 			if(sp.isGetPosition()) {
 				GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = true;
 				addLog("get Position : Success");
@@ -109,7 +117,7 @@ namespace WsGH {
 			}
 		}
 		// 画像保存処理
-		void saveScreenshot() {
+		private void saveScreenshot() {
 			var dt = DateTime.Now;
 			var fileName = dt.ToString("yyyy-MM-dd hh-mm-ss-fff") + ".png";
 			try {
@@ -119,6 +127,21 @@ namespace WsGH {
 			} catch(Exception) {
 				addLog("save Screenshot : Failed");
 			}
+		}
+		// タイマー動作
+		private void DispatcherTimer_Tick(object sender, EventArgs e) {
+			// 座標取得できていた場合の処理
+			if(sp != null && sp.isGetPosition()) {
+				var screenShot = sp.getScreenShot(TwitterOptionMenu.IsChecked);
+				// 遠征中なら、遠征時間読み取りにチャレンジしてみる
+				if(SceneRecognition.isExpeditionScene(screenShot)) {
+					
+				}
+			}
+		}
+		// 色情報を文字列に変換
+		public static string ColorToString(System.Drawing.Color clr) {
+			return "#" + clr.R.ToString("X2") + clr.G.ToString("X2") + clr.B.ToString("X2");
 		}
 	}
 	// ログ管理用のクラス
@@ -136,12 +159,6 @@ namespace WsGH {
 		}
 		private void NotifiyPropertyChanged(string propertyName) {
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
-	}
-	// ユーティリティ
-	static class Utility {
-		public static string ColorToString(System.Drawing.Color clr) {
-			return "#" + clr.R.ToString("X2") + clr.G.ToString("X2") + clr.B.ToString("X2");
 		}
 	}
 }
