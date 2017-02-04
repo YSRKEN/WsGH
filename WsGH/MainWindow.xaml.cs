@@ -28,6 +28,7 @@ namespace WsGH {
 		// コンストラクタ
 		public MainWindow() {
 			InitializeComponent();
+			MouseLeftButtonDown += (o, e) => DragMove();
 			// フォルダの有無をチェック
 			if(!System.IO.Directory.Exists(@"pic\")) {
 				System.IO.Directory.CreateDirectory(@"pic\");
@@ -39,10 +40,15 @@ namespace WsGH {
 			BackgroundOptionMenu.Header = "Background : " + ColorToString(Properties.Settings.Default.BackgroundColor) + " ...";
 			// タイマーを作成する
 			m_Timer = new DispatcherTimer(DispatcherPriority.Normal, this.Dispatcher);
-			m_Timer.Interval = TimeSpan.FromMilliseconds(100.0);
+			m_Timer.Interval = TimeSpan.FromMilliseconds(1000.0);
 			m_Timer.Tick += new EventHandler(DispatcherTimer_Tick);
 			// タイマーの実行開始
 			m_Timer.Start();
+			// タイマー画面を作成・表示
+			TimerWindow tw = new TimerWindow();
+			if(Properties.Settings.Default.ShowTimerWindowFlg) {
+				tw.Show();
+			}
 		}
 		// メニュー操作
 		private void ExitMenu_Click(object sender, RoutedEventArgs e) {
@@ -53,6 +59,13 @@ namespace WsGH {
 		}
 		private void GetScreenshotMenu_Click(object sender, RoutedEventArgs e) {
 			saveScreenshot();
+		}
+		private void ShowTimerWindow_Click(object sender, RoutedEventArgs e) {
+			if(!Properties.Settings.Default.ShowTimerWindowFlg) {
+				TimerWindow tw = new TimerWindow();
+				Properties.Settings.Default.ShowTimerWindowFlg = true;
+				tw.Show();
+			}
 		}
 		private void ShowPicFolderMenu_Click(object sender, RoutedEventArgs e) {
 			System.Diagnostics.Process.Start(@"pic\");
@@ -135,7 +148,7 @@ namespace WsGH {
 				var screenShot = sp.getScreenShot(TwitterOptionMenu.IsChecked);
 				// 遠征中なら、遠征時間読み取りにチャレンジしてみる
 				if(SceneRecognition.isExpeditionScene(screenShot)) {
-					
+					addLog("遠征");
 				}
 			}
 		}

@@ -21,6 +21,9 @@
 			<MenuItem Header="Action(_A)">
 				<MenuItem Header="Get Position(_G)" Click="GetPositionMenu_Click" />
 				<MenuItem x:Name="GetScreenshotMenu" Header="Get Screenshot(_S)" IsEnabled="False" Click="GetScreenshotMenu_Click" />
+				<MenuItem Header="Show Window(_W)">
+					<MenuItem Header="TimerWindow(_T)" Click="ShowTimerWindow_Click" />
+				</MenuItem>
 				<MenuItem Header="Show pic Folder(_P)" Click="ShowPicFolderMenu_Click"/>
 			</MenuItem>
 			<MenuItem Header="Option(_O)">

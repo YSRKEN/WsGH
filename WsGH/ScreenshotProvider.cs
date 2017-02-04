@@ -13,7 +13,7 @@ namespace WsGH {
 		Rectangle screenshotRectangle = new Rectangle(0, 0, 0, 0);
 		public ScreenshotProvider(AfterAction aa, Color backgroundColor) {
 			Rectangle virtualDisplayRectangle = calcVirtualDisplayRectangle();
-			System.Windows.MessageBox.Show("Please click window of WarshipGirls.\n(Esc Key : Cancel)", "WsGH", MessageBoxButton.OK);
+			//System.Windows.MessageBox.Show("Please click window of WarshipGirls.\n(Esc Key : Cancel)", "WsGH", MessageBoxButton.OK);
 			var cw = new ClickWindow(this, virtualDisplayRectangle, aa, backgroundColor);
 			cw.Show();
 		}

@@ -9,13 +9,13 @@
     internal sealed partial class Settings {
         
         public Settings() {
-            // // 設定の保存と変更のイベント ハンドラーを追加するには、以下の行のコメントを解除します:
-            //
-            // this.SettingChanging += this.SettingChangingEventHandler;
-            //
-            // this.SettingsSaving += this.SettingsSavingEventHandler;
-            //
-        }
+			// // 設定の保存と変更のイベント ハンドラーを追加するには、以下の行のコメントを解除します:
+			//
+			// this.SettingChanging += this.SettingChangingEventHandler;
+			//
+			// this.SettingsSaving += this.SettingsSavingEventHandler;
+			//
+		}
         
         private void SettingChangingEventHandler(object sender, System.Configuration.SettingChangingEventArgs e) {
             // SettingChangingEvent イベントを処理するコードをここに追加してください。

@@ -55,5 +55,17 @@ namespace WsGH.Properties {
                 this["BackgroundColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowTimerWindowFlg {
+            get {
+                return ((bool)(this["ShowTimerWindowFlg"]));
+            }
+            set {
+                this["ShowTimerWindowFlg"] = value;
+            }
+        }
     }
 }
