@@ -1,0 +1,31 @@
+﻿<Window x:Class="WsGH.TimerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WsGH"
+        mc:Ignorable="d"
+        Title="TimerWindow" Height="170" Width="340" ResizeMode="NoResize" Closed="Window_Closed">
+	<Grid>
+		<TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Exp" VerticalAlignment="Top" RenderTransformOrigin="0.537,0.084" FontSize="20"/>
+		<TextBlock HorizontalAlignment="Left" Margin="88,10,0,0" TextWrapping="Wrap" Text="Bld" VerticalAlignment="Top" RenderTransformOrigin="0.771,-0.334" FontSize="20"/>
+		<TextBlock HorizontalAlignment="Left" Margin="166,10,0,0" TextWrapping="Wrap" Text="Dev" VerticalAlignment="Top" FontSize="20" RenderTransformOrigin="1.321,0.489"/>
+		<TextBlock HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" Text="Dock" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="ExpTimer1TextBlock" HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="ExpTimer2TextBlock" HorizontalAlignment="Left" Margin="10,52,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="ExpTimer3TextBlock" HorizontalAlignment="Left" Margin="10,73,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="ExpTimer4TextBlock" HorizontalAlignment="Left" Margin="10,94,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="BldTimer1TextBlock" HorizontalAlignment="Left" Margin="88,31,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="BldTimer2TextBlock" HorizontalAlignment="Left" Margin="88,52,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="BldTimer3TextBlock" HorizontalAlignment="Left" Margin="88,73,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="BldTimer4TextBlock" HorizontalAlignment="Left" Margin="88,94,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" RenderTransformOrigin="0.538,0" FontSize="20"/>
+		<TextBlock x:Name="DevTimer1TextBlock" HorizontalAlignment="Left" Margin="166,31,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="DevTimer2TextBlock" HorizontalAlignment="Left" Margin="166,52,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="DevTimer3TextBlock" HorizontalAlignment="Left" Margin="166,73,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="DevTimer4TextBlock" HorizontalAlignment="Left" Margin="166,94,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" RenderTransformOrigin="0.515,0" FontSize="20"/>
+		<TextBlock x:Name="DckTimer1TextBlock" HorizontalAlignment="Left" Margin="244,31,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20" RenderTransformOrigin="-0.273,0.977"/>
+		<TextBlock x:Name="DckTimer2TextBlock" HorizontalAlignment="Left" Margin="244,52,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="DckTimer3TextBlock" HorizontalAlignment="Left" Margin="244,72,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="DckTimer4TextBlock" HorizontalAlignment="Left" Margin="244,94,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
+	</Grid>
+</Window>
