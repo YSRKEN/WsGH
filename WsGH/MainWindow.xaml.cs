@@ -61,11 +61,13 @@ namespace WsGH {
 			saveScreenshot();
 		}
 		private void ShowTimerWindow_Click(object sender, RoutedEventArgs e) {
-			if(!Properties.Settings.Default.ShowTimerWindowFlg) {
-				TimerWindow tw = new TimerWindow();
-				Properties.Settings.Default.ShowTimerWindowFlg = true;
-				tw.Show();
-			}
+			// 2枚以上同じウィンドウを生成しないようにする
+			if(Properties.Settings.Default.ShowTimerWindowFlg)
+				return;
+			// ウィンドウを生成
+			TimerWindow tw = new TimerWindow();
+			Properties.Settings.Default.ShowTimerWindowFlg = true;
+			tw.Show();
 		}
 		private void ShowPicFolderMenu_Click(object sender, RoutedEventArgs e) {
 			System.Diagnostics.Process.Start(@"pic\");
@@ -92,17 +94,21 @@ namespace WsGH {
 			System.Windows.MessageBox.Show(asmttl + " Ver." + asmver + "\n" + asmcpy + "\n" + asmprd);
 		}
 		private void TwitterOption_Changed(object sender, RoutedEventArgs e) {
+			// チェックの状態をログに記録する
 			if(TwitterOptionMenu.IsChecked) {
 				addLog("for Twitter : True");
 			} else {
 				addLog("for Twitter : False");
 			}
+			// チェックの状態を反映させる
 			Properties.Settings.Default.ScreenshotForTwitterFlg = TwitterOptionMenu.IsChecked;
 			Properties.Settings.Default.Save();
 		}
 		private void BackgroundOptionMenu_Click(object sender, RoutedEventArgs e) {
+			// ゲーム背景色を変更するため、色変更ダイアログを表示する
 			var cd = new ColorDialog();
 			if(cd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+				// 色変更を行い、画面にも反映させる
 				Properties.Settings.Default.BackgroundColor = cd.Color;
 				BackgroundOptionMenu.Header = "Background : " + ColorToString(Properties.Settings.Default.BackgroundColor) + " ...";
 				addLog("Background : " + ColorToString(Properties.Settings.Default.BackgroundColor));
@@ -120,6 +126,7 @@ namespace WsGH {
 		}
 		// 座標取得後の画面更新処理
 		private void getPosition() {
+			// 成功した場合と失敗した場合で処理を分ける
 			if(sp.isGetPosition()) {
 				GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = true;
 				addLog("get Position : Success");
@@ -131,8 +138,10 @@ namespace WsGH {
 		}
 		// 画像保存処理
 		private void saveScreenshot() {
+			// 現在時間からファイル名を生成する
 			var dt = DateTime.Now;
 			var fileName = dt.ToString("yyyy-MM-dd hh-mm-ss-fff") + ".png";
+			// 画像を保存する
 			try {
 				sp.getScreenShot(TwitterOptionMenu.IsChecked).Save(@"pic\" + fileName);
 				addLog("save Screenshot : Success");
@@ -145,6 +154,7 @@ namespace WsGH {
 		private void DispatcherTimer_Tick(object sender, EventArgs e) {
 			// 座標取得できていた場合の処理
 			if(sp != null && sp.isGetPosition()) {
+				// とりあえずスクショを取得する
 				var screenShot = sp.getScreenShot(TwitterOptionMenu.IsChecked);
 				// 遠征中なら、遠征時間読み取りにチャレンジしてみる
 				if(SceneRecognition.isExpeditionScene(screenShot)) {
@@ -162,13 +172,8 @@ namespace WsGH {
 		public event PropertyChangedEventHandler PropertyChanged;
 		string loggingText;
 		public string LoggingText {
-			get {
-				return loggingText;
-			}
-			set {
-				loggingText = value;
-				NotifiyPropertyChanged("LoggingText");
-			}
+			get { return loggingText; }
+			set { loggingText = value; NotifiyPropertyChanged("LoggingText"); }
 		}
 		private void NotifiyPropertyChanged(string propertyName) {
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

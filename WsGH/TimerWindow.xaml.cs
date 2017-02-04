@@ -34,7 +34,11 @@ namespace WsGH {
 	public class TimerConverter : IValueConverter {
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
 			var time = (ulong)value;
-			return "00:00:00";
+			if(time == 0) {
+				return "--:--:--";
+			}else {
+				return "00:00:00";
+			}
 		}
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
 			throw new NotImplementedException();
@@ -43,6 +47,7 @@ namespace WsGH {
 	// 値を保存するクラス
 	public class TimerValue : INotifyPropertyChanged
 	{
+		// 遠征タイマー
 		ulong expTimer1;
 		public ulong ExpTimer1 {
 			get { return expTimer1; }
