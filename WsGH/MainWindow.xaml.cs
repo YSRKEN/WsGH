@@ -24,7 +24,8 @@ namespace WsGH {
 	public partial class MainWindow : Window {
 		ScreenshotProvider sp = null;
 		Logger logger;
-		DispatcherTimer m_Timer = null;
+		TimerWindow tw;
+		int timerWindowSecond;
 		// コンストラクタ
 		public MainWindow() {
 			InitializeComponent();
@@ -39,13 +40,14 @@ namespace WsGH {
 			TwitterOptionMenu.IsChecked = Properties.Settings.Default.ScreenshotForTwitterFlg;
 			BackgroundOptionMenu.Header = "Background : " + ColorToString(Properties.Settings.Default.BackgroundColor) + " ...";
 			// タイマーを作成する
-			m_Timer = new DispatcherTimer(DispatcherPriority.Normal, this.Dispatcher);
-			m_Timer.Interval = TimeSpan.FromMilliseconds(1000.0);
+			DispatcherTimer m_Timer = new DispatcherTimer(DispatcherPriority.Normal, this.Dispatcher);
+			m_Timer.Interval = TimeSpan.FromMilliseconds(200.0);
 			m_Timer.Tick += new EventHandler(DispatcherTimer_Tick);
 			// タイマーの実行開始
 			m_Timer.Start();
+			timerWindowSecond = DateTime.Now.Second;
 			// タイマー画面を作成・表示
-			TimerWindow tw = new TimerWindow();
+			tw = new TimerWindow();
 			if(Properties.Settings.Default.ShowTimerWindowFlg) {
 				tw.Show();
 			}
@@ -65,8 +67,9 @@ namespace WsGH {
 			if(Properties.Settings.Default.ShowTimerWindowFlg)
 				return;
 			// ウィンドウを生成
-			TimerWindow tw = new TimerWindow();
+			tw = new TimerWindow();
 			Properties.Settings.Default.ShowTimerWindowFlg = true;
+			Properties.Settings.Default.Save();
 			tw.Show();
 		}
 		private void ShowPicFolderMenu_Click(object sender, RoutedEventArgs e) {
@@ -158,8 +161,34 @@ namespace WsGH {
 				var screenShot = sp.getScreenShot(TwitterOptionMenu.IsChecked);
 				// 遠征中なら、遠征時間読み取りにチャレンジしてみる
 				if(SceneRecognition.isExpeditionScene(screenShot)) {
-					addLog("遠征");
+					var expEndTime = SceneRecognition.getExpeditionTimer(screenShot);
+					var bindData = tw.DataContext as TimerValue;
+					foreach(var pair in expEndTime) {
+						switch(pair.Key) {
+						case 0:
+							bindData.ExpTimer1 = pair.Value;
+							break;
+						case 1:
+							bindData.ExpTimer2 = pair.Value;
+							break;
+						case 2:
+							bindData.ExpTimer3 = pair.Value;
+							break;
+						case 3:
+							bindData.ExpTimer4 = pair.Value;
+							break;
+						default:
+							break;
+						}
+					}
 				}
+			}
+			// タイマーの表示を更新する
+			var timerWindowSecondNow = DateTime.Now.Second;
+			if(timerWindowSecond != timerWindowSecondNow) {
+				var bindData = tw.DataContext as TimerValue;
+				bindData.RedrawTimerWindow();
+				timerWindowSecond = timerWindowSecondNow;
 			}
 		}
 		// 色情報を文字列に変換

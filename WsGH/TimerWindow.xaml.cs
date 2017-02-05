@@ -23,6 +23,12 @@ namespace WsGH {
 		public TimerWindow() {
 			InitializeComponent();
 			MouseLeftButtonDown += (o, e) => DragMove();
+			DataContext = new TimerValue() {
+				ExpTimer1 = Properties.Settings.Default.ExpTimer1,
+				ExpTimer2 = Properties.Settings.Default.ExpTimer2,
+				ExpTimer3 = Properties.Settings.Default.ExpTimer3,
+				ExpTimer4 = Properties.Settings.Default.ExpTimer4,
+			};
 		}
 		// ウィンドウを閉じる際の処理
 		private void Window_Closed(object sender, EventArgs e) {
@@ -34,10 +40,22 @@ namespace WsGH {
 	public class TimerConverter : IValueConverter {
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
 			var time = (ulong)value;
-			if(time == 0) {
+			if(time < 0) {
 				return "--:--:--";
 			}else {
-				return "00:00:00";
+				var now_time = SceneRecognition.GetUnixTime(DateTime.Now);
+				if(time <= now_time) {
+					value = 0;
+					return "--:--:--";
+				}else {
+					var leastSecond = time - now_time;
+					var hour = leastSecond / (60 * 60);
+					leastSecond -= hour * 60 * 60;
+					var minute = leastSecond / 60;
+					leastSecond -= minute * 60;
+					var second = leastSecond;
+					return hour.ToString("D2") + ":" + minute.ToString("D2") + ":" + second.ToString("D2");
+				}
 			}
 		}
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
@@ -51,24 +69,50 @@ namespace WsGH {
 		ulong expTimer1;
 		public ulong ExpTimer1 {
 			get { return expTimer1; }
-			set { expTimer1 = value; NotifyPropertyChanged("ExpTimer1"); }
+			set {
+				expTimer1 = value;
+				Properties.Settings.Default.ExpTimer1 = value;
+				Properties.Settings.Default.Save();
+				NotifyPropertyChanged("ExpTimer1");
+			}
 		}
 		ulong expTimer2;
 		public ulong ExpTimer2 {
 			get { return expTimer2; }
-			set { expTimer2 = value; NotifyPropertyChanged("ExpTimer2"); }
+			set {
+				expTimer2 = value;
+				Properties.Settings.Default.ExpTimer2 = value;
+				Properties.Settings.Default.Save();
+				NotifyPropertyChanged("ExpTimer2");
+			}
 		}
 		ulong expTimer3;
 		public ulong ExpTimer3 {
 			get { return expTimer3; }
-			set { expTimer3 = value; NotifyPropertyChanged("ExpTimer3"); }
+			set {
+				expTimer3 = value;
+				Properties.Settings.Default.ExpTimer3 = value;
+				Properties.Settings.Default.Save();
+				NotifyPropertyChanged("ExpTimer3");
+			}
 		}
 		ulong expTimer4;
 		public ulong ExpTimer4 {
 			get { return expTimer4; }
-			set { expTimer4 = value; NotifyPropertyChanged("ExpTimer4"); }
+			set {
+				expTimer4 = value;
+				Properties.Settings.Default.ExpTimer4 = value;
+				Properties.Settings.Default.Save();
+				NotifyPropertyChanged("ExpTimer4");
+			}
 		}
 		public event PropertyChangedEventHandler PropertyChanged = (s, e) => { };
+		public void RedrawTimerWindow() {
+			NotifyPropertyChanged("ExpTimer1");
+			NotifyPropertyChanged("ExpTimer2");
+			NotifyPropertyChanged("ExpTimer3");
+			NotifyPropertyChanged("ExpTimer4");
+		}
 		private void NotifyPropertyChanged(string parameter) {
 			PropertyChanged(this, new PropertyChangedEventArgs(parameter));
 		}
