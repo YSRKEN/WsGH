@@ -21,14 +21,14 @@ namespace WsGH {
 	public partial class TimerWindow : Window {
 		// コンストラクタ
 		public TimerWindow() {
+			InitializeComponent();
+			MouseLeftButtonDown += (o, e) => DragMove();
 			DataContext = new TimerValue() {
 				ExpTimer1 = Properties.Settings.Default.ExpTimer1,
 				ExpTimer2 = Properties.Settings.Default.ExpTimer2,
 				ExpTimer3 = Properties.Settings.Default.ExpTimer3,
 				ExpTimer4 = Properties.Settings.Default.ExpTimer4,
 			};
-			InitializeComponent();
-			MouseLeftButtonDown += (o, e) => DragMove();
 		}
 		// ウィンドウを閉じる際の処理
 		private void Window_Closed(object sender, EventArgs e) {
