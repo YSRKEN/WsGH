@@ -137,6 +137,9 @@ namespace WsGH {
 		private void ScreenShotButton_Click(object sender, RoutedEventArgs e) {
 			saveScreenshot();
 		}
+		private void TimerWindowButton_Click(object sender, RoutedEventArgs e) {
+			ShowTimerWindow_Click(sender, e);
+		}
 		// ログに内容を追加
 		private void addLog(string str) {
 			var dt = DateTime.Now;
