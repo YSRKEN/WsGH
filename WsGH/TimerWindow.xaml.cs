@@ -21,14 +21,14 @@ namespace WsGH {
 	public partial class TimerWindow : Window {
 		// コンストラクタ
 		public TimerWindow() {
-			InitializeComponent();
-			MouseLeftButtonDown += (o, e) => DragMove();
 			DataContext = new TimerValue() {
 				ExpTimer1 = Properties.Settings.Default.ExpTimer1,
 				ExpTimer2 = Properties.Settings.Default.ExpTimer2,
 				ExpTimer3 = Properties.Settings.Default.ExpTimer3,
 				ExpTimer4 = Properties.Settings.Default.ExpTimer4,
 			};
+			InitializeComponent();
+			MouseLeftButtonDown += (o, e) => DragMove();
 		}
 		// ウィンドウを閉じる際の処理
 		private void Window_Closed(object sender, EventArgs e) {
@@ -39,15 +39,18 @@ namespace WsGH {
 	// コンバータ
 	public class TimerConverter : IValueConverter {
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+			// 完了時刻を読み取る
 			var time = (ulong)value;
 			if(time < 0) {
+				// 完了時刻が異常な値だと--:--:--になる
 				return "--:--:--";
 			}else {
 				var now_time = SceneRecognition.GetUnixTime(DateTime.Now);
 				if(time <= now_time) {
-					value = 0;
+					// 現在時刻≧完了時刻だと--:--:--になる
 					return "--:--:--";
 				}else {
+					// 時間差を計算して画面に表示する
 					var leastSecond = time - now_time;
 					var hour = leastSecond / (60 * 60);
 					leastSecond -= hour * 60 * 60;
@@ -108,6 +111,7 @@ namespace WsGH {
 		}
 		public event PropertyChangedEventHandler PropertyChanged = (s, e) => { };
 		public void RedrawTimerWindow() {
+			// タイマー全体を更新する
 			NotifyPropertyChanged("ExpTimer1");
 			NotifyPropertyChanged("ExpTimer2");
 			NotifyPropertyChanged("ExpTimer3");

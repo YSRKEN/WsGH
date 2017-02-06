@@ -48,7 +48,7 @@ namespace WsGH {
 		// OCRする際にマッチングさせる元のサイズ
 		static Size TemplateSize2 = new Size(TemplateSize1.Width + 2, TemplateSize1.Height + 2);
 		// OCRする際にマッチングさせる先の画像
-		static IplImage TemplateSource = Cv.LoadImage("template.png", LoadMode.Unchanged);
+		static IplImage TemplateSource = Cv.LoadImage("ocr_template.png", LoadMode.Unchanged);
 		#endregion
 		#region その他定数
 		static DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0);
