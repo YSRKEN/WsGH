@@ -259,5 +259,25 @@ namespace WsGH.Properties {
                 this["DockTimer4"] = value;
             }
         }
-    }
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		public WINDOWPLACEMENT MainWindowPlacement {
+			get {
+				return ((WINDOWPLACEMENT)(this["MainWindowPlacement"]));
+			}
+			set {
+				this["MainWindowPlacement"] = value;
+			}
+		}
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		public WINDOWPLACEMENT TimerWindowPlacement {
+			get {
+				return ((WINDOWPLACEMENT)(this["TimerWindowPlacement"]));
+			}
+			set {
+				this["TimerWindowPlacement"] = value;
+			}
+		}
+	}
 }

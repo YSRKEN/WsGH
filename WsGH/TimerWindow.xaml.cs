@@ -30,6 +30,19 @@ namespace WsGH {
 				ExpTimer4 = Properties.Settings.Default.ExpTimer4,
 			};
 		}
+		// ウィンドウ位置復元
+		protected override void OnSourceInitialized(EventArgs e) {
+			base.OnSourceInitialized(e);
+			try {
+				NativeMethods.SetWindowPlacementHelper(this, Properties.Settings.Default.TimerWindowPlacement);
+			} catch { }
+		}
+		// ウィンドウ位置保存
+		protected override void OnClosing(CancelEventArgs e) {
+			base.OnClosing(e);
+			Properties.Settings.Default.TimerWindowPlacement = NativeMethods.GetWindowPlacementHelper(this);
+			Properties.Settings.Default.Save();
+		}
 		// ウィンドウを閉じる際の処理
 		private void Window_Closed(object sender, EventArgs e) {
 			Properties.Settings.Default.ShowTimerWindowFlg = false;

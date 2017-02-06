@@ -53,6 +53,20 @@ namespace WsGH {
 				tw.Show();
 			}
 		}
+		// ウィンドウ位置復元
+		protected override void OnSourceInitialized(EventArgs e) {
+			base.OnSourceInitialized(e);
+			try {
+				NativeMethods.SetWindowPlacementHelper(this, Properties.Settings.Default.MainWindowPlacement);
+			}
+			catch { }
+		}
+		// ウィンドウ位置保存
+		protected override void OnClosing(CancelEventArgs e) {
+			base.OnClosing(e);
+			Properties.Settings.Default.MainWindowPlacement = NativeMethods.GetWindowPlacementHelper(this);
+			Properties.Settings.Default.Save();
+		}
 		// メニュー操作
 		private void ExitMenu_Click(object sender, RoutedEventArgs e) {
 			Close();
