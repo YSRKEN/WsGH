@@ -33,6 +33,7 @@ namespace WsGH {
 		// ウィンドウを閉じる際の処理
 		private void Window_Closed(object sender, EventArgs e) {
 			Properties.Settings.Default.ShowTimerWindowFlg = false;
+			Properties.Settings.Default.Save();
 			Close();
 		}
 	}
