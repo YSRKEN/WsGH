@@ -34,8 +34,9 @@
 				<MenuItem Header="About...(_A)" Click="AboutMenu_Click" />
 			</MenuItem>
 		</Menu>
-		<Button x:Name="ScreenShotButton" Content="ScreenShot" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="ScreenShotButton_Click"/>
-		<Button x:Name="TimerWindowButton" Content="T" HorizontalAlignment="Left" Margin="90,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="20" FontWeight="Bold" Click="TimerWindowButton_Click"/>
+		<Button x:Name="GetPositionButton" Content="G" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="20" FontWeight="Bold" Click="GetPositionMenu_Click"/>
+		<Button x:Name="ScreenShotButton" Content="ScreenShot" HorizontalAlignment="Left" Margin="35,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="ScreenShotButton_Click"/>
+		<Button x:Name="TimerWindowButton" Content="T" HorizontalAlignment="Left" Margin="115,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="20" FontWeight="Bold" Click="ShowTimerWindow_Click"/>
 		<TextBox x:Name="LoggingTextBox" Grid.Row="1" TextWrapping="NoWrap" IsUndoEnabled="False" Text="{Binding Path=LoggingText}" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Margin="10,44,10,10"/>
 	</Grid>
 </Window>

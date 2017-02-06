@@ -40,7 +40,7 @@ namespace WsGH {
 			DataContext = logger = new Logger() { LoggingText = "" };
 			// アプリの設定を初期化
 			TwitterOptionMenu.IsChecked = Properties.Settings.Default.ScreenshotForTwitterFlg;
-			BackgroundOptionMenu.Header = "Background : " + ColorToString(Properties.Settings.Default.BackgroundColor) + " ...";
+			BackgroundOptionMenu.Header = $"Background : {ColorToString(Properties.Settings.Default.BackgroundColor)} ...";
 			// タイマーを作成する
 			DispatcherTimer m_Timer = new DispatcherTimer(DispatcherPriority.Normal, this.Dispatcher);
 			m_Timer.Interval = TimeSpan.FromMilliseconds(200.0);
@@ -73,7 +73,7 @@ namespace WsGH {
 			Close();
 		}
 		private void GetPositionMenu_Click(object sender, RoutedEventArgs e) {
-			sp = new ScreenshotProvider(new AfterAction(getPosition), Properties.Settings.Default.BackgroundColor);
+			sp = new ScreenshotProvider(new AfterAction(getPosition));
 		}
 		private void GetScreenshotMenu_Click(object sender, RoutedEventArgs e) {
 			saveScreenshot();
@@ -137,9 +137,6 @@ namespace WsGH {
 		// ボタン操作
 		private void ScreenShotButton_Click(object sender, RoutedEventArgs e) {
 			saveScreenshot();
-		}
-		private void TimerWindowButton_Click(object sender, RoutedEventArgs e) {
-			ShowTimerWindow_Click(sender, e);
 		}
 		// ログに内容を追加
 		private void addLog(string str) {
@@ -213,7 +210,16 @@ namespace WsGH {
 				if(screenShot != null) {
 					// ズレチェック
 					if(sp.IsPositionShifting()) {
-						
+						addLog("Found PositionShifting!");
+						addLog("try fix PositionShifting...");
+						if(sp.TryPositionShifting()) {
+							GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = true;
+							addLog("fix PositionShifting : Success");
+							addLog("  " + sp.getPositionStr());
+						} else {
+							GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = false;
+							addLog("fix PositionShifting : Failed");
+						}
 					}
 				}
 				// タイマーの表示を更新する

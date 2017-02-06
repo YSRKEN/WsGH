@@ -40,7 +40,12 @@ namespace WsGH {
 		// ウィンドウ位置保存
 		protected override void OnClosing(CancelEventArgs e) {
 			base.OnClosing(e);
-			Properties.Settings.Default.ShowTimerWindowFlg = false;
+			// メインウィンドウが閉じられたことによって閉じる場合でなければ、
+			// ShowTimerWindowFlgをfalseにする
+			if(Application.Current.MainWindow != null) {
+				Properties.Settings.Default.ShowTimerWindowFlg = false;
+			}
+			// TimerWindowの位置を保存する
 			Properties.Settings.Default.TimerWindowPlacement = NativeMethods.GetWindowPlacementHelper(this);
 			Properties.Settings.Default.Save();
 		}
