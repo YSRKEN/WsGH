@@ -132,9 +132,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ocr_template.png.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ocr_template.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
