@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WsGH"
         mc:Ignorable="d"
-        Title="TimerWindow" Height="170" Width="340" ResizeMode="NoResize" Closed="Window_Closed">
+        Title="TimerWindow" Height="170" Width="340" ResizeMode="NoResize">
 	<Window.DataContext>
 		<local:TimerValue/>
 	</Window.DataContext>
