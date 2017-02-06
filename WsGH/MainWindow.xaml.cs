@@ -159,7 +159,7 @@ namespace WsGH {
 		private void saveScreenshot() {
 			// 現在時間からファイル名を生成する
 			var dt = DateTime.Now;
-			var fileName = dt.ToString("yyyy-MM-dd hh-mm-ss-fff") + ".png";
+			var fileName = dt.ToString("yyyy-MM-dd hh-mm-ss-fff") + (TwitterOptionMenu.IsChecked ? "_twi" : "") + ".png";
 			// 画像を保存する
 			try {
 				sp.getScreenShot(TwitterOptionMenu.IsChecked).Save(@"pic\" + fileName);
