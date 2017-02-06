@@ -234,6 +234,18 @@ namespace WsGH {
 			return rect;
 		}
 		// 数字認識を行う
+		/// <summary>
+		/// 数字認識を行う
+		/// 座標・大きさは画像に対する％指定なことに注意
+		/// </summary>
+		/// <param name="bitmap">画像</param>
+		/// <param name="px_per">切り取る左座標</param>
+		/// <param name="py_per">切り取る上座標</param>
+		/// <param name="wx_per">切り取る幅</param>
+		/// <param name="wy_per">切り取る高さ</param>
+		/// <param name="thresold">閾値。これより暗いと黒とみなす</param>
+		/// <param name="negaFlg">trueだと色を反転させて判定する</param>
+		/// <returns>読み取った数値。0～9および10(白色＝読めなかった)をListで返す</returns>
 		static List<int> getDigitOCR(Bitmap bitmap, float[] px_arr, float py_per, float wx_per, float wy_per, int thresold, bool negaFlg) {
 			var output = new List<int>();
 			foreach(var px_per in px_arr) {
@@ -357,7 +369,7 @@ namespace WsGH {
 				//Console.WriteLine((li + 1) + "番目：第" + (fleetIndex + 1) + "艦隊");
 				// 遠征完了時間を計算して書き込む
 				//bitmap.Save("ss.png");
-				var timerDigit = getDigitOCR(bitmap, ExpTimerDigitPX, ExpTimerDigitPY[li], ExpTimerDigitWX, ExpTimerDigitWY, 140, true);
+				var timerDigit = getDigitOCR(bitmap, ExpTimerDigitPX, ExpTimerDigitPY[li], ExpTimerDigitWX, ExpTimerDigitWY, 120, true);
 				var leastSecond = getLeastSecond(timerDigit);
 				output[fleetIndex] = now_time + leastSecond;
 			}
