@@ -55,24 +55,20 @@ namespace WsGH {
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
 			// 完了時刻を読み取る
 			var time = (ulong)value;
-			if(time < 0) {
-				// 完了時刻が異常な値だと--:--:--になる
+			// 現在時刻を読み取る
+			var now_time = SceneRecognition.GetUnixTime(DateTime.Now);
+			if(time <= now_time) {
+				// 現在時刻≧完了時刻だと--:--:--になる
 				return "--:--:--";
-			}else {
-				var now_time = SceneRecognition.GetUnixTime(DateTime.Now);
-				if(time <= now_time) {
-					// 現在時刻≧完了時刻だと--:--:--になる
-					return "--:--:--";
-				}else {
-					// 時間差を計算して画面に表示する
-					var leastSecond = time - now_time;
-					var hour = leastSecond / (60 * 60);
-					leastSecond -= hour * 60 * 60;
-					var minute = leastSecond / 60;
-					leastSecond -= minute * 60;
-					var second = leastSecond;
-					return hour.ToString("D2") + ":" + minute.ToString("D2") + ":" + second.ToString("D2");
-				}
+			} else {
+				// 時間差を計算して画面に表示する
+				var leastSecond = time - now_time;
+				var hour = leastSecond / (60 * 60);
+				leastSecond -= hour * 60 * 60;
+				var minute = leastSecond / 60;
+				leastSecond -= minute * 60;
+				var second = leastSecond;
+				return hour.ToString("D2") + ":" + minute.ToString("D2") + ":" + second.ToString("D2");
 			}
 		}
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
