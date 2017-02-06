@@ -48,11 +48,15 @@ namespace WsGH {
 		// OCRする際にマッチングさせる元のサイズ
 		static Size TemplateSize2 = new Size(TemplateSize1.Width + 2, TemplateSize1.Height + 2);
 		// OCRする際にマッチングさせる先の画像
-		static IplImage TemplateSource = BitmapConverter.ToIplImage(Properties.Resources.ocr_template);
+		static IplImage TemplateSource;
 		#endregion
 		#region その他定数
 		static DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0);
 		#endregion
+
+		public static void InitialSceneRecognition() {
+			TemplateSource = BitmapConverter.ToIplImage(Properties.Resources.ocr_template);
+		}
 
 		/// <summary>
 		/// 画像の一部分におけるDifferenceHashを取得する

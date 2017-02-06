@@ -29,6 +29,7 @@ namespace WsGH {
 		// コンストラクタ
 		public MainWindow() {
 			InitializeComponent();
+			SceneRecognition.InitialSceneRecognition();
 			MouseLeftButtonDown += (o, e) => DragMove();
 			// フォルダの有無をチェック
 			if(!System.IO.Directory.Exists(@"pic\")) {
