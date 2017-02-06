@@ -49,6 +49,23 @@ namespace WsGH {
 			Properties.Settings.Default.TimerWindowPlacement = NativeMethods.GetWindowPlacementHelper(this);
 			Properties.Settings.Default.Save();
 		}
+
+		private void ExpTimer1TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
+			var bindData = DataContext as TimerValue;
+			bindData.ExpTimer1 = 0;
+		}
+		private void ExpTimer2TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
+			var bindData = DataContext as TimerValue;
+			bindData.ExpTimer2 = 0;
+		}
+		private void ExpTimer3TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
+			var bindData = DataContext as TimerValue;
+			bindData.ExpTimer3 = 0;
+		}
+		private void ExpTimer4TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
+			var bindData = DataContext as TimerValue;
+			bindData.ExpTimer4 = 0;
+		}
 	}
 	// コンバータ
 	public class TimerConverter : IValueConverter {

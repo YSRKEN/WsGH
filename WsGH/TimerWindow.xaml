@@ -17,10 +17,10 @@
 		<TextBlock HorizontalAlignment="Left" Margin="88,10,0,0" TextWrapping="Wrap" Text="Bld" VerticalAlignment="Top" RenderTransformOrigin="0.771,-0.334" FontSize="20"/>
 		<TextBlock HorizontalAlignment="Left" Margin="166,10,0,0" TextWrapping="Wrap" Text="Dev" VerticalAlignment="Top" FontSize="20" RenderTransformOrigin="1.321,0.489"/>
 		<TextBlock HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" Text="Dock" VerticalAlignment="Top" FontSize="20"/>
-		<TextBlock x:Name="ExpTimer1TextBlock" HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" Text="{Binding ExpTimer1,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20"/>
-		<TextBlock x:Name="ExpTimer2TextBlock" HorizontalAlignment="Left" Margin="10,52,0,0" TextWrapping="Wrap" Text="{Binding ExpTimer2,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20"/>
-		<TextBlock x:Name="ExpTimer3TextBlock" HorizontalAlignment="Left" Margin="10,73,0,0" TextWrapping="Wrap" Text="{Binding ExpTimer3,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20"/>
-		<TextBlock x:Name="ExpTimer4TextBlock" HorizontalAlignment="Left" Margin="10,94,0,0" TextWrapping="Wrap" Text="{Binding ExpTimer4,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="ExpTimer1TextBlock" HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" Text="{Binding ExpTimer1,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="ExpTimer1TextBlock_MouseDown"/>
+		<TextBlock x:Name="ExpTimer2TextBlock" HorizontalAlignment="Left" Margin="10,52,0,0" TextWrapping="Wrap" Text="{Binding ExpTimer2,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="ExpTimer2TextBlock_MouseDown"/>
+		<TextBlock x:Name="ExpTimer3TextBlock" HorizontalAlignment="Left" Margin="10,73,0,0" TextWrapping="Wrap" Text="{Binding ExpTimer3,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="ExpTimer3TextBlock_MouseDown"/>
+		<TextBlock x:Name="ExpTimer4TextBlock" HorizontalAlignment="Left" Margin="10,94,0,0" TextWrapping="Wrap" Text="{Binding ExpTimer4,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="ExpTimer4TextBlock_MouseDown"/>
 		<TextBlock x:Name="BldTimer1TextBlock" HorizontalAlignment="Left" Margin="88,31,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
 		<TextBlock x:Name="BldTimer2TextBlock" HorizontalAlignment="Left" Margin="88,52,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
 		<TextBlock x:Name="BldTimer3TextBlock" HorizontalAlignment="Left" Margin="88,73,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
