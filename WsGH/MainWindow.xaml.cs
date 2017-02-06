@@ -16,6 +16,7 @@ using OpenCvSharp;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Windows.Threading;
+using System.Drawing;
 
 namespace WsGH {
 	/// <summary>
@@ -173,40 +174,51 @@ namespace WsGH {
 		}
 		// タイマー動作
 		private void DispatcherTimer_Tick(object sender, EventArgs e) {
-			// 座標取得できていた場合の処理
-			if(sp != null && sp.isGetPosition()) {
-				// とりあえずスクショを取得する
-				var screenShot = sp.getScreenShot(TwitterOptionMenu.IsChecked);
-				// 遠征中なら、遠征時間読み取りにチャレンジしてみる
-				if(SceneRecognition.isExpeditionScene(screenShot)) {
-					var expEndTime = SceneRecognition.getExpeditionTimer(screenShot);
-					var bindData = tw.DataContext as TimerValue;
-					foreach(var pair in expEndTime) {
-						switch(pair.Key) {
-						case 0:
-							bindData.ExpTimer1 = pair.Value;
-							break;
-						case 1:
-							bindData.ExpTimer2 = pair.Value;
-							break;
-						case 2:
-							bindData.ExpTimer3 = pair.Value;
-							break;
-						case 3:
-							bindData.ExpTimer4 = pair.Value;
-							break;
-						default:
-							break;
+			// 可能ならスクショを取得する
+			Bitmap screenShot = sp?.getScreenShot(TwitterOptionMenu.IsChecked);
+			// 毎フレーム毎の処理
+			{
+				// スクショが取得できていた場合
+				if(screenShot != null) {
+					// 遠征中なら、遠征時間読み取りにチャレンジしてみる
+					if(SceneRecognition.isExpeditionScene(screenShot)) {
+						var expEndTime = SceneRecognition.getExpeditionTimer(screenShot);
+						var bindData = tw.DataContext as TimerValue;
+						foreach(var pair in expEndTime) {
+							switch(pair.Key) {
+							case 0:
+								bindData.ExpTimer1 = pair.Value;
+								break;
+							case 1:
+								bindData.ExpTimer2 = pair.Value;
+								break;
+							case 2:
+								bindData.ExpTimer3 = pair.Value;
+								break;
+							case 3:
+								bindData.ExpTimer4 = pair.Value;
+								break;
+							default:
+								break;
+							}
 						}
 					}
 				}
 			}
-			// タイマーの表示を更新する
+			// 1秒ごとの処理
 			var timerWindowSecondNow = DateTime.Now.Second;
 			if(timerWindowSecond != timerWindowSecondNow) {
+				timerWindowSecond = timerWindowSecondNow;
+				// スクショが取得できていた場合
+				if(screenShot != null) {
+					// ズレチェック
+					if(sp.IsPositionShifting()) {
+						
+					}
+				}
+				// タイマーの表示を更新する
 				var bindData = tw.DataContext as TimerValue;
 				bindData.RedrawTimerWindow();
-				timerWindowSecond = timerWindowSecondNow;
 			}
 		}
 		// 色情報を文字列に変換

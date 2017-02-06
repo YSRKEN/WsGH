@@ -57,8 +57,10 @@ namespace WsGH {
 		public string getPositionStr() {
 			return "(" + screenshotRectangle.X.ToString() + "," + screenshotRectangle.Y.ToString() + ") " + screenshotRectangle.Width.ToString() + "x" + screenshotRectangle.Height.ToString();
 		}
-		// スクショを取得する
+		// スクショを取得する(スクショ出来ない際はnullが返る)
 		public Bitmap getScreenShot(bool forTwitterFlg) {
+			if(!isGetPosition())
+				return null;
 			var bitmap = new Bitmap(screenshotRectangle.Width, screenshotRectangle.Height);
 			using(var g = Graphics.FromImage(bitmap)) {
 				g.CopyFromScreen(screenshotRectangle.Location, new System.Drawing.Point(), bitmap.Size);
@@ -73,6 +75,16 @@ namespace WsGH {
 				bitmap.SetPixel(0, 0, Color.FromArgb(color_a, color_r, color_g, color_b));
 			}
 			return bitmap;
+		}
+		// ズレを検知する
+		public bool IsPositionShifting() {
+			// 通常より1ピクセルだけ大きく取得する
+			var bitmap = new Bitmap(screenshotRectangle.Width + 2, screenshotRectangle.Height + 2);
+			using(var g = Graphics.FromImage(bitmap)) {
+				g.CopyFromScreen(screenshotRectangle.X - 1, screenshotRectangle.Y - 1, 0, 0, bitmap.Size);
+			}
+			bitmap.Save("IPS.png");
+			return false;
 		}
 		// ゲーム画面の座標をクリックさせるためのインナークラス
 		class ClickWindow : Window {
