@@ -43,15 +43,29 @@ namespace WsGH {
 		};
 		// 艦隊番号アイコンのハッシュ値
 		static ulong[] ExtFleetIconHash = {
-			0x19191f1c1c1e1f1f,
-			0x181ec7870e1e3f7f,
-			0x381e8e0e1e07c71e,
-			0xcc8e0e4ececf8f0e,
+			0x23373e38383e3e1c,
+			0x313d8e0e3c7cfe1c,
+			0x711f1c3c1e0e1c78,
+			0x991d1c9c9e9e1e1c,
 		};
 		// 遠征時間表示のRect
 		static float[] ExpTimerDigitPX = {60.89f, 62.63f, 65.45f, 67.10f, 69.80f, 71.56f};
 		static float[] ExpTimerDigitPY = {5.858f, 26.57f, 47.49f, 68.41f};
 		static float ExpTimerDigitWX = 1.645f, ExpTimerDigitWY = 4.184f;
+		#endregion
+		#region 入渠用定数
+		// 遠征リストの縦幅
+		static int DockListHeight = 4;
+		static RectangleF[] DockButtonPosition = {
+			new RectangleF(26.44f, 24.69f, 9.166f, 5.230f),
+			new RectangleF(26.44f, 45.61f, 9.166f, 5.230f),
+			new RectangleF(26.44f, 66.32f, 9.166f, 5.230f),
+			new RectangleF(26.44f, 87.24f, 9.166f, 5.230f),
+		};
+		// 遠征時間表示のRect
+		static float[] DockTimerDigitPX = {66.86f, 68.86f, 72.03f, 74.15f, 77.32f, 79.32f};
+		static float[] DockTimerDigitPY = {24.69f, 45.61f, 66.32f, 87.24f};
+		static float DockTimerDigitWX = 1.880f, DockTimerDigitWY = 5.021f;
 		#endregion
 		#region OCR用定数
 		// OCRする際にリサイズするサイズ
@@ -68,6 +82,7 @@ namespace WsGH {
 		public static void InitialSceneRecognition() {
 			TemplateSource = BitmapConverter.ToIplImage(Properties.Resources.ocr_template);
 		}
+		#region DifferenceHash関係
 		/// <summary>
 		/// 画像の一部分におけるDifferenceHashを取得する
 		/// 座標・大きさは画像に対する％指定なことに注意
@@ -82,10 +97,10 @@ namespace WsGH {
 			// ％指定をピクセル指定に直す
 			var bitmapWidth = bitmap.Width;
 			var bitmapHeight = bitmap.Height;
-			var px = (int)(bitmapWidth * px_per / 100);
-			var py = (int)(bitmapHeight * py_per / 100);
-			var wx = (int)(bitmapWidth * wx_per / 100);
-			var wy = (int)(bitmapHeight * wy_per / 100);
+			var px = (int)(bitmapWidth * px_per / 100 + 0.5);
+			var py = (int)(bitmapHeight * py_per / 100 + 0.5);
+			var wx = (int)(bitmapWidth * wx_per / 100 + 0.5);
+			var wy = (int)(bitmapHeight * wy_per / 100 + 0.5);
 			// 画像を切り取り、横9ピクセル縦8ピクセルにリサイズする
 			// その際にグレースケール化も同時に施す
 			var canvas = new Bitmap(9, 8);
@@ -111,7 +126,7 @@ namespace WsGH {
 				// g.DrawImage(bitmap, desRect, srcRect, GraphicsUnit.Pixel);
 				// で済むのにMSェ……
 				g.DrawImage(
-					bitmap, desRect, srcRect.X, srcRect.Y, 
+					bitmap, desRect, srcRect.X, srcRect.Y,
 					srcRect.Width, srcRect.Height, GraphicsUnit.Pixel, ia
 				);
 			}
@@ -178,6 +193,8 @@ namespace WsGH {
 		static uint getHummingDistance(ulong a, ulong b) {
 			return popcnt(a ^ b);
 		}
+		#endregion
+		#region OCR関係
 		// 周囲をトリミングする
 		static Rectangle getTrimmingRectangle(Bitmap bitmap) {
 			var rect = new Rectangle(new Point(0, 0), bitmap.Size);
@@ -262,10 +279,10 @@ namespace WsGH {
 				// ％指定をピクセル指定に直す
 				var bitmapWidth = bitmap.Width;
 				var bitmapHeight = bitmap.Height;
-				var px = (int)(bitmapWidth * px_per / 100);
-				var py = (int)(bitmapHeight * py_per / 100);
-				var wx = (int)(bitmapWidth * wx_per / 100);
-				var wy = (int)(bitmapHeight * wy_per / 100);
+				var px = (int)(bitmapWidth * px_per / 100 + 0.5);
+				var py = (int)(bitmapHeight * py_per / 100 + 0.5);
+				var wx = (int)(bitmapWidth * wx_per / 100 + 0.5);
+				var wy = (int)(bitmapHeight * wy_per / 100 + 0.5);
 				// 画像を切り取る
 				var canvas = new Bitmap(wx, wy);
 				using(var g = Graphics.FromImage(canvas)) {
@@ -318,6 +335,7 @@ namespace WsGH {
 			}
 			return output;
 		}
+		#endregion
 		// 時刻を正規化する
 		static uint getLeastSecond(List<int> timerDigit) {
 			/*foreach(var d in timerDigit)
@@ -353,24 +371,25 @@ namespace WsGH {
 				return SceneType.Dock;
 			return SceneType.Unknown;
 		}
+		#region 遠征関係
 		// 遠征のシーンかを判定する
 		public static bool IsExpeditionScene(Bitmap bitmap) {
 			{
 				// 左下の「母港」ボタンの近くにある装飾
 				var hash = getDifferenceHash(bitmap, 10.11, 76.36, 3.525, 6.276);
-				if(getHummingDistance(hash, 0x2d2e2ba5aaa22a2a) >= 20)
+				if(getHummingDistance(hash, 0x2d2f2ba7aaa22b2a) >= 20)
 					return false;
 			}
 			{
 				// 3・4段目の間の隙間にある模様の一部(左の方)
 				var hash = getDifferenceHash(bitmap, 21.86, 62.76, 3.878, 1.883);
-				if(getHummingDistance(hash, 0xd2d0b8a8a4545656) >= 20)
+				if(getHummingDistance(hash, 0xd0b8a8a454565652) >= 20)
 					return false;
 			}
 			{
 				// 2段目の枠の左下の一部
 				var hash = getDifferenceHash(bitmap, 14.69, 38.91, 2.350, 4.184);
-				if(getHummingDistance(hash, 0xa0a0a0b0d9647c34) >= 20)
+				if(getHummingDistance(hash, 0xa0a8a091e8743834) >= 20)
 					return false;
 			}
 			return true;
@@ -382,7 +401,7 @@ namespace WsGH {
 			for(int li = 0; li < ExpListHeight; ++li) {
 				// 「艦隊派遣」ボタンが出ていれば、その行に遠征艦隊はいない
 				var bhash = getDifferenceHash(bitmap, ExpButtonPosition[li]);
-				if(getHummingDistance(bhash, 0xd3d2dcd648b4a638) < 20)
+				if(getHummingDistance(bhash, 0xb5424a525a6c516a) < 20)
 					continue;
 				// 遠征している艦隊の番号を取得する
 				// ハッシュに対するハミング距離を計算した後、LINQで最小値のインデックス(艦隊番号)を取り出す
@@ -405,66 +424,84 @@ namespace WsGH {
 			}
 			return output;
 		}
+		#endregion
+		#region 建造関係
 		// 建造のシーンかを判定する
 		static bool IsBuildScene(Bitmap bitmap) {
 			{
 				// 建造ボタン
 				var hash = getDifferenceHash(bitmap, 1.763, 7.322, 6.933, 5.649);
-				if(getHummingDistance(hash, 0x00ce51554a425038) >= 20)
+				if(getHummingDistance(hash, 0x225a551d98566290) >= 20)
 					return false;
 			}
 			{
 				// 建造枠
 				var hash = getDifferenceHash(bitmap, 36.78, 21.34, 2.233, 3.975);
-				if(getHummingDistance(hash, 0x46d9a65959aab406) >= 20)
+				if(getHummingDistance(hash, 0x56b94e5a5a52a55e) >= 20)
 					return false;
 			}
 			{
 				// 建造アイコン
-				var hash = getDifferenceHash(bitmap, 20.33, 9.205, 4.465, 4.393);
-				if(getHummingDistance(hash, 0x00706a152f55650d) >= 20)
+				var hash = getDifferenceHash(bitmap, 27.50, 8.996, 1.880, 4.184);
+				if(getHummingDistance(hash, 0xff555e5e807666c6) >= 20)
 					return false;
 			}
 			return true;
 		}
+		#endregion
+		#region 開発関係
 		// 開発のシーンかを判定する
 		static bool IsDevelopScene(Bitmap bitmap) {
 			{
 				// 開発ボタン
 				var hash = getDifferenceHash(bitmap, 1.880, 33.26, 7.051, 6.276);
-				if(getHummingDistance(hash, 0x00d5742219316352) >= 20)
+				if(getHummingDistance(hash, 0x02595a5aa939c8ab) >= 20)
 					return false;
 			}
 			{
 				// 開発枠
 				var hash = getDifferenceHash(bitmap, 36.78, 21.34, 2.233, 3.975);
-				if(getHummingDistance(hash, 0x46d9a65959aab406) >= 20)
+				if(getHummingDistance(hash, 0x56b94e5a5a52a55e) >= 20)
 					return false;
 			}
 			{
 				// 開発アイコン
-				var hash = getDifferenceHash(bitmap, 20.33, 9.205, 4.465, 4.393);
-				if(getHummingDistance(hash, 0x00581854162b533b) >= 20)
+				var hash = getDifferenceHash(bitmap, 27.50, 8.996, 1.880, 4.184);
+				if(getHummingDistance(hash, 0xffdd5a8ddadcd896) >= 20)
 					return false;
 			}
 			return true;
 		}
+		#endregion
+		#region 入渠関係
 		// 入渠のシーンかを判定する
 		static bool IsDockScene(Bitmap bitmap) {
 			{
 				// 修復ボタン
 				var hash = getDifferenceHash(bitmap, 1.880, 20.29, 6.933, 5.858);
-				if(getHummingDistance(hash, 0x04a3555b2b596070) >= 20)
+				if(getHummingDistance(hash, 0x846db65c641d5526) >= 20)
 					return false;
 			}
 			{
 				// 修復アイコン
 				var hash = getDifferenceHash(bitmap, 24.09, 9.205, 4.465, 4.393);
-				if(getHummingDistance(hash, 0x07665c1224555851) >= 20)
+				if(getHummingDistance(hash, 0x8776335455555522) >= 20)
 					return false;
 			}
 			return true;
 		}
-
+		// 入渠タイマーを取得する
+		public static Dictionary<int, ulong> getDockTimer(Bitmap bitmap) {
+			var output = new Dictionary<int, ulong>();
+			var now_time = GetUnixTime(DateTime.Now);
+			for(int li = 0; li < DockListHeight; ++li) {
+				// 「選択」ボタンが出ていれば、その行に遠征艦隊はいない
+				var bhash = getDifferenceHash(bitmap, DockButtonPosition[li]);
+				if(getHummingDistance(bhash, 0x8d352d6d89354a80) < 20)
+					continue;
+			}
+			return output;
+		}
+		#endregion
 	}
 }

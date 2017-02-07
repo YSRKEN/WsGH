@@ -173,54 +173,55 @@ namespace WsGH {
 		private void DispatcherTimer_Tick(object sender, EventArgs e) {
 			// 可能ならスクショを取得する
 			Bitmap captureFrame = sp?.getScreenShot(TwitterOptionMenu.IsChecked);
-			// 毎フレーム毎の処理
-			{
-				// スクショが取得できていた場合
-				if(captureFrame != null) {
-					// シーンを判定する
-					var scene = SceneRecognition.JudgeScene(captureFrame);
-					// 現在認識しているシーンを表示する
-					SceneTextBlock.Text = $"Scene : {SceneRecognition.SceneString[scene]}";
-					// シーンごとに振り分ける
-					switch(scene) {
-					case SceneRecognition.SceneType.Expedition:
-						// 遠征中なら、遠征時間読み取りにチャレンジしてみる
-						var expEndTime = SceneRecognition.getExpeditionTimer(captureFrame);
-						var bindData = tw.DataContext as TimerValue;
-						foreach(var pair in expEndTime) {
-							switch(pair.Key) {
-							case 0:
-								bindData.ExpTimer1 = pair.Value;
-								break;
-							case 1:
-								bindData.ExpTimer2 = pair.Value;
-								break;
-							case 2:
-								bindData.ExpTimer3 = pair.Value;
-								break;
-							case 3:
-								bindData.ExpTimer4 = pair.Value;
-								break;
-							default:
-								break;
-							}
+			#region 毎フレーム毎の処理
+			// スクショが取得できていた場合
+			if(captureFrame != null) {
+				// シーンを判定する
+				var scene = SceneRecognition.JudgeScene(captureFrame);
+				// 現在認識しているシーンを表示する
+				SceneTextBlock.Text = $"Scene : {SceneRecognition.SceneString[scene]}";
+				// シーンごとに振り分ける
+				switch(scene) {
+				case SceneRecognition.SceneType.Expedition:
+					// 遠征中なら、遠征時間を読み取る
+					var expEndTime = SceneRecognition.getExpeditionTimer(captureFrame);
+					var bindData = tw.DataContext as TimerValue;
+					foreach(var pair in expEndTime) {
+						switch(pair.Key) {
+						case 0:
+							bindData.ExpTimer1 = pair.Value;
+							break;
+						case 1:
+							bindData.ExpTimer2 = pair.Value;
+							break;
+						case 2:
+							bindData.ExpTimer3 = pair.Value;
+							break;
+						case 3:
+							bindData.ExpTimer4 = pair.Value;
+							break;
+						default:
+							break;
 						}
-						break;
-					case SceneRecognition.SceneType.Build:
-						// 建造中
-						break;
-					case SceneRecognition.SceneType.Develop:
-						// 開発中
-						break;
-					case SceneRecognition.SceneType.Dock:
-						// 入渠中
-						break;
-					default:
-						break;
 					}
+					break;
+				case SceneRecognition.SceneType.Build:
+					// 建造中
+					break;
+				case SceneRecognition.SceneType.Develop:
+					// 開発中
+					break;
+				case SceneRecognition.SceneType.Dock:
+					// 入渠中なら、入渠時間を読み取る
+					var dockEndTime = SceneRecognition.getDockTimer(captureFrame);
+
+					break;
+				default:
+					break;
 				}
 			}
-			// 1秒ごとの処理
+			#endregion
+			#region 1秒ごとの処理
 			var timerWindowSecondNow = DateTime.Now.Second;
 			if(timerWindowSecond != timerWindowSecondNow) {
 				timerWindowSecond = timerWindowSecondNow;
@@ -244,6 +245,7 @@ namespace WsGH {
 				var bindData = tw.DataContext as TimerValue;
 				bindData.RedrawTimerWindow();
 			}
+			#endregion
 			captureFrame?.Dispose();
 		}
 		// 色情報を文字列に変換
