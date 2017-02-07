@@ -13,6 +13,14 @@ namespace WsGH {
 		// 各種定数定義
 		#region シーン認識用定数
 		public enum SceneType { Unknown, Expedition, Build, Develop, Dock };
+		public static Dictionary<SceneType, string> SceneString
+			 = new Dictionary<SceneType, string> {
+				{ SceneType.Unknown, "Unknown" },
+				{ SceneType.Expedition, "Expedition" },
+				{ SceneType.Build, "Build" },
+				{ SceneType.Develop, "Develop" },
+				{ SceneType.Dock, "Dock" },
+			 };
 		#endregion
 		#region 遠征用定数
 		// 遠征艦隊数
@@ -56,11 +64,10 @@ namespace WsGH {
 		#region その他定数
 		static DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0);
 		#endregion
-
+		// 認識用初期化
 		public static void InitialSceneRecognition() {
 			TemplateSource = BitmapConverter.ToIplImage(Properties.Resources.ocr_template);
 		}
-
 		/// <summary>
 		/// 画像の一部分におけるDifferenceHashを取得する
 		/// 座標・大きさは画像に対する％指定なことに注意
@@ -336,24 +343,32 @@ namespace WsGH {
 		}
 		// Scene判定
 		public static SceneType JudgeScene(Bitmap bitmap) {
-			if(isExpeditionScene(bitmap)) {
+			if(IsExpeditionScene(bitmap))
 				return SceneType.Expedition;
-			}
+			if(IsBuildScene(bitmap))
+				return SceneType.Build;
+			if(IsDevelopScene(bitmap))
+				return SceneType.Develop;
+			if(IsDockScene(bitmap))
+				return SceneType.Dock;
 			return SceneType.Unknown;
 		}
 		// 遠征のシーンかを判定する
-		public static bool isExpeditionScene(Bitmap bitmap) {
+		public static bool IsExpeditionScene(Bitmap bitmap) {
 			{
+				// 左下の「母港」ボタンの近くにある装飾
 				var hash = getDifferenceHash(bitmap, 10.11, 76.36, 3.525, 6.276);
 				if(getHummingDistance(hash, 0x2d2e2ba5aaa22a2a) >= 20)
 					return false;
 			}
 			{
+				// 3・4段目の間の隙間にある模様の一部(左の方)
 				var hash = getDifferenceHash(bitmap, 21.86, 62.76, 3.878, 1.883);
 				if(getHummingDistance(hash, 0xd2d0b8a8a4545656) >= 20)
 					return false;
 			}
 			{
+				// 2段目の枠の左下の一部
 				var hash = getDifferenceHash(bitmap, 14.69, 38.91, 2.350, 4.184);
 				if(getHummingDistance(hash, 0xa0a0a0b0d9647c34) >= 20)
 					return false;
@@ -390,5 +405,66 @@ namespace WsGH {
 			}
 			return output;
 		}
+		// 建造のシーンかを判定する
+		static bool IsBuildScene(Bitmap bitmap) {
+			{
+				// 建造ボタン
+				var hash = getDifferenceHash(bitmap, 1.763, 7.322, 6.933, 5.649);
+				if(getHummingDistance(hash, 0x00ce51554a425038) >= 20)
+					return false;
+			}
+			{
+				// 建造枠
+				var hash = getDifferenceHash(bitmap, 36.78, 21.34, 2.233, 3.975);
+				if(getHummingDistance(hash, 0x46d9a65959aab406) >= 20)
+					return false;
+			}
+			{
+				// 建造アイコン
+				var hash = getDifferenceHash(bitmap, 20.33, 9.205, 4.465, 4.393);
+				if(getHummingDistance(hash, 0x00706a152f55650d) >= 20)
+					return false;
+			}
+			return true;
+		}
+		// 開発のシーンかを判定する
+		static bool IsDevelopScene(Bitmap bitmap) {
+			{
+				// 開発ボタン
+				var hash = getDifferenceHash(bitmap, 1.880, 33.26, 7.051, 6.276);
+				if(getHummingDistance(hash, 0x00d5742219316352) >= 20)
+					return false;
+			}
+			{
+				// 開発枠
+				var hash = getDifferenceHash(bitmap, 36.78, 21.34, 2.233, 3.975);
+				if(getHummingDistance(hash, 0x46d9a65959aab406) >= 20)
+					return false;
+			}
+			{
+				// 開発アイコン
+				var hash = getDifferenceHash(bitmap, 20.33, 9.205, 4.465, 4.393);
+				if(getHummingDistance(hash, 0x00581854162b533b) >= 20)
+					return false;
+			}
+			return true;
+		}
+		// 入渠のシーンかを判定する
+		static bool IsDockScene(Bitmap bitmap) {
+			{
+				// 修復ボタン
+				var hash = getDifferenceHash(bitmap, 1.880, 20.29, 6.933, 5.858);
+				if(getHummingDistance(hash, 0x04a3555b2b596070) >= 20)
+					return false;
+			}
+			{
+				// 修復アイコン
+				var hash = getDifferenceHash(bitmap, 24.09, 9.205, 4.465, 4.393);
+				if(getHummingDistance(hash, 0x07665c1224555851) >= 20)
+					return false;
+			}
+			return true;
+		}
+
 	}
 }

@@ -179,6 +179,8 @@ namespace WsGH {
 				if(captureFrame != null) {
 					// シーンを判定する
 					var scene = SceneRecognition.JudgeScene(captureFrame);
+					// 現在認識しているシーンを表示する
+					SceneTextBlock.Text = $"Scene : {SceneRecognition.SceneString[scene]}";
 					// シーンごとに振り分ける
 					switch(scene) {
 					case SceneRecognition.SceneType.Expedition:
