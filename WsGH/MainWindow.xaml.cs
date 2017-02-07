@@ -177,8 +177,12 @@ namespace WsGH {
 			{
 				// スクショが取得できていた場合
 				if(screenShot != null) {
-					// 遠征中なら、遠征時間読み取りにチャレンジしてみる
-					if(SceneRecognition.isExpeditionScene(screenShot)) {
+					// シーンを判定する
+					var scene = SceneRecognition.JudgeScene(screenShot);
+					// シーンごとに振り分ける
+					switch(scene) {
+					case SceneRecognition.SceneType.Expedition:
+						// 遠征中なら、遠征時間読み取りにチャレンジしてみる
 						var expEndTime = SceneRecognition.getExpeditionTimer(screenShot);
 						var bindData = tw.DataContext as TimerValue;
 						foreach(var pair in expEndTime) {
@@ -199,6 +203,18 @@ namespace WsGH {
 								break;
 							}
 						}
+						break;
+					case SceneRecognition.SceneType.Build:
+						// 建造中
+						break;
+					case SceneRecognition.SceneType.Develop:
+						// 開発中
+						break;
+					case SceneRecognition.SceneType.Dock:
+						// 入渠中
+						break;
+					default:
+						break;
 					}
 				}
 			}

@@ -11,6 +11,9 @@ using OpenCvSharp.Extensions;
 namespace WsGH {
 	static class SceneRecognition {
 		// 各種定数定義
+		#region シーン認識用定数
+		public enum SceneType { Unknown, Expedition, Build, Develop, Dock };
+		#endregion
 		#region 遠征用定数
 		// 遠征艦隊数
 		static int ExpFleetCount = 4;
@@ -330,6 +333,13 @@ namespace WsGH {
 			var dt2 = dt.ToUniversalTime();
 			var elapsedTime = dt2 - UnixEpoch;
 			return (ulong)elapsedTime.TotalSeconds;
+		}
+		// Scene判定
+		public static SceneType JudgeScene(Bitmap bitmap) {
+			if(isExpeditionScene(bitmap)) {
+				return SceneType.Expedition;
+			}
+			return SceneType.Unknown;
 		}
 		// 遠征のシーンかを判定する
 		public static bool isExpeditionScene(Bitmap bitmap) {
