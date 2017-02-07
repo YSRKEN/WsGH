@@ -23,10 +23,10 @@ namespace WsGH {
 	/// MainWindow.xaml の相互作用ロジック
 	/// </summary>
 	public partial class MainWindow : Window {
-		ScreenshotProvider sp = null;
-		Logger logger;
-		TimerWindow tw;
-		int timerWindowSecond;
+		ScreenshotProvider sp = null;	//スクショ用の情報を記憶する
+		Logger logger = null;			//メイン画面のログを記録する
+		TimerWindow tw = null;			//TimerWindowのインスタンス
+		int timerWindowSecond;			//毎秒行う処理のために秒数を記憶
 		// コンストラクタ
 		public MainWindow() {
 			InitializeComponent();
@@ -172,18 +172,18 @@ namespace WsGH {
 		// タイマー動作
 		private void DispatcherTimer_Tick(object sender, EventArgs e) {
 			// 可能ならスクショを取得する
-			Bitmap screenShot = sp?.getScreenShot(TwitterOptionMenu.IsChecked);
+			Bitmap captureFrame = sp?.getScreenShot(TwitterOptionMenu.IsChecked);
 			// 毎フレーム毎の処理
 			{
 				// スクショが取得できていた場合
-				if(screenShot != null) {
+				if(captureFrame != null) {
 					// シーンを判定する
-					var scene = SceneRecognition.JudgeScene(screenShot);
+					var scene = SceneRecognition.JudgeScene(captureFrame);
 					// シーンごとに振り分ける
 					switch(scene) {
 					case SceneRecognition.SceneType.Expedition:
 						// 遠征中なら、遠征時間読み取りにチャレンジしてみる
-						var expEndTime = SceneRecognition.getExpeditionTimer(screenShot);
+						var expEndTime = SceneRecognition.getExpeditionTimer(captureFrame);
 						var bindData = tw.DataContext as TimerValue;
 						foreach(var pair in expEndTime) {
 							switch(pair.Key) {
@@ -223,7 +223,7 @@ namespace WsGH {
 			if(timerWindowSecond != timerWindowSecondNow) {
 				timerWindowSecond = timerWindowSecondNow;
 				// スクショが取得できていた場合
-				if(screenShot != null) {
+				if(captureFrame != null) {
 					// ズレチェック
 					if(sp.IsPositionShifting()) {
 						addLog("Found PositionShifting!");
@@ -242,6 +242,7 @@ namespace WsGH {
 				var bindData = tw.DataContext as TimerValue;
 				bindData.RedrawTimerWindow();
 			}
+			captureFrame?.Dispose();
 		}
 		// 色情報を文字列に変換
 		public static string ColorToString(System.Drawing.Color clr) {
