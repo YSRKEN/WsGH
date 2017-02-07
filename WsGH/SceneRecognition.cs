@@ -343,6 +343,11 @@ namespace WsGH {
 				if(getHummingDistance(hash, 0xd2d0b8a8a4545656) >= 20)
 					return false;
 			}
+			{
+				var hash = getDifferenceHash(bitmap, 14.69, 38.91, 2.350, 4.184);
+				if(getHummingDistance(hash, 0xa0a0a0b0d9647c34) >= 20)
+					return false;
+			}
 			return true;
 		}
 		// 遠征タイマーを取得する
