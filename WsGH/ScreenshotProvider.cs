@@ -86,15 +86,12 @@ namespace WsGH {
 				g.CopyFromScreen(screenshotRectangle.X - 1, screenshotRectangle.Y - 1, 0, 0, bitmap.Size);
 			}
 			var backgroundColor = Properties.Settings.Default.BackgroundColor.ToArgb();
-			var hoge = bitmap.GetPixel(0, 0);
-			if(bitmap.GetPixel(0, 0).ToArgb() != backgroundColor)
+			if((bitmap.GetPixel(0, 0).ToArgb() != backgroundColor)
+			&& (bitmap.GetPixel(0, screenshotRectangle.Height + 1).ToArgb() != backgroundColor)
+			&& (bitmap.GetPixel(screenshotRectangle.Width + 1, 0).ToArgb() != backgroundColor)
+			&& (bitmap.GetPixel(screenshotRectangle.Width + 1, screenshotRectangle.Height + 1).ToArgb() != backgroundColor)) {
 				return true;
-			if(bitmap.GetPixel(0, screenshotRectangle.Height + 1).ToArgb() != backgroundColor)
-				return true;
-			if(bitmap.GetPixel(screenshotRectangle.Width + 1, 0).ToArgb() != backgroundColor)
-				return true;
-			if(bitmap.GetPixel(screenshotRectangle.Width + 1, screenshotRectangle.Height + 1).ToArgb() != backgroundColor)
-				return true;
+			}
 			return false;
 		}
 		// ズレを自動修正する
