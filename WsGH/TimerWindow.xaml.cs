@@ -28,6 +28,10 @@ namespace WsGH {
 				ExpTimer2 = Properties.Settings.Default.ExpTimer2,
 				ExpTimer3 = Properties.Settings.Default.ExpTimer3,
 				ExpTimer4 = Properties.Settings.Default.ExpTimer4,
+				DockTimer1 = Properties.Settings.Default.DockTimer1,
+				DockTimer2 = Properties.Settings.Default.DockTimer2,
+				DockTimer3 = Properties.Settings.Default.DockTimer3,
+				DockTimer4 = Properties.Settings.Default.DockTimer4,
 			};
 		}
 		// ウィンドウ位置復元
@@ -65,6 +69,22 @@ namespace WsGH {
 		private void ExpTimer4TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
 			var bindData = DataContext as TimerValue;
 			bindData.ExpTimer4 = 0;
+		}
+		private void DockTimer1TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
+			var bindData = DataContext as TimerValue;
+			bindData.DockTimer1 = 0;
+		}
+		private void DockTimer2TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
+			var bindData = DataContext as TimerValue;
+			bindData.DockTimer2 = 0;
+		}
+		private void DockTimer3TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
+			var bindData = DataContext as TimerValue;
+			bindData.DockTimer3 = 0;
+		}
+		private void DockTimer4TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
+			var bindData = DataContext as TimerValue;
+			bindData.DockTimer4 = 0;
 		}
 	}
 	// コンバータ
@@ -136,6 +156,46 @@ namespace WsGH {
 				NotifyPropertyChanged("ExpTimer4");
 			}
 		}
+		ulong dockTimer1;
+		public ulong DockTimer1 {
+			get { return dockTimer1; }
+			set {
+				dockTimer1 = value;
+				Properties.Settings.Default.DockTimer1 = value;
+				Properties.Settings.Default.Save();
+				NotifyPropertyChanged("DockTimer1");
+			}
+		}
+		ulong dockTimer2;
+		public ulong DockTimer2 {
+			get { return dockTimer2; }
+			set {
+				dockTimer2 = value;
+				Properties.Settings.Default.DockTimer2 = value;
+				Properties.Settings.Default.Save();
+				NotifyPropertyChanged("DockTimer2");
+			}
+		}
+		ulong dockTimer3;
+		public ulong DockTimer3 {
+			get { return dockTimer3; }
+			set {
+				dockTimer3 = value;
+				Properties.Settings.Default.DockTimer3 = value;
+				Properties.Settings.Default.Save();
+				NotifyPropertyChanged("DockTimer3");
+			}
+		}
+		ulong dockTimer4;
+		public ulong DockTimer4 {
+			get { return dockTimer4; }
+			set {
+				dockTimer4 = value;
+				Properties.Settings.Default.DockTimer4 = value;
+				Properties.Settings.Default.Save();
+				NotifyPropertyChanged("DockTimer4");
+			}
+		}
 		public event PropertyChangedEventHandler PropertyChanged = (s, e) => { };
 		public void RedrawTimerWindow() {
 			// タイマー全体を更新する
@@ -143,6 +203,10 @@ namespace WsGH {
 			NotifyPropertyChanged("ExpTimer2");
 			NotifyPropertyChanged("ExpTimer3");
 			NotifyPropertyChanged("ExpTimer4");
+			NotifyPropertyChanged("DockTimer1");
+			NotifyPropertyChanged("DockTimer2");
+			NotifyPropertyChanged("DockTimer3");
+			NotifyPropertyChanged("DockTimer4");
 		}
 		private void NotifyPropertyChanged(string parameter) {
 			PropertyChanged(this, new PropertyChangedEventArgs(parameter));

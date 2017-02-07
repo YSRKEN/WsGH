@@ -499,6 +499,11 @@ namespace WsGH {
 				var bhash = getDifferenceHash(bitmap, DockButtonPosition[li]);
 				if(getHummingDistance(bhash, 0x8d352d6d89354a80) < 20)
 					continue;
+				// 入渠時間を取得する
+				var timerDigit = getDigitOCR(bitmap, DockTimerDigitPX, DockTimerDigitPY[li], DockTimerDigitWX, DockTimerDigitWY, 50, true);
+				var leastSecond = getLeastSecond(timerDigit);
+				//Console.WriteLine($"{li + 1}番目：{leastSecond}");
+				output[li] = now_time + leastSecond;
 			}
 			return output;
 		}

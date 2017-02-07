@@ -28,10 +28,10 @@
 		<TextBlock x:Name="DevTimer1TextBlock" HorizontalAlignment="Left" Margin="166,31,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
 		<TextBlock x:Name="DevTimer2TextBlock" HorizontalAlignment="Left" Margin="166,52,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
 		<TextBlock x:Name="DevTimer3TextBlock" HorizontalAlignment="Left" Margin="166,73,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
-		<TextBlock x:Name="DevTimer4TextBlock" HorizontalAlignment="Left" Margin="166,94,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" RenderTransformOrigin="0.515,0" FontSize="20"/>
-		<TextBlock x:Name="DckTimer1TextBlock" HorizontalAlignment="Left" Margin="244,31,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20" RenderTransformOrigin="-0.273,0.977"/>
-		<TextBlock x:Name="DckTimer2TextBlock" HorizontalAlignment="Left" Margin="244,52,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
-		<TextBlock x:Name="DckTimer3TextBlock" HorizontalAlignment="Left" Margin="244,72,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
-		<TextBlock x:Name="DckTimer4TextBlock" HorizontalAlignment="Left" Margin="244,94,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="DevTimer4TextBlock" HorizontalAlignment="Left" Margin="166,94,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="DckTimer1TextBlock" HorizontalAlignment="Left" Margin="244,31,0,0" TextWrapping="Wrap" Text="{Binding DockTimer1,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="DckTimer2TextBlock" HorizontalAlignment="Left" Margin="244,52,0,0" TextWrapping="Wrap" Text="{Binding DockTimer2,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="DckTimer3TextBlock" HorizontalAlignment="Left" Margin="244,72,0,0" TextWrapping="Wrap" Text="{Binding DockTimer3,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20"/>
+		<TextBlock x:Name="DckTimer4TextBlock" HorizontalAlignment="Left" Margin="244,94,0,0" TextWrapping="Wrap" Text="{Binding DockTimer4,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20"/>
 	</Grid>
 </Window>

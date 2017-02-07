@@ -181,11 +181,11 @@ namespace WsGH {
 				// 現在認識しているシーンを表示する
 				SceneTextBlock.Text = $"Scene : {SceneRecognition.SceneString[scene]}";
 				// シーンごとに振り分ける
+				var bindData = tw.DataContext as TimerValue;
 				switch(scene) {
 				case SceneRecognition.SceneType.Expedition:
 					// 遠征中なら、遠征時間を読み取る
 					var expEndTime = SceneRecognition.getExpeditionTimer(captureFrame);
-					var bindData = tw.DataContext as TimerValue;
 					foreach(var pair in expEndTime) {
 						switch(pair.Key) {
 						case 0:
@@ -214,7 +214,24 @@ namespace WsGH {
 				case SceneRecognition.SceneType.Dock:
 					// 入渠中なら、入渠時間を読み取る
 					var dockEndTime = SceneRecognition.getDockTimer(captureFrame);
-
+					foreach(var pair in dockEndTime) {
+						switch(pair.Key) {
+						case 0:
+							bindData.DockTimer1 = pair.Value;
+							break;
+						case 1:
+							bindData.DockTimer2 = pair.Value;
+							break;
+						case 2:
+							bindData.DockTimer3 = pair.Value;
+							break;
+						case 3:
+							bindData.DockTimer4 = pair.Value;
+							break;
+						default:
+							break;
+						}
+					}
 					break;
 				default:
 					break;
