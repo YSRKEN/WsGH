@@ -54,7 +54,7 @@ namespace WsGH {
 		static float ExpTimerDigitWX = 1.645f, ExpTimerDigitWY = 4.184f;
 		#endregion
 		#region 入渠用定数
-		// 遠征リストの縦幅
+		// 入渠リストの縦幅
 		static int DockListHeight = 4;
 		static RectangleF[] DockButtonPosition = {
 			new RectangleF(26.44f, 24.69f, 9.166f, 5.230f),
@@ -62,10 +62,17 @@ namespace WsGH {
 			new RectangleF(26.44f, 66.32f, 9.166f, 5.230f),
 			new RectangleF(26.44f, 87.24f, 9.166f, 5.230f),
 		};
-		// 遠征時間表示のRect
+		// 入渠時間表示のRect
 		static float[] DockTimerDigitPX = {66.86f, 68.86f, 72.03f, 74.15f, 77.32f, 79.32f};
 		static float[] DockTimerDigitPY = {24.69f, 45.61f, 66.32f, 87.24f};
 		static float DockTimerDigitWX = 1.880f, DockTimerDigitWY = 5.021f;
+		// 高速修復ボタンのRect
+		static RectangleF[] DockFastRepairPosition = {
+			new RectangleF(93.54f, 24.69f, 2.350f, 4.184f),
+			new RectangleF(93.54f, 42.05f, 2.350f, 4.184f),
+			new RectangleF(93.54f, 62.76f, 2.350f, 4.184f),
+			new RectangleF(93.54f, 83.68f, 2.350f, 4.184f),
+		};
 		#endregion
 		#region OCR用定数
 		// OCRする際にリサイズするサイズ
@@ -495,9 +502,13 @@ namespace WsGH {
 			var output = new Dictionary<int, ulong>();
 			var now_time = GetUnixTime(DateTime.Now);
 			for(int li = 0; li < DockListHeight; ++li) {
-				// 「選択」ボタンが出ていれば、その行に遠征艦隊はいない
+				// 「選択」ボタンが出ていれば、その行に入渠艦隊はいない
 				var bhash = getDifferenceHash(bitmap, DockButtonPosition[li]);
 				if(getHummingDistance(bhash, 0x8d352d6d89354a80) < 20)
+					continue;
+				// 高速修復ボタンがなければ、その行に入渠艦隊はいない
+				bhash = getDifferenceHash(bitmap, DockFastRepairPosition[li]);
+				if(getHummingDistance(bhash, 0x679768f6daca5a9c) >= 20)
 					continue;
 				// 入渠時間を取得する
 				var timerDigit = getDigitOCR(bitmap, DockTimerDigitPX, DockTimerDigitPY[li], DockTimerDigitWX, DockTimerDigitWY, 50, true);
