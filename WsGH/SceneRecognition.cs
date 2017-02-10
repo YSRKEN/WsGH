@@ -53,6 +53,36 @@ namespace WsGH {
 		static float[] ExpTimerDigitPY = {5.858f, 26.57f, 47.49f, 68.41f};
 		static float ExpTimerDigitWX = 1.645f, ExpTimerDigitWY = 4.184f;
 		#endregion
+		#region 建造用定数
+		// 建造リストの縦幅
+		static int BuildListHeight = 4;
+		// 画面左のステータス表示
+		static RectangleF[] BuildStatusPosition = {
+			new RectangleF(15.51f, 23.22f, 2.350f, 4.184f),
+			new RectangleF(15.51f, 43.10f, 2.350f, 4.184f),
+			new RectangleF(15.51f, 62.97f, 2.350f, 4.184f),
+			new RectangleF(15.51f, 82.85f, 2.350f, 4.184f),
+		};
+		// 建造時間表示のRect
+		static float[] BuildTimerDigitPX = {26.91f, 27.97f, 29.38f, 30.32f, 31.85f, 32.79f};
+		static float[] BuildTimerDigitPY = {29.71f, 49.58f, 69.46f, 89.33f};
+		static float BuildTimerDigitWX = 0.823f, BuildTimerDigitWY = 2.510f;
+		#endregion
+		#region 開発用定数
+		// 開発リストの縦幅
+		static int DevListHeight = 4;
+		// 画面左のステータス表示
+		static RectangleF[] DevStatusPosition = {
+			new RectangleF(15.51f, 23.22f, 2.350f, 4.184f),
+			new RectangleF(15.51f, 43.10f, 2.350f, 4.184f),
+			new RectangleF(15.51f, 62.97f, 2.350f, 4.184f),
+			new RectangleF(15.51f, 82.85f, 2.350f, 4.184f),
+		};
+		// 建造時間表示のRect
+		static float[] DevTimerDigitPX = {26.91f, 27.97f, 29.38f, 30.32f, 31.85f, 32.79f};
+		static float[] DevTimerDigitPY = {29.71f, 49.58f, 69.46f, 89.33f};
+		static float DevTimerDigitWX = 0.823f, DevTimerDigitWY = 2.510f;
+		#endregion
 		#region 入渠用定数
 		// 入渠リストの縦幅
 		static int DockListHeight = 4;
@@ -74,21 +104,6 @@ namespace WsGH {
 			new RectangleF(93.54f, 62.76f, 2.350f, 4.184f),
 			new RectangleF(93.54f, 83.68f, 2.350f, 4.184f),
 		};
-		#endregion
-		#region 建造用定数
-		// 建造リストの縦幅
-		static int BuildListHeight = 4;
-		// 画面左のステータス表示
-		static RectangleF[] BuildStatusPosition = {
-			new RectangleF(15.51f, 23.22f, 2.350f, 4.184f),
-			new RectangleF(15.51f, 43.10f, 2.350f, 4.184f),
-			new RectangleF(15.51f, 62.97f, 2.350f, 4.184f),
-			new RectangleF(15.51f, 82.85f, 2.350f, 4.184f),
-		};
-		// 建造時間表示のRect
-		static float[] BuildTimerDigitPX = {26.91f, 27.97f, 29.38f, 30.32f, 31.85f, 32.79f};
-		static float[] BuildTimerDigitPY = {29.71f, 49.58f, 69.46f, 89.33f};
-		static float BuildTimerDigitWX = 0.823f, BuildTimerDigitWY = 2.510f;
 		#endregion
 		#region OCR用定数
 		// OCRする際にリサイズするサイズ
@@ -471,6 +486,7 @@ namespace WsGH {
 			}
 			return true;
 		}
+		// 建造タイマーを取得する
 		public static Dictionary<int, ulong> getBuildTimer(Bitmap bitmap) {
 			var output = new Dictionary<int, ulong>();
 			var now_time = GetUnixTime(DateTime.Now);
@@ -485,7 +501,7 @@ namespace WsGH {
 				// 建造時間を取得する
 				var timerDigit = getDigitOCR(bitmap, BuildTimerDigitPX, BuildTimerDigitPY[li], BuildTimerDigitWX, BuildTimerDigitWY, 100, true);
 				var leastSecond = getLeastSecond(timerDigit);
-				Console.WriteLine($"{li + 1}番目：{leastSecond}");
+				//Console.WriteLine($"{li + 1}番目：{leastSecond}");
 				output[li] = now_time + leastSecond;
 			}
 			return output;
@@ -513,6 +529,26 @@ namespace WsGH {
 					return false;
 			}
 			return true;
+		}
+		// 開発タイマーを取得する
+		public static Dictionary<int, ulong> getDevTimer(Bitmap bitmap) {
+			var output = new Dictionary<int, ulong>();
+			var now_time = GetUnixTime(DateTime.Now);
+			for(int li = 0; li < DevListHeight; ++li) {
+				// スタンバイ表示ならば、その行に入渠艦隊はいない
+				var bhash = getDifferenceHash(bitmap, DevStatusPosition[li]);
+				if(getHummingDistance(bhash, 0x4147b56a9d33cb1c) < 20)
+					continue;
+				// 開発中でなければ、その行に入渠艦隊はいない
+				if(getHummingDistance(bhash, 0x545471565654659a) >= 20)
+					continue;
+				// 建造時間を取得する
+				var timerDigit = getDigitOCR(bitmap, DevTimerDigitPX, DevTimerDigitPY[li], DevTimerDigitWX, DevTimerDigitWY, 100, true);
+				var leastSecond = getLeastSecond(timerDigit);
+				Console.WriteLine($"{li + 1}番目：{leastSecond}");
+				output[li] = now_time + leastSecond;
+			}
+			return output;
 		}
 		#endregion
 		#region 入渠関係

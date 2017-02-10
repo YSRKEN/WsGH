@@ -229,6 +229,25 @@ namespace WsGH {
 					break;
 				case SceneRecognition.SceneType.Develop:
 					// 開発中
+					var devEndTime = SceneRecognition.getDevTimer(captureFrame);
+					foreach(var pair in devEndTime) {
+						switch(pair.Key) {
+						case 0:
+							bindData.DevTimer1 = pair.Value;
+							break;
+						case 1:
+							bindData.DevTimer2 = pair.Value;
+							break;
+						case 2:
+							bindData.DevTimer3 = pair.Value;
+							break;
+						case 3:
+							bindData.DevTimer4 = pair.Value;
+							break;
+						default:
+							break;
+						}
+					}
 					break;
 				case SceneRecognition.SceneType.Dock:
 					// 入渠中なら、入渠時間を読み取る

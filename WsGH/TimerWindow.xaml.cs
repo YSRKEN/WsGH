@@ -32,6 +32,10 @@ namespace WsGH {
 				BuildTimer2 = Properties.Settings.Default.BuildTimer2,
 				BuildTimer3 = Properties.Settings.Default.BuildTimer3,
 				BuildTimer4 = Properties.Settings.Default.BuildTimer4,
+				DevTimer1 = Properties.Settings.Default.DevTimer1,
+				DevTimer2 = Properties.Settings.Default.DevTimer2,
+				DevTimer3 = Properties.Settings.Default.DevTimer3,
+				DevTimer4 = Properties.Settings.Default.DevTimer4,
 				DockTimer1 = Properties.Settings.Default.DockTimer1,
 				DockTimer2 = Properties.Settings.Default.DockTimer2,
 				DockTimer3 = Properties.Settings.Default.DockTimer3,
@@ -89,6 +93,22 @@ namespace WsGH {
 		private void BuildTimer4TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
 			var bindData = DataContext as TimerValue;
 			bindData.BuildTimer4 = 0;
+		}
+		private void DevTimer1TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
+			var bindData = DataContext as TimerValue;
+			bindData.DevTimer1 = 0;
+		}
+		private void DevTimer2TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
+			var bindData = DataContext as TimerValue;
+			bindData.DevTimer2 = 0;
+		}
+		private void DevTimer3TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
+			var bindData = DataContext as TimerValue;
+			bindData.DevTimer3 = 0;
+		}
+		private void DevTimer4TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
+			var bindData = DataContext as TimerValue;
+			bindData.DevTimer4 = 0;
 		}
 		private void DockTimer1TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
 			var bindData = DataContext as TimerValue;
@@ -219,6 +239,48 @@ namespace WsGH {
 			}
 		}
 		#endregion
+		#region 開発タイマー
+		ulong devTimer1;
+		public ulong DevTimer1 {
+			get { return devTimer1; }
+			set {
+				devTimer1 = value;
+				Properties.Settings.Default.DevTimer1 = value;
+				Properties.Settings.Default.Save();
+				NotifyPropertyChanged("DevTimer1");
+			}
+		}
+		ulong devTimer2;
+		public ulong DevTimer2 {
+			get { return devTimer2; }
+			set {
+				devTimer2 = value;
+				Properties.Settings.Default.DevTimer2 = value;
+				Properties.Settings.Default.Save();
+				NotifyPropertyChanged("DevTimer2");
+			}
+		}
+		ulong devTimer3;
+		public ulong DevTimer3 {
+			get { return devTimer3; }
+			set {
+				devTimer3 = value;
+				Properties.Settings.Default.DevTimer3 = value;
+				Properties.Settings.Default.Save();
+				NotifyPropertyChanged("DevTimer3");
+			}
+		}
+		ulong devTimer4;
+		public ulong DevTimer4 {
+			get { return devTimer4; }
+			set {
+				devTimer4 = value;
+				Properties.Settings.Default.DevTimer4 = value;
+				Properties.Settings.Default.Save();
+				NotifyPropertyChanged("DevTimer4");
+			}
+		}
+		#endregion
 		#region 入渠タイマー
 		ulong dockTimer1;
 		public ulong DockTimer1 {
@@ -272,6 +334,10 @@ namespace WsGH {
 			NotifyPropertyChanged("BuildTimer2");
 			NotifyPropertyChanged("BuildTimer3");
 			NotifyPropertyChanged("BuildTimer4");
+			NotifyPropertyChanged("DevTimer1");
+			NotifyPropertyChanged("DevTimer2");
+			NotifyPropertyChanged("DevTimer3");
+			NotifyPropertyChanged("DevTimer4");
 			NotifyPropertyChanged("DockTimer1");
 			NotifyPropertyChanged("DockTimer2");
 			NotifyPropertyChanged("DockTimer3");
