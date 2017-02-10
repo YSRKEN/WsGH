@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WsGH"
+		xmlns:properties="clr-namespace:WsGH.Properties"
         mc:Ignorable="d"
         Title="WarshipGirls Helper" Height="200" Width="300" ResizeMode="CanMinimize" Topmost="True">
 	<Grid Margin="0,0,0,0">
@@ -15,23 +16,23 @@
 			<RowDefinition />
 		</Grid.RowDefinitions>
 		<Menu>
-			<MenuItem Header="File(_F)">
-				<MenuItem Header="Exit(_X)" Click="ExitMenu_Click" />
+			<MenuItem Header="{x:Static properties:Resources.MenuHeaderFile}">
+				<MenuItem Header="{x:Static properties:Resources.MenuHeaderExit}" Click="ExitMenu_Click" />
 			</MenuItem>
-			<MenuItem Header="Action(_A)">
-				<MenuItem Header="Get Position(_G)" Click="GetPositionMenu_Click" />
-				<MenuItem x:Name="GetScreenshotMenu" Header="Get Screenshot(_S)" IsEnabled="False" Click="GetScreenshotMenu_Click" />
-				<MenuItem Header="Show Window(_W)">
-					<MenuItem Header="TimerWindow(_T)" Click="ShowTimerWindow_Click" />
+			<MenuItem Header="{x:Static properties:Resources.MenuHeaderAction}">
+				<MenuItem Header="{x:Static properties:Resources.MenuHeaderGetPosition}" Click="GetPositionMenu_Click" />
+				<MenuItem x:Name="GetScreenshotMenu" Header="{x:Static properties:Resources.MenuHeaderGetScreenshot}" IsEnabled="False" Click="GetScreenshotMenu_Click" />
+				<MenuItem Header="{x:Static properties:Resources.MenuHeaderShowWindow}">
+					<MenuItem Header="{x:Static properties:Resources.MenuHeaderTimerWindow}" Click="ShowTimerWindow_Click" />
 				</MenuItem>
-				<MenuItem Header="Show pic Folder(_P)" Click="ShowPicFolderMenu_Click"/>
+				<MenuItem Header="{x:Static properties:Resources.MenuHeaderShowPicFolder}" Click="ShowPicFolderMenu_Click"/>
 			</MenuItem>
-			<MenuItem Header="Option(_O)">
-				<MenuItem x:Name="TwitterOptionMenu" IsCheckable="True" Header="for Twitter" Checked="TwitterOption_Changed" Unchecked="TwitterOption_Changed" />
+			<MenuItem Header="{x:Static properties:Resources.MenuHeaderOption}">
+				<MenuItem x:Name="TwitterOptionMenu" IsCheckable="True" Header="{x:Static properties:Resources.MenuHeaderForTwitter}" Checked="TwitterOption_Changed" Unchecked="TwitterOption_Changed" />
 				<MenuItem x:Name="BackgroundOptionMenu" Header="Background : #000000" Click="BackgroundOptionMenu_Click"/>
 			</MenuItem>
-			<MenuItem Header="Help(_H)">
-				<MenuItem Header="About...(_A)" Click="AboutMenu_Click" />
+			<MenuItem Header="{x:Static properties:Resources.MenuHeaderHelp}">
+				<MenuItem Header="{x:Static properties:Resources.MenuHeaderAbout}" Click="AboutMenu_Click" />
 			</MenuItem>
 		</Menu>
 		<Button x:Name="GetPositionButton" Content="G" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="20" FontWeight="Bold" Click="GetPositionMenu_Click"/>

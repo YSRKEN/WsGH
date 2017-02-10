@@ -22,7 +22,7 @@ namespace WsGH.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace WsGH.Properties {
         ///   このクラスで使用されているキャッシュされた ResourceManager インスタンスを返します。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WsGH.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace WsGH.Properties {
         ///   現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,9 +61,126 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
+        ///   About...(_A) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderAbout {
+            get {
+                return ResourceManager.GetString("MenuHeaderAbout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Action(_A) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderAction {
+            get {
+                return ResourceManager.GetString("MenuHeaderAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Background(_B) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderBackground {
+            get {
+                return ResourceManager.GetString("MenuHeaderBackground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Exit(_X) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderExit {
+            get {
+                return ResourceManager.GetString("MenuHeaderExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   File(_F) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderFile {
+            get {
+                return ResourceManager.GetString("MenuHeaderFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   for Twitter(_T) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderForTwitter {
+            get {
+                return ResourceManager.GetString("MenuHeaderForTwitter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Get Position(_G) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderGetPosition {
+            get {
+                return ResourceManager.GetString("MenuHeaderGetPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Get Screenshot(_S) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderGetScreenshot {
+            get {
+                return ResourceManager.GetString("MenuHeaderGetScreenshot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Help(_H) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderHelp {
+            get {
+                return ResourceManager.GetString("MenuHeaderHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Option(_O) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderOption {
+            get {
+                return ResourceManager.GetString("MenuHeaderOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Show pic Folder(_P) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderShowPicFolder {
+            get {
+                return ResourceManager.GetString("MenuHeaderShowPicFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Show Window(_W) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderShowWindow {
+            get {
+                return ResourceManager.GetString("MenuHeaderShowWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   TimerWindow(_T) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderTimerWindow {
+            get {
+                return ResourceManager.GetString("MenuHeaderTimerWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap ocr_template {
+        public static System.Drawing.Bitmap ocr_template {
             get {
                 object obj = ResourceManager.GetObject("ocr_template", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
