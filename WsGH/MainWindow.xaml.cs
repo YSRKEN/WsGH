@@ -134,6 +134,12 @@ namespace WsGH {
 				Properties.Settings.Default.Save();
 			}
 		}
+		private void SelectLanguageJapanese_Click(object sender, RoutedEventArgs e) {
+			ResourceService.Current.ChangeCulture("ja-JP");
+		}
+		private void SelectLanguageEnglish_Click(object sender, RoutedEventArgs e) {
+			ResourceService.Current.ChangeCulture("");
+		}
 		// ボタン操作
 		private void ScreenShotButton_Click(object sender, RoutedEventArgs e) {
 			saveScreenshot();

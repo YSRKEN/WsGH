@@ -126,6 +126,9 @@
   <data name="MenuHeaderBackground" xml:space="preserve">
     <value>Background(_B)</value>
   </data>
+  <data name="MenuHeaderEnglishLanguage" xml:space="preserve">
+    <value>English(_E)</value>
+  </data>
   <data name="MenuHeaderExit" xml:space="preserve">
     <value>Exit(_X)</value>
   </data>
@@ -144,8 +147,14 @@
   <data name="MenuHeaderHelp" xml:space="preserve">
     <value>Help(_H)</value>
   </data>
+  <data name="MenuHeaderJapaneseLanguage" xml:space="preserve">
+    <value>Japanese(_J)</value>
+  </data>
   <data name="MenuHeaderOption" xml:space="preserve">
     <value>Option(_O)</value>
+  </data>
+  <data name="MenuHeaderSelectLanguage" xml:space="preserve">
+    <value>Select Language(_L)</value>
   </data>
   <data name="MenuHeaderShowPicFolder" xml:space="preserve">
     <value>Show pic Folder(_P)</value>

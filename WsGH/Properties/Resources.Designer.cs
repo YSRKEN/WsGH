@@ -88,6 +88,15 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
+        ///   English(_E) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderEnglishLanguage {
+            get {
+                return ResourceManager.GetString("MenuHeaderEnglishLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Exit(_X) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string MenuHeaderExit {
@@ -142,11 +151,29 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
+        ///   Japanese(_J) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderJapaneseLanguage {
+            get {
+                return ResourceManager.GetString("MenuHeaderJapaneseLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Option(_O) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string MenuHeaderOption {
             get {
                 return ResourceManager.GetString("MenuHeaderOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Select Language(_L) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderSelectLanguage {
+            get {
+                return ResourceManager.GetString("MenuHeaderSelectLanguage", resourceCulture);
             }
         }
         

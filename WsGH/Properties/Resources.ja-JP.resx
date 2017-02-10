@@ -126,6 +126,9 @@
   <data name="MenuHeaderBackground" xml:space="preserve">
     <value>背景色(_B)</value>
   </data>
+  <data name="MenuHeaderEnglishLanguage" xml:space="preserve">
+    <value>英語(_E)</value>
+  </data>
   <data name="MenuHeaderExit" xml:space="preserve">
     <value>終了(_X)</value>
   </data>
@@ -144,8 +147,14 @@
   <data name="MenuHeaderHelp" xml:space="preserve">
     <value>ヘルプ(_H)</value>
   </data>
+  <data name="MenuHeaderJapaneseLanguage" xml:space="preserve">
+    <value>日本語(_J)</value>
+  </data>
   <data name="MenuHeaderOption" xml:space="preserve">
     <value>オプション(_O)</value>
+  </data>
+  <data name="MenuHeaderSelectLanguage" xml:space="preserve">
+    <value>言語選択(_L)</value>
   </data>
   <data name="MenuHeaderShowPicFolder" xml:space="preserve">
     <value>picフォルダを表示(_P)</value>
