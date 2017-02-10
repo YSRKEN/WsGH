@@ -207,6 +207,25 @@ namespace WsGH {
 					break;
 				case SceneRecognition.SceneType.Build:
 					// 建造中
+					var buildEndTime = SceneRecognition.getBuildTimer(captureFrame);
+					foreach(var pair in buildEndTime) {
+						switch(pair.Key) {
+						case 0:
+							bindData.BuildTimer1 = pair.Value;
+							break;
+						case 1:
+							bindData.BuildTimer2 = pair.Value;
+							break;
+						case 2:
+							bindData.BuildTimer3 = pair.Value;
+							break;
+						case 3:
+							bindData.BuildTimer4 = pair.Value;
+							break;
+						default:
+							break;
+						}
+					}
 					break;
 				case SceneRecognition.SceneType.Develop:
 					// 開発中

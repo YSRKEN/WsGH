@@ -74,6 +74,9 @@ namespace WsGH {
 			new RectangleF(93.54f, 83.68f, 2.350f, 4.184f),
 		};
 		#endregion
+		#region 建造用定数
+
+		#endregion
 		#region OCR用定数
 		// OCRする際にリサイズするサイズ
 		static Size TemplateSize1 = new Size(32, 32);
@@ -454,6 +457,11 @@ namespace WsGH {
 					return false;
 			}
 			return true;
+		}
+		public static Dictionary<int, ulong> getBuildTimer(Bitmap bitmap) {
+			var output = new Dictionary<int, ulong>();
+
+			return output;
 		}
 		#endregion
 		#region 開発関係

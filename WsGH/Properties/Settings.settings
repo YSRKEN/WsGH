@@ -26,16 +26,16 @@
     <Setting Name="ExpTimer4" Type="System.UInt64" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="BldTimer1" Type="System.UInt64" Scope="User">
+    <Setting Name="BuildTimer1" Type="System.UInt64" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="BldTimer2" Type="System.UInt64" Scope="User">
+    <Setting Name="BuildTimer2" Type="System.UInt64" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="BldTimer3" Type="System.UInt64" Scope="User">
+    <Setting Name="BuildTimer3" Type="System.UInt64" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="BldTimer4" Type="System.UInt64" Scope="User">
+    <Setting Name="BuildTimer4" Type="System.UInt64" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="DevTimer1" Type="System.UInt64" Scope="User">

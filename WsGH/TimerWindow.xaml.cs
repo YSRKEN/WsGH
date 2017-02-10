@@ -28,6 +28,10 @@ namespace WsGH {
 				ExpTimer2 = Properties.Settings.Default.ExpTimer2,
 				ExpTimer3 = Properties.Settings.Default.ExpTimer3,
 				ExpTimer4 = Properties.Settings.Default.ExpTimer4,
+				BuildTimer1 = Properties.Settings.Default.BuildTimer1,
+				BuildTimer2 = Properties.Settings.Default.BuildTimer2,
+				BuildTimer3 = Properties.Settings.Default.BuildTimer3,
+				BuildTimer4 = Properties.Settings.Default.BuildTimer4,
 				DockTimer1 = Properties.Settings.Default.DockTimer1,
 				DockTimer2 = Properties.Settings.Default.DockTimer2,
 				DockTimer3 = Properties.Settings.Default.DockTimer3,
@@ -69,6 +73,22 @@ namespace WsGH {
 		private void ExpTimer4TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
 			var bindData = DataContext as TimerValue;
 			bindData.ExpTimer4 = 0;
+		}
+		private void BuildTimer1TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
+			var bindData = DataContext as TimerValue;
+			bindData.BuildTimer1 = 0;
+		}
+		private void BuildTimer2TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
+			var bindData = DataContext as TimerValue;
+			bindData.BuildTimer2 = 0;
+		}
+		private void BuildTimer3TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
+			var bindData = DataContext as TimerValue;
+			bindData.BuildTimer3 = 0;
+		}
+		private void BuildTimer4TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
+			var bindData = DataContext as TimerValue;
+			bindData.BuildTimer4 = 0;
 		}
 		private void DockTimer1TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
 			var bindData = DataContext as TimerValue;
@@ -115,7 +135,7 @@ namespace WsGH {
 	// 値を保存するクラス
 	public class TimerValue : INotifyPropertyChanged
 	{
-		// 遠征タイマー
+		#region 遠征タイマー
 		ulong expTimer1;
 		public ulong ExpTimer1 {
 			get { return expTimer1; }
@@ -156,6 +176,50 @@ namespace WsGH {
 				NotifyPropertyChanged("ExpTimer4");
 			}
 		}
+		#endregion
+		#region 建造タイマー
+		ulong buildTimer1;
+		public ulong BuildTimer1 {
+			get { return buildTimer1; }
+			set {
+				buildTimer1 = value;
+				Properties.Settings.Default.BuildTimer1 = value;
+				Properties.Settings.Default.Save();
+				NotifyPropertyChanged("BuildTimer1");
+			}
+		}
+		ulong buildTimer2;
+		public ulong BuildTimer2 {
+			get { return buildTimer2; }
+			set {
+				buildTimer2 = value;
+				Properties.Settings.Default.BuildTimer2 = value;
+				Properties.Settings.Default.Save();
+				NotifyPropertyChanged("BuildTimer2");
+			}
+		}
+		ulong buildTimer3;
+		public ulong BuildTimer3 {
+			get { return buildTimer3; }
+			set {
+				buildTimer3 = value;
+				Properties.Settings.Default.BuildTimer3 = value;
+				Properties.Settings.Default.Save();
+				NotifyPropertyChanged("BuildTimer3");
+			}
+		}
+		ulong buildTimer4;
+		public ulong BuildTimer4 {
+			get { return buildTimer4; }
+			set {
+				buildTimer4 = value;
+				Properties.Settings.Default.BuildTimer4 = value;
+				Properties.Settings.Default.Save();
+				NotifyPropertyChanged("BuildTimer4");
+			}
+		}
+		#endregion
+		#region 入渠タイマー
 		ulong dockTimer1;
 		public ulong DockTimer1 {
 			get { return dockTimer1; }
@@ -196,6 +260,7 @@ namespace WsGH {
 				NotifyPropertyChanged("DockTimer4");
 			}
 		}
+		#endregion
 		public event PropertyChangedEventHandler PropertyChanged = (s, e) => { };
 		public void RedrawTimerWindow() {
 			// タイマー全体を更新する
@@ -203,6 +268,10 @@ namespace WsGH {
 			NotifyPropertyChanged("ExpTimer2");
 			NotifyPropertyChanged("ExpTimer3");
 			NotifyPropertyChanged("ExpTimer4");
+			NotifyPropertyChanged("BuildTimer1");
+			NotifyPropertyChanged("BuildTimer2");
+			NotifyPropertyChanged("BuildTimer3");
+			NotifyPropertyChanged("BuildTimer4");
 			NotifyPropertyChanged("DockTimer1");
 			NotifyPropertyChanged("DockTimer2");
 			NotifyPropertyChanged("DockTimer3");

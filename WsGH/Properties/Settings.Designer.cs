@@ -119,48 +119,48 @@ namespace WsGH.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public ulong BldTimer1 {
+        public ulong BuildTimer1 {
             get {
-                return ((ulong)(this["BldTimer1"]));
+                return ((ulong)(this["BuildTimer1"]));
             }
             set {
-                this["BldTimer1"] = value;
+                this["BuildTimer1"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public ulong BldTimer2 {
+        public ulong BuildTimer2 {
             get {
-                return ((ulong)(this["BldTimer2"]));
+                return ((ulong)(this["BuildTimer2"]));
             }
             set {
-                this["BldTimer2"] = value;
+                this["BuildTimer2"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public ulong BldTimer3 {
+        public ulong BuildTimer3 {
             get {
-                return ((ulong)(this["BldTimer3"]));
+                return ((ulong)(this["BuildTimer3"]));
             }
             set {
-                this["BldTimer3"] = value;
+                this["BuildTimer3"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public ulong BldTimer4 {
+        public ulong BuildTimer4 {
             get {
-                return ((ulong)(this["BldTimer4"]));
+                return ((ulong)(this["BuildTimer4"]));
             }
             set {
-                this["BldTimer4"] = value;
+                this["BuildTimer4"] = value;
             }
         }
         
