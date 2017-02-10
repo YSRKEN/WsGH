@@ -68,7 +68,7 @@ namespace WsGH {
 		static float DockTimerDigitWX = 1.880f, DockTimerDigitWY = 5.021f;
 		// 高速修復ボタンのRect
 		static RectangleF[] DockFastRepairPosition = {
-			new RectangleF(93.54f, 24.69f, 2.350f, 4.184f),
+			new RectangleF(93.54f, 21.13f, 2.350f, 4.184f),
 			new RectangleF(93.54f, 42.05f, 2.350f, 4.184f),
 			new RectangleF(93.54f, 62.76f, 2.350f, 4.184f),
 			new RectangleF(93.54f, 83.68f, 2.350f, 4.184f),
@@ -508,7 +508,7 @@ namespace WsGH {
 					continue;
 				// 高速修復ボタンがなければ、その行に入渠艦隊はいない
 				bhash = getDifferenceHash(bitmap, DockFastRepairPosition[li]);
-				if(getHummingDistance(bhash, 0x679768f6daca5a9c) >= 20)
+				if(getHummingDistance(bhash, 0x29b86aaa98b2997c) >= 20)
 					continue;
 				// 入渠時間を取得する
 				var timerDigit = getDigitOCR(bitmap, DockTimerDigitPX, DockTimerDigitPY[li], DockTimerDigitWX, DockTimerDigitWY, 50, true);
