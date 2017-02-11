@@ -94,13 +94,6 @@ namespace WsGH {
 		#region 入渠用定数
 		// 入渠リストの縦幅
 		static int DockListHeight = 4;
-		// 艦船カードの一部のRect
-		static RectangleF[] DockCardPosition = {
-			new RectangleF(75.39f, 19.44f, 4.063f, 4.444f),
-			new RectangleF(75.39f, 40.28f, 4.063f, 4.444f),
-			new RectangleF(75.39f, 61.11f, 4.063f, 4.444f),
-			new RectangleF(75.39f, 81.94f, 4.063f, 4.444f),
-		};
 		// 入渠時間表示のRect
 		static float[] DockTimerDigitPX = {66.86f, 68.86f, 72.03f, 74.15f, 77.32f, 79.32f};
 		static float[] DockTimerDigitPY = {24.69f, 45.61f, 66.32f, 87.24f};
@@ -581,12 +574,8 @@ namespace WsGH {
 			var output = new Dictionary<int, ulong>();
 			var now_time = GetUnixTime(DateTime.Now);
 			for(int li = 0; li < DockListHeight; ++li) {
-				// 艦船Cardが無ければ、その行に入渠艦隊はいない
-				var bhash = getDifferenceHash(bitmap, DockCardPosition[li]);
-				if(getHummingDistance(bhash, 0x8a40400000960801) >= 20)
-					continue;
 				// 高速修復ボタンがなければ、その行に入渠艦隊はいない
-				bhash = getDifferenceHash(bitmap, DockFastRepairPosition[li]);
+				var bhash = getDifferenceHash(bitmap, DockFastRepairPosition[li]);
 				if(getHummingDistance(bhash, 0x28a978a9d852e923) >= 20)
 					continue;
 				// 入渠時間を取得する
