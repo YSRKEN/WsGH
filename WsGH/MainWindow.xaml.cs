@@ -38,7 +38,7 @@ namespace WsGH {
 			// 画面表示を初期化
 			DataContext = new MainWindowDC() {
 				LoggingText = "",
-				MenuHeaderBackground = "",
+				MenuHeaderBackgroundOther = "",
 			};
 			// アプリの設定を初期化
 			TwitterOptionMenu.IsChecked = Properties.Settings.Default.ScreenshotForTwitterFlg;
@@ -127,7 +127,7 @@ namespace WsGH {
 				// 色変更を行い、画面にも反映させる
 				Properties.Settings.Default.BackgroundColor = cd.Color;
 				var bindData = DataContext as MainWindowDC;
-				bindData.MenuHeaderBackground = "";
+				bindData.MenuHeaderBackgroundOther = "";
 				addLog($"{Properties.Resources.LoggingTextrBackground} : {MainWindowDC.ColorToString(Properties.Settings.Default.BackgroundColor)}");
 				Properties.Settings.Default.Save();
 			}
@@ -179,7 +179,7 @@ namespace WsGH {
 		void ChangeLanguage(string culture) {
 			ResourceService.Current.ChangeCulture(culture);
 			var bindData = DataContext as MainWindowDC;
-			bindData.MenuHeaderBackground = "";
+			bindData.MenuHeaderBackgroundOther = "";
 		}
 		// タイマー動作
 		private void DispatcherTimer_Tick(object sender, EventArgs e) {
@@ -330,12 +330,12 @@ namespace WsGH {
 			}
 		}
 		// 背景オプション
-		public string MenuHeaderBackground {
+		public string MenuHeaderBackgroundOther {
 			get {
-				return $"{Properties.Resources.MenuHeaderBackground} : {ColorToString(Properties.Settings.Default.BackgroundColor)} ...";
+				return $"{Properties.Resources.MenuHeaderBackgroundOther} : {ColorToString(Properties.Settings.Default.BackgroundColor)} ...";
 			}
 			set {
-				NotifyPropertyChanged("MenuHeaderBackground");
+				NotifyPropertyChanged("MenuHeaderBackgroundOther");
 			}
 		}
 		// 色情報を文字列に変換
