@@ -118,76 +118,76 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MenuHeaderAbout" xml:space="preserve">
-    <value>About...(_A)</value>
+    <value>バージョン情報...(_A)</value>
   </data>
   <data name="MenuHeaderAction" xml:space="preserve">
-    <value>Action(_A)</value>
+    <value>操作(_A)</value>
   </data>
   <data name="MenuHeaderBackground" xml:space="preserve">
-    <value>Background(_B)</value>
+    <value>背景色(_B)</value>
   </data>
   <data name="MenuHeaderEnglishLanguage" xml:space="preserve">
-    <value>English(_E)</value>
+    <value>英語(_E)</value>
   </data>
   <data name="MenuHeaderExit" xml:space="preserve">
-    <value>Exit(_X)</value>
+    <value>終了(_X)</value>
   </data>
   <data name="MenuHeaderFile" xml:space="preserve">
-    <value>File(_F)</value>
+    <value>ファイル(_F)</value>
   </data>
   <data name="MenuHeaderForTwitter" xml:space="preserve">
-    <value>for Twitter(_T)</value>
+    <value>Twitter用に加工(_T)</value>
   </data>
   <data name="MenuHeaderGetPosition" xml:space="preserve">
-    <value>Get Position(_G)</value>
+    <value>座標取得(_G)</value>
   </data>
   <data name="MenuHeaderGetScreenshot" xml:space="preserve">
-    <value>Get Screenshot(_S)</value>
+    <value>スクリーンショット(_S)</value>
   </data>
   <data name="MenuHeaderHelp" xml:space="preserve">
-    <value>Help(_H)</value>
+    <value>ヘルプ(_H)</value>
   </data>
   <data name="MenuHeaderJapaneseLanguage" xml:space="preserve">
-    <value>Japanese(_J)</value>
+    <value>日本語(_J)</value>
   </data>
   <data name="MenuHeaderOption" xml:space="preserve">
-    <value>Option(_O)</value>
+    <value>オプション(_O)</value>
   </data>
   <data name="MenuHeaderSelectLanguage" xml:space="preserve">
-    <value>Select Language(_L)</value>
+    <value>言語選択(_L)</value>
   </data>
   <data name="MenuHeaderShowPicFolder" xml:space="preserve">
-    <value>Show pic Folder(_P)</value>
+    <value>picフォルダを表示(_P)</value>
   </data>
   <data name="MenuHeaderShowWindow" xml:space="preserve">
-    <value>Show Window(_W)</value>
+    <value>ウィンドウを表示(_W)</value>
   </data>
   <data name="MenuHeaderTimerWindow" xml:space="preserve">
-    <value>TimerWindow(_T)</value>
+    <value>タイマー画面(_T)</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ocr_template" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ocr_template.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TextBlockTextBld" xml:space="preserve">
-    <value>Bld</value>
+    <value>建造</value>
   </data>
   <data name="TextBlockTextDev" xml:space="preserve">
-    <value>Dev</value>
+    <value>開発</value>
   </data>
   <data name="TextBlockTextDock" xml:space="preserve">
-    <value>Dock</value>
+    <value>ドック</value>
   </data>
   <data name="TextBlockTextExp" xml:space="preserve">
-    <value>Exp</value>
+    <value>遠征</value>
   </data>
   <data name="TextGetPositionButton" xml:space="preserve">
-    <value>G</value>
+    <value>座</value>
   </data>
   <data name="TextScreenShotButton" xml:space="preserve">
-    <value>ScreenShot</value>
+    <value>画像保存</value>
   </data>
   <data name="TitleTimerWindow" xml:space="preserve">
-    <value>TimerWindow</value>
+    <value>タイマー画面</value>
   </data>
 </root>
