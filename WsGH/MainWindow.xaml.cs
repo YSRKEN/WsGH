@@ -37,11 +37,11 @@ namespace WsGH {
 			}
 			// 画面表示を初期化
 			DataContext = new MainWindowDC() {
-				LoggingText = ""
+				LoggingText = "",
+				MenuHeaderBackground = "",
 			};
 			// アプリの設定を初期化
 			TwitterOptionMenu.IsChecked = Properties.Settings.Default.ScreenshotForTwitterFlg;
-			BackgroundOptionMenu.Header = $"Background : {ColorToString(Properties.Settings.Default.BackgroundColor)} ...";
 			// タイマーを作成する
 			DispatcherTimer m_Timer = new DispatcherTimer(DispatcherPriority.Normal, this.Dispatcher);
 			m_Timer.Interval = TimeSpan.FromMilliseconds(200.0);
@@ -130,16 +130,19 @@ namespace WsGH {
 			if(cd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
 				// 色変更を行い、画面にも反映させる
 				Properties.Settings.Default.BackgroundColor = cd.Color;
-				BackgroundOptionMenu.Header = "Background : " + ColorToString(Properties.Settings.Default.BackgroundColor) + " ...";
-				addLog("Background : " + ColorToString(Properties.Settings.Default.BackgroundColor));
+				var bindData = DataContext as MainWindowDC;
+				bindData.MenuHeaderBackground = "";
+				addLog("Background : " + MainWindowDC.ColorToString(Properties.Settings.Default.BackgroundColor));
 				Properties.Settings.Default.Save();
 			}
 		}
 		private void SelectLanguageJapanese_Click(object sender, RoutedEventArgs e) {
-			ResourceService.Current.ChangeCulture("ja-JP");
+			// 日本語に切り替え
+			ChangeLanguage("ja-JP");
 		}
 		private void SelectLanguageEnglish_Click(object sender, RoutedEventArgs e) {
-			ResourceService.Current.ChangeCulture("");
+			// 英語に切り替え
+			ChangeLanguage("");
 		}
 		// ボタン操作
 		private void ScreenShotButton_Click(object sender, RoutedEventArgs e) {
@@ -176,6 +179,12 @@ namespace WsGH {
 			} catch(Exception) {
 				addLog("save Screenshot : Failed");
 			}
+		}
+		// 言語切替
+		void ChangeLanguage(string culture) {
+			ResourceService.Current.ChangeCulture(culture);
+			var bindData = DataContext as MainWindowDC;
+			bindData.NotifyPropertyChanged("MenuHeaderBackground");
 		}
 		// タイマー動作
 		private void DispatcherTimer_Tick(object sender, EventArgs e) {
@@ -311,10 +320,6 @@ namespace WsGH {
 			#endregion
 			captureFrame?.Dispose();
 		}
-		// 色情報を文字列に変換
-		public static string ColorToString(System.Drawing.Color clr) {
-			return "#" + clr.R.ToString("X2") + clr.G.ToString("X2") + clr.B.ToString("X2");
-		}
 	}
 	class MainWindowDC : INotifyPropertyChanged {
 		// ログテキスト
@@ -326,8 +331,22 @@ namespace WsGH {
 				NotifyPropertyChanged("LoggingText");
 			}
 		}
+		// 背景オプション
+		public string MenuHeaderBackground {
+			get {
+				return $"{Properties.Resources.MenuHeaderBackground} : {ColorToString(Properties.Settings.Default.BackgroundColor)} ...";
+			}
+			set {
+				NotifyPropertyChanged("MenuHeaderBackground");
+			}
+		}
+		// 色情報を文字列に変換
+		public static string ColorToString(System.Drawing.Color clr) {
+			return "#" + clr.R.ToString("X2") + clr.G.ToString("X2") + clr.B.ToString("X2");
+		}
+		//
 		public event PropertyChangedEventHandler PropertyChanged = (s, e) => { };
-		private void NotifyPropertyChanged(string parameter) {
+		public void NotifyPropertyChanged(string parameter) {
 			PropertyChanged(this, new PropertyChangedEventArgs(parameter));
 		}
 	}
