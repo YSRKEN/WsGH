@@ -191,7 +191,8 @@ namespace WsGH {
 				// シーンを判定する
 				var scene = SceneRecognition.JudgeScene(captureFrame);
 				// 現在認識しているシーンを表示する
-				SceneTextBlock.Text = $"{Properties.Resources.LoggingTextScene} : {SceneRecognition.SceneString[scene]}";
+				var culture = (Properties.Resources.Culture == null ? System.Globalization.CultureInfo.CurrentCulture : Properties.Resources.Culture).ToString();
+				SceneTextBlock.Text = $"{Properties.Resources.LoggingTextScene} : {(culture == "ja-JP" ? SceneRecognition.SceneStringJapanese[scene] : SceneRecognition.SceneString[scene])}";
 				// シーンごとに振り分ける
 				var bindData = tw.DataContext as TimerValue;
 				switch(scene) {
