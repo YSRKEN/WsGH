@@ -24,7 +24,6 @@ namespace WsGH {
 	/// </summary>
 	public partial class MainWindow : Window {
 		ScreenshotProvider sp = null;	//スクショ用の情報を記憶する
-		Logger logger = null;			//メイン画面のログを記録する
 		TimerWindow tw = null;			//TimerWindowのインスタンス
 		int timerWindowSecond;			//毎秒行う処理のために秒数を記憶
 		// コンストラクタ
@@ -36,11 +35,13 @@ namespace WsGH {
 			if(!System.IO.Directory.Exists(@"pic\")) {
 				System.IO.Directory.CreateDirectory(@"pic\");
 			}
-			// ログ表示を初期化
-			DataContext = logger = new Logger() { LoggingText = "" };
+			// 画面表示を初期化
+			DataContext = new MainWindowDC() {
+				LoggingText = "",
+				MenuHeaderBackground = "",
+			};
 			// アプリの設定を初期化
 			TwitterOptionMenu.IsChecked = Properties.Settings.Default.ScreenshotForTwitterFlg;
-			BackgroundOptionMenu.Header = $"Background : {ColorToString(Properties.Settings.Default.BackgroundColor)} ...";
 			// タイマーを作成する
 			DispatcherTimer m_Timer = new DispatcherTimer(DispatcherPriority.Normal, this.Dispatcher);
 			m_Timer.Interval = TimeSpan.FromMilliseconds(200.0);
@@ -114,11 +115,7 @@ namespace WsGH {
 		}
 		private void TwitterOption_Changed(object sender, RoutedEventArgs e) {
 			// チェックの状態をログに記録する
-			if(TwitterOptionMenu.IsChecked) {
-				addLog("for Twitter : True");
-			} else {
-				addLog("for Twitter : False");
-			}
+			addLog($"{Properties.Resources.LoggingTextForTwitter} : {(TwitterOptionMenu.IsChecked ? "True" : "False")}");
 			// チェックの状態を反映させる
 			Properties.Settings.Default.ScreenshotForTwitterFlg = TwitterOptionMenu.IsChecked;
 			Properties.Settings.Default.Save();
@@ -129,16 +126,19 @@ namespace WsGH {
 			if(cd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
 				// 色変更を行い、画面にも反映させる
 				Properties.Settings.Default.BackgroundColor = cd.Color;
-				BackgroundOptionMenu.Header = "Background : " + ColorToString(Properties.Settings.Default.BackgroundColor) + " ...";
-				addLog("Background : " + ColorToString(Properties.Settings.Default.BackgroundColor));
+				var bindData = DataContext as MainWindowDC;
+				bindData.MenuHeaderBackground = "";
+				addLog($"{Properties.Resources.LoggingTextrBackground} : {MainWindowDC.ColorToString(Properties.Settings.Default.BackgroundColor)}");
 				Properties.Settings.Default.Save();
 			}
 		}
 		private void SelectLanguageJapanese_Click(object sender, RoutedEventArgs e) {
-			ResourceService.Current.ChangeCulture("ja-JP");
+			// 日本語に切り替え
+			ChangeLanguage("ja-JP");
 		}
 		private void SelectLanguageEnglish_Click(object sender, RoutedEventArgs e) {
-			ResourceService.Current.ChangeCulture("");
+			// 英語に切り替え
+			ChangeLanguage("");
 		}
 		// ボタン操作
 		private void ScreenShotButton_Click(object sender, RoutedEventArgs e) {
@@ -147,19 +147,19 @@ namespace WsGH {
 		// ログに内容を追加
 		private void addLog(string str) {
 			var dt = DateTime.Now;
-			logger.LoggingText += dt.ToString("hh:mm:ss ") + str + "\n";
+			var bindData = DataContext as MainWindowDC;
+			bindData.LoggingText += dt.ToString("hh:mm:ss ") + str + "\n";
 		}
 		// 座標取得後の画面更新処理
 		private void getPosition() {
-			// 成功した場合と失敗した場合で処理を分ける
-			if(sp.isGetPosition()) {
-				GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = true;
-				addLog("get Position : Success");
+			// 成功か失敗かを読み取る
+			var isGetPosition = sp.isGetPosition();
+			// 結果を記録
+			GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = isGetPosition;
+			addLog($"{Properties.Resources.LoggingTextGetPosition} : {(isGetPosition ? "Success" : "Failed")}");
+			// 成功時は座標を表示する
+			if(isGetPosition)
 				addLog("  " + sp.getPositionStr());
-			} else {
-				GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = false;
-				addLog("get Position : Failed");
-			}
 		}
 		// 画像保存処理
 		private void saveScreenshot() {
@@ -169,11 +169,17 @@ namespace WsGH {
 			// 画像を保存する
 			try {
 				sp.getScreenShot(TwitterOptionMenu.IsChecked).Save(@"pic\" + fileName);
-				addLog("save Screenshot : Success");
+				addLog($"{Properties.Resources.LoggingTextGetScreenshot} : Success");
 				addLog("  (" + fileName + ")");
 			} catch(Exception) {
-				addLog("save Screenshot : Failed");
+				addLog($"{Properties.Resources.LoggingTextGetScreenshot} : Failed");
 			}
+		}
+		// 言語切替
+		void ChangeLanguage(string culture) {
+			ResourceService.Current.ChangeCulture(culture);
+			var bindData = DataContext as MainWindowDC;
+			bindData.MenuHeaderBackground = "";
 		}
 		// タイマー動作
 		private void DispatcherTimer_Tick(object sender, EventArgs e) {
@@ -185,12 +191,13 @@ namespace WsGH {
 				// シーンを判定する
 				var scene = SceneRecognition.JudgeScene(captureFrame);
 				// 現在認識しているシーンを表示する
-				SceneTextBlock.Text = $"Scene : {SceneRecognition.SceneString[scene]}";
+				var culture = (Properties.Resources.Culture == null ? System.Globalization.CultureInfo.CurrentCulture : Properties.Resources.Culture).ToString();
+				SceneTextBlock.Text = $"{Properties.Resources.LoggingTextScene} : {(culture == "ja-JP" ? SceneRecognition.SceneStringJapanese[scene] : SceneRecognition.SceneString[scene])}";
 				// シーンごとに振り分ける
 				var bindData = tw.DataContext as TimerValue;
 				switch(scene) {
 				case SceneRecognition.SceneType.Expedition:
-					// 遠征中なら、遠征時間を読み取る
+					#region 遠征中なら、遠征時間を読み取る
 					var expEndTime = SceneRecognition.getExpeditionTimer(captureFrame);
 					foreach(var pair in expEndTime) {
 						switch(pair.Key) {
@@ -211,8 +218,9 @@ namespace WsGH {
 						}
 					}
 					break;
+					#endregion
 				case SceneRecognition.SceneType.Build:
-					// 建造中
+					#region 建造中なら、建造時間を読み取る
 					var buildEndTime = SceneRecognition.getBuildTimer(captureFrame);
 					foreach(var pair in buildEndTime) {
 						switch(pair.Key) {
@@ -233,8 +241,9 @@ namespace WsGH {
 						}
 					}
 					break;
+				#endregion
 				case SceneRecognition.SceneType.Develop:
-					// 開発中
+					#region 開発中なら、開発時間を読み取る
 					var devEndTime = SceneRecognition.getDevTimer(captureFrame);
 					foreach(var pair in devEndTime) {
 						switch(pair.Key) {
@@ -255,8 +264,9 @@ namespace WsGH {
 						}
 					}
 					break;
+				#endregion
 				case SceneRecognition.SceneType.Dock:
-					// 入渠中なら、入渠時間を読み取る
+					#region 入渠中なら、入渠時間を読み取る
 					var dockEndTime = SceneRecognition.getDockTimer(captureFrame);
 					foreach(var pair in dockEndTime) {
 						switch(pair.Key) {
@@ -277,6 +287,7 @@ namespace WsGH {
 						}
 					}
 					break;
+				#endregion
 				default:
 					break;
 				}
@@ -290,16 +301,14 @@ namespace WsGH {
 				if(captureFrame != null) {
 					// ズレチェック
 					if(sp.IsPositionShifting()) {
-						addLog("Found PositionShifting!");
-						addLog("try fix PositionShifting...");
-						if(sp.TryPositionShifting()) {
-							GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = true;
-							addLog("fix PositionShifting : Success");
+						addLog(Properties.Resources.LoggingTextFoundPS);
+						addLog(Properties.Resources.LoggingTextTryFixPS);
+						// ズレ修復の結果を代入
+						var tryFixPositionShifting = sp.TryPositionShifting();
+						GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = tryFixPositionShifting;
+						addLog($"{Properties.Resources.LoggingTextFixPS} : {(tryFixPositionShifting ? "Success" : "Failed")}");
+						if(tryFixPositionShifting)
 							addLog("  " + sp.getPositionStr());
-						} else {
-							GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = false;
-							addLog("fix PositionShifting : Failed");
-						}
 					}
 				}
 				// タイマーの表示を更新する
@@ -309,21 +318,34 @@ namespace WsGH {
 			#endregion
 			captureFrame?.Dispose();
 		}
+	}
+	class MainWindowDC : INotifyPropertyChanged {
+		// ログテキスト
+		string loggingText;
+		public string LoggingText {
+			get { return loggingText; }
+			set {
+				loggingText = value;
+				NotifyPropertyChanged("LoggingText");
+			}
+		}
+		// 背景オプション
+		public string MenuHeaderBackground {
+			get {
+				return $"{Properties.Resources.MenuHeaderBackground} : {ColorToString(Properties.Settings.Default.BackgroundColor)} ...";
+			}
+			set {
+				NotifyPropertyChanged("MenuHeaderBackground");
+			}
+		}
 		// 色情報を文字列に変換
 		public static string ColorToString(System.Drawing.Color clr) {
 			return "#" + clr.R.ToString("X2") + clr.G.ToString("X2") + clr.B.ToString("X2");
 		}
-	}
-	// ログ管理用のクラス
-	class Logger : INotifyPropertyChanged {
-		public event PropertyChangedEventHandler PropertyChanged;
-		string loggingText;
-		public string LoggingText {
-			get { return loggingText; }
-			set { loggingText = value; NotifiyPropertyChanged("LoggingText"); }
-		}
-		private void NotifiyPropertyChanged(string propertyName) {
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		//
+		public event PropertyChangedEventHandler PropertyChanged = (s, e) => { };
+		public void NotifyPropertyChanged(string parameter) {
+			PropertyChanged(this, new PropertyChangedEventArgs(parameter));
 		}
 	}
 }

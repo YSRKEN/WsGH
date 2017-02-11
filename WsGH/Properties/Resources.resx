@@ -190,4 +190,28 @@
   <data name="TitleTimerWindow" xml:space="preserve">
     <value>TimerWindow</value>
   </data>
+  <data name="LoggingTextFixPS" xml:space="preserve">
+    <value>fix PositionShifting</value>
+  </data>
+  <data name="LoggingTextForTwitter" xml:space="preserve">
+    <value>for Twitter</value>
+  </data>
+  <data name="LoggingTextFoundPS" xml:space="preserve">
+    <value>Found PositionShifting!</value>
+  </data>
+  <data name="LoggingTextGetPosition" xml:space="preserve">
+    <value>get Position</value>
+  </data>
+  <data name="LoggingTextGetScreenshot" xml:space="preserve">
+    <value>save Screenshot</value>
+  </data>
+  <data name="LoggingTextrBackground" xml:space="preserve">
+    <value>Background</value>
+  </data>
+  <data name="LoggingTextScene" xml:space="preserve">
+    <value>Scene</value>
+  </data>
+  <data name="LoggingTextTryFixPS" xml:space="preserve">
+    <value>try fix PositionShifting...</value>
+  </data>
 </root>

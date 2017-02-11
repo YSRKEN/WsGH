@@ -190,4 +190,28 @@
   <data name="TitleTimerWindow" xml:space="preserve">
     <value>タイマー画面</value>
   </data>
+  <data name="LoggingTextFixPS" xml:space="preserve">
+    <value>位置ズレ修復</value>
+  </data>
+  <data name="LoggingTextForTwitter" xml:space="preserve">
+    <value>Twitter用に加工</value>
+  </data>
+  <data name="LoggingTextFoundPS" xml:space="preserve">
+    <value>位置ズレを検知しました！</value>
+  </data>
+  <data name="LoggingTextGetPosition" xml:space="preserve">
+    <value>座標取得</value>
+  </data>
+  <data name="LoggingTextGetScreenshot" xml:space="preserve">
+    <value>スクリーンショット</value>
+  </data>
+  <data name="LoggingTextrBackground" xml:space="preserve">
+    <value>背景色</value>
+  </data>
+  <data name="LoggingTextScene" xml:space="preserve">
+    <value>状況</value>
+  </data>
+  <data name="LoggingTextTryFixPS" xml:space="preserve">
+    <value>位置ズレ修復を試みます...</value>
+  </data>
 </root>
