@@ -13,9 +13,10 @@ namespace WsGH {
 		Rectangle screenshotRectangle = new Rectangle(0, 0, 0, 0);
 		Rectangle virtualDisplayRectangle;
 		int clickPointX, clickPointY;
-		public ScreenshotProvider(AfterAction aa) {
+		Color backgroundColor;
+		public ScreenshotProvider(AfterAction aa, Color backgroundColor) {
+			this.backgroundColor = backgroundColor;
 			virtualDisplayRectangle = calcVirtualDisplayRectangle();
-			//System.Windows.MessageBox.Show("Please click window of WarshipGirls.\n(Esc Key : Cancel)", "WsGH", MessageBoxButton.OK);
 			var cw = new ClickWindow(this, virtualDisplayRectangle, aa);
 			cw.Show();
 		}
@@ -85,11 +86,11 @@ namespace WsGH {
 			using(var g = Graphics.FromImage(bitmap)) {
 				g.CopyFromScreen(screenshotRectangle.X - 1, screenshotRectangle.Y - 1, 0, 0, bitmap.Size);
 			}
-			var backgroundColor = Properties.Settings.Default.BackgroundColor.ToArgb();
-			if((bitmap.GetPixel(0, 0).ToArgb() != backgroundColor)
-			&& (bitmap.GetPixel(0, screenshotRectangle.Height + 1).ToArgb() != backgroundColor)
-			&& (bitmap.GetPixel(screenshotRectangle.Width + 1, 0).ToArgb() != backgroundColor)
-			&& (bitmap.GetPixel(screenshotRectangle.Width + 1, screenshotRectangle.Height + 1).ToArgb() != backgroundColor)) {
+			var backgroundColorArgb = backgroundColor.ToArgb();
+			if((bitmap.GetPixel(0, 0).ToArgb() != backgroundColorArgb)
+			&& (bitmap.GetPixel(0, screenshotRectangle.Height + 1).ToArgb() != backgroundColorArgb)
+			&& (bitmap.GetPixel(screenshotRectangle.Width + 1, 0).ToArgb() != backgroundColorArgb)
+			&& (bitmap.GetPixel(screenshotRectangle.Width + 1, screenshotRectangle.Height + 1).ToArgb() != backgroundColorArgb)) {
 				return true;
 			}
 			return false;
@@ -98,7 +99,7 @@ namespace WsGH {
 		public bool TryPositionShifting() {
 			var vdb = getVirtualDisplayBitmap(virtualDisplayRectangle);
 			// クリックした座標から、ゲーム画面の座標を逆算する
-			var gameWindowRectangle = getGameWindowRectangle(vdb, clickPointX, clickPointY);
+			var gameWindowRectangle = getGameWindowRectangle(vdb, backgroundColor, clickPointX, clickPointY);
 			// ゲーム画面の座標をスクリーン座標に変換する
 			screenshotRectangle.X = gameWindowRectangle.X + virtualDisplayRectangle.X;
 			screenshotRectangle.Y = gameWindowRectangle.Y + virtualDisplayRectangle.Y;
@@ -112,10 +113,9 @@ namespace WsGH {
 			return true;
 		}
 		// ゲーム画面の座標を逆算する
-		static Rectangle getGameWindowRectangle(Bitmap bitmap, int clickPointX, int clickPointY) {
+		static Rectangle getGameWindowRectangle(Bitmap bitmap, Color backgroundColor, int clickPointX, int clickPointY) {
 			var gwr = new Rectangle(clickPointX, clickPointY, 0, 0);
 			// 上下左右の境界を取得する
-			var backgroundColor = Properties.Settings.Default.BackgroundColor;
 			var borderColor = Color.FromArgb(backgroundColor.R, backgroundColor.G, backgroundColor.B);
 			const int borderDiff = 5;
 			// 左
@@ -221,7 +221,7 @@ namespace WsGH {
 				ScreenshotProvider.clickPointX = Control.MousePosition.X - vdr.Left;
 				ScreenshotProvider.clickPointY = Control.MousePosition.Y - vdr.Top;
 				// クリックした座標から、ゲーム画面の座標を逆算する
-				var gameWindowRectangle = getGameWindowRectangle(vdb, ScreenshotProvider.clickPointX, ScreenshotProvider.clickPointY);
+				var gameWindowRectangle = getGameWindowRectangle(vdb, ScreenshotProvider.backgroundColor, ScreenshotProvider.clickPointX, ScreenshotProvider.clickPointY);
 				// ゲーム画面の座標をスクリーン座標に変換する
 				ScreenshotProvider.screenshotRectangle.X = gameWindowRectangle.X + vdr.X;
 				ScreenshotProvider.screenshotRectangle.Y = gameWindowRectangle.Y + vdr.Y;

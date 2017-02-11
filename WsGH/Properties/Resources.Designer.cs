@@ -160,6 +160,15 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
+        ///   Other App に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderBackgroundOther {
+            get {
+                return ResourceManager.GetString("MenuHeaderBackgroundOther", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   English(_E) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string MenuHeaderEnglishLanguage {

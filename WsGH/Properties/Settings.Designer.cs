@@ -25,7 +25,7 @@ namespace WsGH.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.0.0.0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.0.1.0")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
@@ -279,5 +279,16 @@ namespace WsGH.Properties {
 				this["TimerWindowPlacement"] = value;
 			}
 		}
-	}
+		[global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BackgroundColorType {
+            get {
+                return ((int)(this["BackgroundColorType"]));
+            }
+            set {
+                this["BackgroundColorType"] = value;
+            }
+        }
+    }
 }
