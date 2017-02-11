@@ -213,5 +213,68 @@ namespace WsGH.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Bld に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TextBlockTextBld {
+            get {
+                return ResourceManager.GetString("TextBlockTextBld", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Dev に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TextBlockTextDev {
+            get {
+                return ResourceManager.GetString("TextBlockTextDev", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Dock に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TextBlockTextDock {
+            get {
+                return ResourceManager.GetString("TextBlockTextDock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Exp に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TextBlockTextExp {
+            get {
+                return ResourceManager.GetString("TextBlockTextExp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   G に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TextGetPositionButton {
+            get {
+                return ResourceManager.GetString("TextGetPositionButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ScreenShot に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TextScreenShotButton {
+            get {
+                return ResourceManager.GetString("TextScreenShotButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   TimerWindow に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TitleTimerWindow {
+            get {
+                return ResourceManager.GetString("TitleTimerWindow", resourceCulture);
+            }
+        }
     }
 }

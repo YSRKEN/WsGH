@@ -10,6 +10,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using WsGH.Properties;
 
 namespace WsGH {
 	public class ResourceService : INotifyPropertyChanged {
@@ -22,7 +23,7 @@ namespace WsGH {
 
 		#endregion
 
-		private readonly WsGH.Properties.Resources _resources = new Properties.Resources();
+		private readonly WsGH.Properties.Resources _resources = new Resources();
 
 		/// <summary>
 		/// 多言語化されたリソースを取得します。
@@ -48,7 +49,7 @@ namespace WsGH {
 		/// </summary>
 		/// <param name="name">カルチャの名前。</param>
 		public void ChangeCulture(string name) {
-			Properties.Resources.Culture = CultureInfo.GetCultureInfo(name);
+			Resources.Culture = CultureInfo.GetCultureInfo(name);
 			this.RaisePropertyChanged("Resources");
 		}
 	}
