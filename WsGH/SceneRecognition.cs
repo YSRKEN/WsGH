@@ -53,7 +53,7 @@ namespace WsGH {
 		static ulong[] ExtFleetIconHash = {
 			0x23373e38383e3e1c,
 			0x313d8e0e3c7cfe1c,
-			0x711f1c3c1e0e1c78,
+			0x803d8c1c1c0e8e7c,
 			0x991d1c9c9e9e1e1c,
 		};
 		// 遠征時間表示のRect
