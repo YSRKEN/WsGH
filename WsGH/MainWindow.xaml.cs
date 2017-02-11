@@ -179,7 +179,7 @@ namespace WsGH {
 		void ChangeLanguage(string culture) {
 			ResourceService.Current.ChangeCulture(culture);
 			var bindData = DataContext as MainWindowDC;
-			bindData.NotifyPropertyChanged("MenuHeaderBackground");
+			bindData.MenuHeaderBackground = "";
 		}
 		// タイマー動作
 		private void DispatcherTimer_Tick(object sender, EventArgs e) {
@@ -197,7 +197,7 @@ namespace WsGH {
 				var bindData = tw.DataContext as TimerValue;
 				switch(scene) {
 				case SceneRecognition.SceneType.Expedition:
-					// 遠征中なら、遠征時間を読み取る
+					#region 遠征中なら、遠征時間を読み取る
 					var expEndTime = SceneRecognition.getExpeditionTimer(captureFrame);
 					foreach(var pair in expEndTime) {
 						switch(pair.Key) {
@@ -218,8 +218,9 @@ namespace WsGH {
 						}
 					}
 					break;
+					#endregion
 				case SceneRecognition.SceneType.Build:
-					// 建造中
+					#region 建造中なら、建造時間を読み取る
 					var buildEndTime = SceneRecognition.getBuildTimer(captureFrame);
 					foreach(var pair in buildEndTime) {
 						switch(pair.Key) {
@@ -240,8 +241,9 @@ namespace WsGH {
 						}
 					}
 					break;
+				#endregion
 				case SceneRecognition.SceneType.Develop:
-					// 開発中
+					#region 開発中なら、開発時間を読み取る
 					var devEndTime = SceneRecognition.getDevTimer(captureFrame);
 					foreach(var pair in devEndTime) {
 						switch(pair.Key) {
@@ -262,8 +264,9 @@ namespace WsGH {
 						}
 					}
 					break;
+				#endregion
 				case SceneRecognition.SceneType.Dock:
-					// 入渠中なら、入渠時間を読み取る
+					#region 入渠中なら、入渠時間を読み取る
 					var dockEndTime = SceneRecognition.getDockTimer(captureFrame);
 					foreach(var pair in dockEndTime) {
 						switch(pair.Key) {
@@ -284,6 +287,7 @@ namespace WsGH {
 						}
 					}
 					break;
+				#endregion
 				default:
 					break;
 				}
