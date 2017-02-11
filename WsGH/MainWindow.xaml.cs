@@ -42,6 +42,7 @@ namespace WsGH {
 			};
 			// アプリの設定を初期化
 			TwitterOptionMenu.IsChecked = Properties.Settings.Default.ScreenshotForTwitterFlg;
+			SetBackgroundCheck(Properties.Settings.Default.BackgroundColorType);
 			// タイマーを作成する
 			DispatcherTimer m_Timer = new DispatcherTimer(DispatcherPriority.Normal, this.Dispatcher);
 			m_Timer.Interval = TimeSpan.FromMilliseconds(200.0);
@@ -120,16 +121,29 @@ namespace WsGH {
 			Properties.Settings.Default.ScreenshotForTwitterFlg = TwitterOptionMenu.IsChecked;
 			Properties.Settings.Default.Save();
 		}
-		private void BackgroundOptionMenu_Click(object sender, RoutedEventArgs e) {
+		private void BackgroundOptionMenuBS_Click(object sender, RoutedEventArgs e) {
+			SetBackgroundCheck(0);
+			// 画面にも反映させる
+			addLog($"{Properties.Resources.LoggingTextrBackground} : #000000");
+		}
+
+		private void BackgroundOptionMenuNox_Click(object sender, RoutedEventArgs e) {
+			SetBackgroundCheck(1);
+			// 画面にも反映させる
+			addLog($"{Properties.Resources.LoggingTextrBackground} : #1C1B20");
+		}
+		private void BackgroundOptionMenuOther_Click(object sender, RoutedEventArgs e) {
+			SetBackgroundCheck(2);
 			// ゲーム背景色を変更するため、色変更ダイアログを表示する
 			var cd = new ColorDialog();
 			if(cd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-				// 色変更を行い、画面にも反映させる
+				// 色変更を行う
 				Properties.Settings.Default.BackgroundColor = cd.Color;
+				Properties.Settings.Default.Save();
+				// 画面にも反映させる
+				addLog($"{Properties.Resources.LoggingTextrBackground} : {MainWindowDC.ColorToString(Properties.Settings.Default.BackgroundColor)}");
 				var bindData = DataContext as MainWindowDC;
 				bindData.MenuHeaderBackgroundOther = "";
-				addLog($"{Properties.Resources.LoggingTextrBackground} : {MainWindowDC.ColorToString(Properties.Settings.Default.BackgroundColor)}");
-				Properties.Settings.Default.Save();
 			}
 		}
 		private void SelectLanguageJapanese_Click(object sender, RoutedEventArgs e) {
@@ -149,6 +163,49 @@ namespace WsGH {
 			var dt = DateTime.Now;
 			var bindData = DataContext as MainWindowDC;
 			bindData.LoggingText += dt.ToString("hh:mm:ss ") + str + "\n";
+		}
+		// 背景色のチェックを切り替え
+		void SetBackgroundCheck(int colorType) {
+			Properties.Settings.Default.BackgroundColorType = colorType;
+			Properties.Settings.Default.Save();
+			switch(colorType) {
+			case 0:
+				// BlueStacks
+				BackgroundOptionMenuBS.IsChecked = true;
+				BackgroundOptionMenuNox.IsChecked = false;
+				BackgroundOptionMenuOther.IsChecked = false;
+				break;
+			case 1:
+				// Nox
+				BackgroundOptionMenuBS.IsChecked = false;
+				BackgroundOptionMenuNox.IsChecked = true;
+				BackgroundOptionMenuOther.IsChecked = false;
+				break;
+			case 2:
+				// Other
+				BackgroundOptionMenuBS.IsChecked = false;
+				BackgroundOptionMenuNox.IsChecked = false;
+				BackgroundOptionMenuOther.IsChecked = true;
+				break;
+			default:
+				break;
+			}
+		}
+		// 背景色を取得
+		System.Drawing.Color GetBackgroundColor() {
+			switch(Properties.Settings.Default.BackgroundColorType) {
+			case 0:
+				// BlueStacks
+				return System.Drawing.Color.FromArgb(0, 0, 0);
+			case 1:
+				// Nox
+				return System.Drawing.Color.FromArgb(28, 27, 32);
+			case 2:
+				// Other
+				return Properties.Settings.Default.BackgroundColor;
+			default:
+				return System.Drawing.Color.FromArgb(0, 0, 0);
+			}
 		}
 		// 座標取得後の画面更新処理
 		private void getPosition() {
