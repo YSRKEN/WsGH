@@ -162,6 +162,7 @@ namespace WsGH {
 			var dt = DateTime.Now;
 			var bindData = DataContext as MainWindowDC;
 			bindData.LoggingText += dt.ToString("hh:mm:ss ") + str + "\n";
+			LoggingTextBox.ScrollToEnd();
 		}
 		// 背景色のチェックを切り替え
 		void SetBackgroundCheck(int colorType) {
