@@ -115,11 +115,7 @@ namespace WsGH {
 		}
 		private void TwitterOption_Changed(object sender, RoutedEventArgs e) {
 			// チェックの状態をログに記録する
-			if(TwitterOptionMenu.IsChecked) {
-				addLog("for Twitter : True");
-			} else {
-				addLog("for Twitter : False");
-			}
+			addLog($"{Properties.Resources.LoggingTextForTwitter} : {(TwitterOptionMenu.IsChecked ? "True" : "False")}");
 			// チェックの状態を反映させる
 			Properties.Settings.Default.ScreenshotForTwitterFlg = TwitterOptionMenu.IsChecked;
 			Properties.Settings.Default.Save();
@@ -132,7 +128,7 @@ namespace WsGH {
 				Properties.Settings.Default.BackgroundColor = cd.Color;
 				var bindData = DataContext as MainWindowDC;
 				bindData.MenuHeaderBackground = "";
-				addLog("Background : " + MainWindowDC.ColorToString(Properties.Settings.Default.BackgroundColor));
+				addLog($"{Properties.Resources.LoggingTextrBackground} : {MainWindowDC.ColorToString(Properties.Settings.Default.BackgroundColor)}");
 				Properties.Settings.Default.Save();
 			}
 		}
@@ -156,15 +152,14 @@ namespace WsGH {
 		}
 		// 座標取得後の画面更新処理
 		private void getPosition() {
-			// 成功した場合と失敗した場合で処理を分ける
-			if(sp.isGetPosition()) {
-				GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = true;
-				addLog("get Position : Success");
+			// 成功か失敗かを読み取る
+			var isGetPosition = sp.isGetPosition();
+			// 結果を記録
+			GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = isGetPosition;
+			addLog($"{Properties.Resources.LoggingTextGetPosition} : {(isGetPosition ? "Success" : "Failed")}");
+			// 成功時は座標を表示する
+			if(isGetPosition)
 				addLog("  " + sp.getPositionStr());
-			} else {
-				GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = false;
-				addLog("get Position : Failed");
-			}
 		}
 		// 画像保存処理
 		private void saveScreenshot() {
@@ -174,10 +169,10 @@ namespace WsGH {
 			// 画像を保存する
 			try {
 				sp.getScreenShot(TwitterOptionMenu.IsChecked).Save(@"pic\" + fileName);
-				addLog("save Screenshot : Success");
+				addLog($"{Properties.Resources.LoggingTextGetScreenshot} : Success");
 				addLog("  (" + fileName + ")");
 			} catch(Exception) {
-				addLog("save Screenshot : Failed");
+				addLog($"{Properties.Resources.LoggingTextGetScreenshot} : Failed");
 			}
 		}
 		// 言語切替
@@ -196,7 +191,7 @@ namespace WsGH {
 				// シーンを判定する
 				var scene = SceneRecognition.JudgeScene(captureFrame);
 				// 現在認識しているシーンを表示する
-				SceneTextBlock.Text = $"Scene : {SceneRecognition.SceneString[scene]}";
+				SceneTextBlock.Text = $"{Properties.Resources.LoggingTextScene} : {SceneRecognition.SceneString[scene]}";
 				// シーンごとに振り分ける
 				var bindData = tw.DataContext as TimerValue;
 				switch(scene) {
@@ -301,16 +296,14 @@ namespace WsGH {
 				if(captureFrame != null) {
 					// ズレチェック
 					if(sp.IsPositionShifting()) {
-						addLog("Found PositionShifting!");
-						addLog("try fix PositionShifting...");
-						if(sp.TryPositionShifting()) {
-							GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = true;
-							addLog("fix PositionShifting : Success");
+						addLog(Properties.Resources.LoggingTextFoundPS);
+						addLog(Properties.Resources.LoggingTextTryFixPS);
+						// ズレ修復の結果を代入
+						var tryFixPositionShifting = sp.TryPositionShifting();
+						GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = tryFixPositionShifting;
+						addLog($"{Properties.Resources.LoggingTextFixPS} : {(tryFixPositionShifting ? "Success" : "Failed")}");
+						if(tryFixPositionShifting)
 							addLog("  " + sp.getPositionStr());
-						} else {
-							GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = false;
-							addLog("fix PositionShifting : Failed");
-						}
 					}
 				}
 				// タイマーの表示を更新する

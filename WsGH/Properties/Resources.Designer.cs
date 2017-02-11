@@ -61,6 +61,78 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
+        ///   fix PositionShifting に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LoggingTextFixPS {
+            get {
+                return ResourceManager.GetString("LoggingTextFixPS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   for Twitter に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LoggingTextForTwitter {
+            get {
+                return ResourceManager.GetString("LoggingTextForTwitter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Found PositionShifting! に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LoggingTextFoundPS {
+            get {
+                return ResourceManager.GetString("LoggingTextFoundPS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   get Position に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LoggingTextGetPosition {
+            get {
+                return ResourceManager.GetString("LoggingTextGetPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   save Screenshot に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LoggingTextGetScreenshot {
+            get {
+                return ResourceManager.GetString("LoggingTextGetScreenshot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Background に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LoggingTextrBackground {
+            get {
+                return ResourceManager.GetString("LoggingTextrBackground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Scene に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LoggingTextScene {
+            get {
+                return ResourceManager.GetString("LoggingTextScene", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   try fix PositionShifting... に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LoggingTextTryFixPS {
+            get {
+                return ResourceManager.GetString("LoggingTextTryFixPS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   About...(_A) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string MenuHeaderAbout {
