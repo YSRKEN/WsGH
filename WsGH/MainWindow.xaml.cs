@@ -44,7 +44,7 @@ namespace WsGH {
 			TwitterOptionMenu.IsChecked = Properties.Settings.Default.ScreenshotForTwitterFlg;
 			SetBackgroundCheck(Properties.Settings.Default.BackgroundColorType);
 			// タイマーを作成する
-			DispatcherTimer m_Timer = new DispatcherTimer(DispatcherPriority.Normal, this.Dispatcher);
+			DispatcherTimer m_Timer = new DispatcherTimer(DispatcherPriority.Normal, Dispatcher);
 			m_Timer.Interval = TimeSpan.FromMilliseconds(200.0);
 			m_Timer.Tick += new EventHandler(DispatcherTimer_Tick);
 			// タイマーの実行開始
@@ -75,7 +75,7 @@ namespace WsGH {
 			Close();
 		}
 		private void GetPositionMenu_Click(object sender, RoutedEventArgs e) {
-			sp = new ScreenshotProvider(new AfterAction(getPosition));
+			sp = new ScreenshotProvider(new AfterAction(getPosition), GetBackgroundColor());
 		}
 		private void GetScreenshotMenu_Click(object sender, RoutedEventArgs e) {
 			saveScreenshot();
@@ -126,7 +126,6 @@ namespace WsGH {
 			// 画面にも反映させる
 			addLog($"{Properties.Resources.LoggingTextrBackground} : #000000");
 		}
-
 		private void BackgroundOptionMenuNox_Click(object sender, RoutedEventArgs e) {
 			SetBackgroundCheck(1);
 			// 画面にも反映させる
