@@ -1,4 +1,4 @@
-# WsGH
+# WarshipGirls Helper
 The WarshipGirls Helper by C#
 
 # 概要

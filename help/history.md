@@ -1,4 +1,4 @@
-# WGH 更新履歴
+# WarshipGirls Helper 更新履歴
 
 ・Ver.1.0.0(2017/02/11)  
 - 最初のリリース
