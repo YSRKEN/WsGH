@@ -24,7 +24,6 @@ namespace WsGH {
 	/// </summary>
 	public partial class MainWindow : Window {
 		ScreenshotProvider sp = null;	//スクショ用の情報を記憶する
-		Logger logger = null;			//メイン画面のログを記録する
 		TimerWindow tw = null;			//TimerWindowのインスタンス
 		int timerWindowSecond;			//毎秒行う処理のために秒数を記憶
 		// コンストラクタ
@@ -36,8 +35,10 @@ namespace WsGH {
 			if(!System.IO.Directory.Exists(@"pic\")) {
 				System.IO.Directory.CreateDirectory(@"pic\");
 			}
-			// ログ表示を初期化
-			DataContext = logger = new Logger() { LoggingText = "" };
+			// 画面表示を初期化
+			DataContext = new MainWindowDC() {
+				LoggingText = ""
+			};
 			// アプリの設定を初期化
 			TwitterOptionMenu.IsChecked = Properties.Settings.Default.ScreenshotForTwitterFlg;
 			BackgroundOptionMenu.Header = $"Background : {ColorToString(Properties.Settings.Default.BackgroundColor)} ...";
@@ -147,7 +148,8 @@ namespace WsGH {
 		// ログに内容を追加
 		private void addLog(string str) {
 			var dt = DateTime.Now;
-			logger.LoggingText += dt.ToString("hh:mm:ss ") + str + "\n";
+			var bindData = DataContext as MainWindowDC;
+			bindData.LoggingText += dt.ToString("hh:mm:ss ") + str + "\n";
 		}
 		// 座標取得後の画面更新処理
 		private void getPosition() {
@@ -314,16 +316,19 @@ namespace WsGH {
 			return "#" + clr.R.ToString("X2") + clr.G.ToString("X2") + clr.B.ToString("X2");
 		}
 	}
-	// ログ管理用のクラス
-	class Logger : INotifyPropertyChanged {
-		public event PropertyChangedEventHandler PropertyChanged;
+	class MainWindowDC : INotifyPropertyChanged {
+		// ログテキスト
 		string loggingText;
 		public string LoggingText {
 			get { return loggingText; }
-			set { loggingText = value; NotifiyPropertyChanged("LoggingText"); }
+			set {
+				loggingText = value;
+				NotifyPropertyChanged("LoggingText");
+			}
 		}
-		private void NotifiyPropertyChanged(string propertyName) {
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		public event PropertyChangedEventHandler PropertyChanged = (s, e) => { };
+		private void NotifyPropertyChanged(string parameter) {
+			PropertyChanged(this, new PropertyChangedEventArgs(parameter));
 		}
 	}
 }
