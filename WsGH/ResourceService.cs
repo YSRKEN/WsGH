@@ -23,13 +23,13 @@ namespace WsGH {
 
 		#endregion
 
-		private readonly WsGH.Properties.Resources _resources = new Resources();
+		private readonly Resources _resources = new Resources();
 
 		/// <summary>
 		/// 多言語化されたリソースを取得します。
 		/// </summary>
-		public WsGH.Properties.Resources Resources {
-			get { return this._resources; }
+		public Resources Resources {
+			get { return _resources; }
 		}
 
 		#region INotifyPropertyChanged members
@@ -37,9 +37,7 @@ namespace WsGH {
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null) {
-			var handler = this.PropertyChanged;
-			if(handler != null)
-				handler(this, new PropertyChangedEventArgs(propertyName));
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
 		#endregion
@@ -50,7 +48,7 @@ namespace WsGH {
 		/// <param name="name">カルチャの名前。</param>
 		public void ChangeCulture(string name) {
 			Resources.Culture = CultureInfo.GetCultureInfo(name);
-			this.RaisePropertyChanged("Resources");
+			RaisePropertyChanged("Resources");
 		}
 	}
 }
