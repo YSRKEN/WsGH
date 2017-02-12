@@ -44,17 +44,17 @@ namespace WsGH {
 		};
 		// 艦隊番号アイコンのRect
 		static RectangleF[] ExpFleetIconPosition = {
-			new RectangleF(86.60f, 6.695f, 0.9401f, 2.301f),
-			new RectangleF(86.60f, 27.41f, 0.9401f, 2.301f),
-			new RectangleF(86.60f, 48.33f, 0.9401f, 2.301f),
-			new RectangleF(86.60f, 69.25f, 0.9401f, 2.301f),
+			new RectangleF(86.38f, 6.667f, 0.8750f, 2.444f),
+			new RectangleF(86.38f, 27.56f, 0.8750f, 2.444f),
+			new RectangleF(86.38f, 48.44f, 0.8750f, 2.444f),
+			new RectangleF(86.38f, 69.33f, 0.8750f, 2.444f),
 		};
 		// 艦隊番号アイコンのハッシュ値
 		static ulong[] ExtFleetIconHash = {
-			0x23373e38383e3e1c,
-			0x313d8e0e3c7cfe1c,
-			0x803d8c1c1c0e8e7c,
-			0x991d1c9c9e9e1e1c,
+			0x840e0e8e0e0f0f03,
+			0xe80763c3071f3f03,
+			0xc80763070703270f,
+			0x6787173777270707,
 		};
 		// 遠征時間表示のRect
 		static float[] ExpTimerDigitPX = {60.89f, 62.63f, 65.45f, 67.10f, 69.80f, 71.56f};
