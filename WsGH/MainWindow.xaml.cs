@@ -43,6 +43,7 @@ namespace WsGH {
 			// アプリの設定を初期化
 			TwitterOptionMenu.IsChecked = Properties.Settings.Default.ScreenshotForTwitterFlg;
 			SetBackgroundCheck(Properties.Settings.Default.BackgroundColorType);
+			ChangeLanguageCheckMenu(GetCulture());
 			// タイマーを作成する
 			DispatcherTimer m_Timer = new DispatcherTimer(DispatcherPriority.Normal, Dispatcher);
 			m_Timer.Interval = TimeSpan.FromMilliseconds(200.0);
@@ -237,6 +238,34 @@ namespace WsGH {
 			ResourceService.Current.ChangeCulture(culture);
 			var bindData = DataContext as MainWindowDC;
 			bindData.MenuHeaderBackgroundOther = "";
+			ChangeLanguageCheckMenu(culture);
+		}
+		/// <summary>
+		/// 現在の使用言語を取得
+		/// </summary>
+		/// <returns>""なら英語、"ja-JP"なら日本語</returns>
+		string GetCulture() {
+			return (
+					// カルチャーがセットされてない際は
+					Properties.Resources.Culture == null
+					// システムのデフォルト言語を返す
+					? System.Globalization.CultureInfo.CurrentCulture
+					// さもなければセットされたカルチャーを返す
+					: Properties.Resources.Culture
+				).ToString();	//文字列化
+		}
+		// 言語切替時のチェック
+		void ChangeLanguageCheckMenu(string culture) {
+			switch(culture) {
+			case "ja-JP":
+				SelectJapaneseMenu.IsChecked = true;
+				SelectEnglishMenu.IsChecked = false;
+				break;
+			default:
+				SelectJapaneseMenu.IsChecked = false;
+				SelectEnglishMenu.IsChecked = true;
+				break;
+			}
 		}
 		// タイマー動作
 		private void DispatcherTimer_Tick(object sender, EventArgs e) {
@@ -248,7 +277,7 @@ namespace WsGH {
 				// シーンを判定する
 				var scene = SceneRecognition.JudgeScene(captureFrame);
 				// 現在認識しているシーンを表示する
-				var culture = (Properties.Resources.Culture == null ? System.Globalization.CultureInfo.CurrentCulture : Properties.Resources.Culture).ToString();
+				var culture = GetCulture();
 				SceneTextBlock.Text = $"{Properties.Resources.LoggingTextScene} : {(culture == "ja-JP" ? SceneRecognition.SceneStringJapanese[scene] : SceneRecognition.SceneString[scene])}";
 				// シーンごとに振り分ける
 				var bindData = tw.DataContext as TimerValue;
