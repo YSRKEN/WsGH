@@ -1,16 +1,17 @@
-# WsGH
+# WarshipGirls Helper
 The WarshipGirls Helper by C#
 
 # 概要
 - 当ツールは、幻萌网络(MOE FANTASY INC.)によって開発・運営されるオンラインゲーム『[戦艦少女R](http://jianniang.com)』のプレイを支援するものです
 - パソコン上に、『戦艦少女R』の画面が表示されている必要があります。別途Androidエミュレータ等をご用意ください
 - 動作環境：Windows OS／開発環境：Microsoft　Visual Studio Community 2015 Update 3
-- 動作確認環境：Windows 10(64bit)＋BlueStacks 2
+- 動作確認OS：Windows 10(64bit)
+- 動作確認エミュレータ：BlueStacks 2／Nox App Player
 
 ## 警告
 - 前述の動作確認環境以外での動作は確認していません
-- デフォルトの設定では、戦艦少女の画面座標を取得する際、「ゲーム表示の周りに黒枠(#000000)がある」ことを前提にしています
-- ただ、ゲーム表示の背景色は黒以外でも、設定変更によって対応可能です
+- デフォルトの背景色設定では、BlueStacksで動作させることを前提としています
+ - ただし、背景色設定は任意に切り替え可能です
 
 ## 使い方
 　[help.md](./help/help.md)を参照してください。

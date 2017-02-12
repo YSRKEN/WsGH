@@ -35,26 +35,26 @@ namespace WsGH {
 		static int ExpFleetCount = 4;
 		// 遠征リストの縦幅
 		static int ExpListHeight = 4;
-		// 「艦隊派遣」ボタンのRect
+		// 艦隊帰投ボタンのRect
 		static RectangleF[] ExpButtonPosition = {
-			new RectangleF(81.43f, 8.996f, 11.16f, 5.230f),
-			new RectangleF(81.43f, 29.92f, 11.16f, 5.230f),
-			new RectangleF(81.43f, 50.63f, 11.16f, 5.230f),
-			new RectangleF(81.43f, 71.55f, 11.16f, 5.230f),
+			new RectangleF(91.38f, 10.22f, 4.375f, 7.778f),
+			new RectangleF(91.38f, 31.11f, 4.375f, 7.778f),
+			new RectangleF(91.38f, 52.00f, 4.375f, 7.778f),
+			new RectangleF(91.38f, 72.89f, 4.375f, 7.778f),
 		};
 		// 艦隊番号アイコンのRect
 		static RectangleF[] ExpFleetIconPosition = {
-			new RectangleF(86.60f, 6.695f, 0.9401f, 2.301f),
-			new RectangleF(86.60f, 27.41f, 0.9401f, 2.301f),
-			new RectangleF(86.60f, 48.33f, 0.9401f, 2.301f),
-			new RectangleF(86.60f, 69.25f, 0.9401f, 2.301f),
+			new RectangleF(86.38f, 6.667f, 0.8750f, 2.444f),
+			new RectangleF(86.38f, 27.56f, 0.8750f, 2.444f),
+			new RectangleF(86.38f, 48.44f, 0.8750f, 2.444f),
+			new RectangleF(86.38f, 69.33f, 0.8750f, 2.444f),
 		};
 		// 艦隊番号アイコンのハッシュ値
 		static ulong[] ExtFleetIconHash = {
-			0x23373e38383e3e1c,
-			0x313d8e0e3c7cfe1c,
-			0x711f1c3c1e0e1c78,
-			0x991d1c9c9e9e1e1c,
+			0x840e0e8e0e0f0f03,
+			0xe80763c3071f3f03,
+			0xc80763070703270f,
+			0x6787173777270707,
 		};
 		// 遠征時間表示のRect
 		static float[] ExpTimerDigitPX = {60.89f, 62.63f, 65.45f, 67.10f, 69.80f, 71.56f};
@@ -94,13 +94,6 @@ namespace WsGH {
 		#region 入渠用定数
 		// 入渠リストの縦幅
 		static int DockListHeight = 4;
-		// 「選択」ボタンのRect
-		static RectangleF[] DockButtonPosition = {
-			new RectangleF(26.44f, 24.69f, 9.166f, 5.230f),
-			new RectangleF(26.44f, 45.61f, 9.166f, 5.230f),
-			new RectangleF(26.44f, 66.32f, 9.166f, 5.230f),
-			new RectangleF(26.44f, 87.24f, 9.166f, 5.230f),
-		};
 		// 入渠時間表示のRect
 		static float[] DockTimerDigitPX = {66.86f, 68.86f, 72.03f, 74.15f, 77.32f, 79.32f};
 		static float[] DockTimerDigitPY = {24.69f, 45.61f, 66.32f, 87.24f};
@@ -445,9 +438,9 @@ namespace WsGH {
 			var output = new Dictionary<int, ulong>();
 			var now_time = GetUnixTime(DateTime.Now);
 			for(int li = 0; li < ExpListHeight; ++li) {
-				// 「艦隊派遣」ボタンが出ていれば、その行に遠征艦隊はいない
+				// 艦隊帰投ボタンが出ていなければ、その行に遠征艦隊はいない
 				var bhash = getDifferenceHash(bitmap, ExpButtonPosition[li]);
-				if(getHummingDistance(bhash, 0xb5424a525a6c516a) < 20)
+				if(getHummingDistance(bhash, 0x1b60c68aca2e5635) >= 20)
 					continue;
 				// 遠征している艦隊の番号を取得する
 				// ハッシュに対するハミング距離を計算した後、LINQで最小値のインデックス(艦隊番号)を取り出す
@@ -581,13 +574,9 @@ namespace WsGH {
 			var output = new Dictionary<int, ulong>();
 			var now_time = GetUnixTime(DateTime.Now);
 			for(int li = 0; li < DockListHeight; ++li) {
-				// 「選択」ボタンが出ていれば、その行に入渠艦隊はいない
-				var bhash = getDifferenceHash(bitmap, DockButtonPosition[li]);
-				if(getHummingDistance(bhash, 0x8d352d6d89354a80) < 20)
-					continue;
 				// 高速修復ボタンがなければ、その行に入渠艦隊はいない
-				bhash = getDifferenceHash(bitmap, DockFastRepairPosition[li]);
-				if(getHummingDistance(bhash, 0x29b86aaa98b2997c) >= 20)
+				var bhash = getDifferenceHash(bitmap, DockFastRepairPosition[li]);
+				if(getHummingDistance(bhash, 0x28a978a9d852e923) >= 20)
 					continue;
 				// 入渠時間を取得する
 				var timerDigit = getDigitOCR(bitmap, DockTimerDigitPX, DockTimerDigitPY[li], DockTimerDigitWX, DockTimerDigitWY, 50, true);

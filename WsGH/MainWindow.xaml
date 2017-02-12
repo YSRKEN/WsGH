@@ -29,10 +29,14 @@
 			</MenuItem>
 			<MenuItem Header="{Binding Source={x:Static app:ResourceService.Current}, Path=Resources.MenuHeaderOption, Mode=OneWay}">
 				<MenuItem x:Name="TwitterOptionMenu" IsCheckable="True" Header="{Binding Source={x:Static app:ResourceService.Current}, Path=Resources.MenuHeaderForTwitter, Mode=OneWay}" Checked="TwitterOption_Changed" Unchecked="TwitterOption_Changed" />
-				<MenuItem x:Name="BackgroundOptionMenu" Header="{Binding MenuHeaderBackground}" Click="BackgroundOptionMenu_Click"/>
+				<MenuItem Header="{Binding Source={x:Static app:ResourceService.Current}, Path=Resources.MenuHeaderBackground, Mode=OneWay}">
+					<MenuItem x:Name="BackgroundOptionMenuBS" Header="BlueStacks : #000000" IsCheckable="True" Click="BackgroundOptionMenuBS_Click"/>
+					<MenuItem x:Name="BackgroundOptionMenuNox" Header="Nox App Player : #1C1B20" IsCheckable="True" Click="BackgroundOptionMenuNox_Click"/>
+					<MenuItem x:Name="BackgroundOptionMenuOther" Header="{Binding MenuHeaderBackgroundOther}" IsCheckable="True" Click="BackgroundOptionMenuOther_Click"/>
+				</MenuItem>
 				<MenuItem Header="{Binding Source={x:Static app:ResourceService.Current}, Path=Resources.MenuHeaderSelectLanguage, Mode=OneWay}">
-					<MenuItem Header="{Binding Source={x:Static app:ResourceService.Current}, Path=Resources.MenuHeaderJapaneseLanguage, Mode=OneWay}" Click="SelectLanguageJapanese_Click"/>
-					<MenuItem Header="{Binding Source={x:Static app:ResourceService.Current}, Path=Resources.MenuHeaderEnglishLanguage, Mode=OneWay}" Click="SelectLanguageEnglish_Click"/>
+					<MenuItem x:Name="SelectJapaneseMenu" Header="{Binding Source={x:Static app:ResourceService.Current}, Path=Resources.MenuHeaderJapaneseLanguage, Mode=OneWay}" Click="SelectLanguageJapanese_Click" IsCheckable="True"/>
+					<MenuItem x:Name="SelectEnglishMenu" Header="{Binding Source={x:Static app:ResourceService.Current}, Path=Resources.MenuHeaderEnglishLanguage, Mode=OneWay}" Click="SelectLanguageEnglish_Click" IsCheckable="True"/>
 				</MenuItem>
 			</MenuItem>
 			<MenuItem Header="{Binding Source={x:Static app:ResourceService.Current}, Path=Resources.MenuHeaderHelp, Mode=OneWay}">

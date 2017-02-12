@@ -214,4 +214,7 @@
   <data name="LoggingTextTryFixPS" xml:space="preserve">
     <value>位置ズレ修復を試みます...</value>
   </data>
+  <data name="MenuHeaderBackgroundOther" xml:space="preserve">
+    <value>その他</value>
+  </data>
 </root>

@@ -38,12 +38,14 @@ namespace WsGH {
 			// 画面表示を初期化
 			DataContext = new MainWindowDC() {
 				LoggingText = "",
-				MenuHeaderBackground = "",
+				MenuHeaderBackgroundOther = "",
 			};
 			// アプリの設定を初期化
 			TwitterOptionMenu.IsChecked = Properties.Settings.Default.ScreenshotForTwitterFlg;
+			SetBackgroundCheck(Properties.Settings.Default.BackgroundColorType);
+			ChangeLanguageCheckMenu(GetCulture());
 			// タイマーを作成する
-			DispatcherTimer m_Timer = new DispatcherTimer(DispatcherPriority.Normal, this.Dispatcher);
+			DispatcherTimer m_Timer = new DispatcherTimer(DispatcherPriority.Normal, Dispatcher);
 			m_Timer.Interval = TimeSpan.FromMilliseconds(200.0);
 			m_Timer.Tick += new EventHandler(DispatcherTimer_Tick);
 			// タイマーの実行開始
@@ -74,7 +76,7 @@ namespace WsGH {
 			Close();
 		}
 		private void GetPositionMenu_Click(object sender, RoutedEventArgs e) {
-			sp = new ScreenshotProvider(new AfterAction(getPosition));
+			sp = new ScreenshotProvider(new AfterAction(getPosition), GetBackgroundColor());
 		}
 		private void GetScreenshotMenu_Click(object sender, RoutedEventArgs e) {
 			saveScreenshot();
@@ -120,16 +122,28 @@ namespace WsGH {
 			Properties.Settings.Default.ScreenshotForTwitterFlg = TwitterOptionMenu.IsChecked;
 			Properties.Settings.Default.Save();
 		}
-		private void BackgroundOptionMenu_Click(object sender, RoutedEventArgs e) {
+		private void BackgroundOptionMenuBS_Click(object sender, RoutedEventArgs e) {
+			SetBackgroundCheck(0);
+			// 画面にも反映させる
+			addLog($"{Properties.Resources.LoggingTextrBackground} : #000000");
+		}
+		private void BackgroundOptionMenuNox_Click(object sender, RoutedEventArgs e) {
+			SetBackgroundCheck(1);
+			// 画面にも反映させる
+			addLog($"{Properties.Resources.LoggingTextrBackground} : #1C1B20");
+		}
+		private void BackgroundOptionMenuOther_Click(object sender, RoutedEventArgs e) {
+			SetBackgroundCheck(2);
 			// ゲーム背景色を変更するため、色変更ダイアログを表示する
 			var cd = new ColorDialog();
 			if(cd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-				// 色変更を行い、画面にも反映させる
+				// 色変更を行う
 				Properties.Settings.Default.BackgroundColor = cd.Color;
-				var bindData = DataContext as MainWindowDC;
-				bindData.MenuHeaderBackground = "";
-				addLog($"{Properties.Resources.LoggingTextrBackground} : {MainWindowDC.ColorToString(Properties.Settings.Default.BackgroundColor)}");
 				Properties.Settings.Default.Save();
+				// 画面にも反映させる
+				addLog($"{Properties.Resources.LoggingTextrBackground} : {MainWindowDC.ColorToString(Properties.Settings.Default.BackgroundColor)}");
+				var bindData = DataContext as MainWindowDC;
+				bindData.MenuHeaderBackgroundOther = "";
 			}
 		}
 		private void SelectLanguageJapanese_Click(object sender, RoutedEventArgs e) {
@@ -149,6 +163,50 @@ namespace WsGH {
 			var dt = DateTime.Now;
 			var bindData = DataContext as MainWindowDC;
 			bindData.LoggingText += dt.ToString("hh:mm:ss ") + str + "\n";
+			LoggingTextBox.ScrollToEnd();
+		}
+		// 背景色のチェックを切り替え
+		void SetBackgroundCheck(int colorType) {
+			Properties.Settings.Default.BackgroundColorType = colorType;
+			Properties.Settings.Default.Save();
+			switch(colorType) {
+			case 0:
+				// BlueStacks
+				BackgroundOptionMenuBS.IsChecked = true;
+				BackgroundOptionMenuNox.IsChecked = false;
+				BackgroundOptionMenuOther.IsChecked = false;
+				break;
+			case 1:
+				// Nox
+				BackgroundOptionMenuBS.IsChecked = false;
+				BackgroundOptionMenuNox.IsChecked = true;
+				BackgroundOptionMenuOther.IsChecked = false;
+				break;
+			case 2:
+				// Other
+				BackgroundOptionMenuBS.IsChecked = false;
+				BackgroundOptionMenuNox.IsChecked = false;
+				BackgroundOptionMenuOther.IsChecked = true;
+				break;
+			default:
+				break;
+			}
+		}
+		// 背景色を取得
+		System.Drawing.Color GetBackgroundColor() {
+			switch(Properties.Settings.Default.BackgroundColorType) {
+			case 0:
+				// BlueStacks
+				return System.Drawing.Color.FromArgb(0, 0, 0);
+			case 1:
+				// Nox
+				return System.Drawing.Color.FromArgb(28, 27, 32);
+			case 2:
+				// Other
+				return Properties.Settings.Default.BackgroundColor;
+			default:
+				return System.Drawing.Color.FromArgb(0, 0, 0);
+			}
 		}
 		// 座標取得後の画面更新処理
 		private void getPosition() {
@@ -179,7 +237,35 @@ namespace WsGH {
 		void ChangeLanguage(string culture) {
 			ResourceService.Current.ChangeCulture(culture);
 			var bindData = DataContext as MainWindowDC;
-			bindData.MenuHeaderBackground = "";
+			bindData.MenuHeaderBackgroundOther = "";
+			ChangeLanguageCheckMenu(culture);
+		}
+		/// <summary>
+		/// 現在の使用言語を取得
+		/// </summary>
+		/// <returns>""なら英語、"ja-JP"なら日本語</returns>
+		string GetCulture() {
+			return (
+					// カルチャーがセットされてない際は
+					Properties.Resources.Culture == null
+					// システムのデフォルト言語を返す
+					? System.Globalization.CultureInfo.CurrentCulture
+					// さもなければセットされたカルチャーを返す
+					: Properties.Resources.Culture
+				).ToString();	//文字列化
+		}
+		// 言語切替時のチェック
+		void ChangeLanguageCheckMenu(string culture) {
+			switch(culture) {
+			case "ja-JP":
+				SelectJapaneseMenu.IsChecked = true;
+				SelectEnglishMenu.IsChecked = false;
+				break;
+			default:
+				SelectJapaneseMenu.IsChecked = false;
+				SelectEnglishMenu.IsChecked = true;
+				break;
+			}
 		}
 		// タイマー動作
 		private void DispatcherTimer_Tick(object sender, EventArgs e) {
@@ -191,7 +277,7 @@ namespace WsGH {
 				// シーンを判定する
 				var scene = SceneRecognition.JudgeScene(captureFrame);
 				// 現在認識しているシーンを表示する
-				var culture = (Properties.Resources.Culture == null ? System.Globalization.CultureInfo.CurrentCulture : Properties.Resources.Culture).ToString();
+				var culture = GetCulture();
 				SceneTextBlock.Text = $"{Properties.Resources.LoggingTextScene} : {(culture == "ja-JP" ? SceneRecognition.SceneStringJapanese[scene] : SceneRecognition.SceneString[scene])}";
 				// シーンごとに振り分ける
 				var bindData = tw.DataContext as TimerValue;
@@ -330,12 +416,12 @@ namespace WsGH {
 			}
 		}
 		// 背景オプション
-		public string MenuHeaderBackground {
+		public string MenuHeaderBackgroundOther {
 			get {
-				return $"{Properties.Resources.MenuHeaderBackground} : {ColorToString(Properties.Settings.Default.BackgroundColor)} ...";
+				return $"{Properties.Resources.MenuHeaderBackgroundOther} : {ColorToString(Properties.Settings.Default.BackgroundColor)} ...";
 			}
 			set {
-				NotifyPropertyChanged("MenuHeaderBackground");
+				NotifyPropertyChanged("MenuHeaderBackgroundOther");
 			}
 		}
 		// 色情報を文字列に変換

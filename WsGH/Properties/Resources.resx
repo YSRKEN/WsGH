@@ -214,4 +214,7 @@
   <data name="LoggingTextTryFixPS" xml:space="preserve">
     <value>try fix PositionShifting...</value>
   </data>
+  <data name="MenuHeaderBackgroundOther" xml:space="preserve">
+    <value>Other App</value>
+  </data>
 </root>
