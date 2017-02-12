@@ -35,12 +35,12 @@ namespace WsGH {
 		static int ExpFleetCount = 4;
 		// 遠征リストの縦幅
 		static int ExpListHeight = 4;
-		// 「艦隊派遣」ボタンのRect
+		// 艦隊帰投ボタンのRect
 		static RectangleF[] ExpButtonPosition = {
-			new RectangleF(81.43f, 8.996f, 11.16f, 5.230f),
-			new RectangleF(81.43f, 29.92f, 11.16f, 5.230f),
-			new RectangleF(81.43f, 50.63f, 11.16f, 5.230f),
-			new RectangleF(81.43f, 71.55f, 11.16f, 5.230f),
+			new RectangleF(91.38f, 10.22f, 4.375f, 7.778f),
+			new RectangleF(91.38f, 31.11f, 4.375f, 7.778f),
+			new RectangleF(91.38f, 52.00f, 4.375f, 7.778f),
+			new RectangleF(91.38f, 72.89f, 4.375f, 7.778f),
 		};
 		// 艦隊番号アイコンのRect
 		static RectangleF[] ExpFleetIconPosition = {
@@ -438,9 +438,9 @@ namespace WsGH {
 			var output = new Dictionary<int, ulong>();
 			var now_time = GetUnixTime(DateTime.Now);
 			for(int li = 0; li < ExpListHeight; ++li) {
-				// 「艦隊派遣」ボタンが出ていれば、その行に遠征艦隊はいない
+				// 艦隊帰投ボタンが出ていなければ、その行に遠征艦隊はいない
 				var bhash = getDifferenceHash(bitmap, ExpButtonPosition[li]);
-				if(getHummingDistance(bhash, 0xb5424a525a6c516a) < 20)
+				if(getHummingDistance(bhash, 0x1b60c68aca2e5635) >= 20)
 					continue;
 				// 遠征している艦隊の番号を取得する
 				// ハッシュに対するハミング距離を計算した後、LINQで最小値のインデックス(艦隊番号)を取り出す
