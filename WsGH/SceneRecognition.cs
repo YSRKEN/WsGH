@@ -12,7 +12,7 @@ namespace WsGH {
 	static class SceneRecognition {
 		// 各種定数定義
 		#region シーン認識用定数
-		public enum SceneType { Unknown, Expedition, Build, Develop, Dock };
+		public enum SceneType { Unknown, Expedition, Build, Develop, Dock, Home };
 		public static Dictionary<SceneType, string> SceneString
 			 = new Dictionary<SceneType, string> {
 				{ SceneType.Unknown, "Unknown" },
@@ -20,6 +20,7 @@ namespace WsGH {
 				{ SceneType.Build, "Build" },
 				{ SceneType.Develop, "Develop" },
 				{ SceneType.Dock, "Dock" },
+				{ SceneType.Home, "Home" },
 			 };
 		public static Dictionary<SceneType, string> SceneStringJapanese
 			 = new Dictionary<SceneType, string> {
@@ -28,6 +29,7 @@ namespace WsGH {
 				{ SceneType.Build, "建造" },
 				{ SceneType.Develop, "開発" },
 				{ SceneType.Dock, "入渠" },
+				{ SceneType.Home, "母港" },
 			 };
 		#endregion
 		#region 遠征用定数
@@ -52,7 +54,7 @@ namespace WsGH {
 		// 艦隊番号アイコンのハッシュ値
 		static ulong[] ExtFleetIconHash = {
 			0x840e0e8e0e0f0f03,
-			0xe80763c3071f3f03,
+			0x0f2363070f3f0302,
 			0xc80763070703270f,
 			0x6787173777270707,
 		};
@@ -100,10 +102,10 @@ namespace WsGH {
 		static float DockTimerDigitWX = 1.880f, DockTimerDigitWY = 5.021f;
 		// 高速修復ボタンのRect
 		static RectangleF[] DockFastRepairPosition = {
-			new RectangleF(93.54f, 21.13f, 2.350f, 4.184f),
-			new RectangleF(93.54f, 42.05f, 2.350f, 4.184f),
-			new RectangleF(93.54f, 62.76f, 2.350f, 4.184f),
-			new RectangleF(93.54f, 83.68f, 2.350f, 4.184f),
+			new RectangleF(87.19f, 22.36f, 3.125f, 5.556f),
+			new RectangleF(87.19f, 43.19f, 3.125f, 5.556f),
+			new RectangleF(87.19f, 64.03f, 3.125f, 5.556f),
+			new RectangleF(87.19f, 84.86f, 3.125f, 5.556f),
 		};
 		#endregion
 		#region OCR用定数
@@ -408,6 +410,8 @@ namespace WsGH {
 				return SceneType.Develop;
 			if(IsDockScene(bitmap))
 				return SceneType.Dock;
+			if(IsHomeScene(bitmap))
+				return SceneType.Home;
 			return SceneType.Unknown;
 		}
 		#region 遠征関係
@@ -546,7 +550,6 @@ namespace WsGH {
 				// 建造時間を取得する
 				var timerDigit = getDigitOCR(bitmap, DevTimerDigitPX, DevTimerDigitPY[li], DevTimerDigitWX, DevTimerDigitWY, 100, true);
 				var leastSecond = getLeastSecond(timerDigit);
-				Console.WriteLine($"{li + 1}番目：{leastSecond}");
 				output[li] = now_time + leastSecond;
 			}
 			return output;
@@ -581,10 +584,27 @@ namespace WsGH {
 				// 入渠時間を取得する
 				var timerDigit = getDigitOCR(bitmap, DockTimerDigitPX, DockTimerDigitPY[li], DockTimerDigitWX, DockTimerDigitWY, 50, true);
 				var leastSecond = getLeastSecond(timerDigit);
-				//Console.WriteLine($"{li + 1}番目：{leastSecond}");
 				output[li] = now_time + leastSecond;
 			}
 			return output;
+		}
+		#endregion
+		#region 母港関係
+		// 母港のシーン(ボタンあり)かを判定する
+		static bool IsHomeScene(Bitmap bitmap) {
+			// 左上の表示
+			var hash = getDifferenceHash(bitmap, 6.933, 1.674, 2.350, 4.184);
+			if(getHummingDistance(hash, 0x0712092214489850) >= 20)
+				return false;
+			return true;
+		}
+		// 資材量が表示されているかを判定する
+		public static bool CanReadSupplyValue(Bitmap bitmap) {
+			// 弾薬の表示
+			var hash = getDifferenceHash(bitmap, 47.12, 0.8368, 2.115, 3.766);
+			if(getHummingDistance(hash, 0xd52a264d9cbd6bd3) >= 20)
+				return false;
+			return true;
 		}
 		#endregion
 	}

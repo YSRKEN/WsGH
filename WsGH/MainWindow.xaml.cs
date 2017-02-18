@@ -374,6 +374,8 @@ namespace WsGH {
 					}
 					break;
 				#endregion
+				case SceneRecognition.SceneType.Home:
+					
 				default:
 					break;
 				}
