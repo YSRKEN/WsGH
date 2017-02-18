@@ -54,7 +54,7 @@ namespace WsGH {
 		// 艦隊番号アイコンのハッシュ値
 		static ulong[] ExtFleetIconHash = {
 			0x840e0e8e0e0f0f03,
-			0xe80763c3071f3f03,
+			0x0f2363070f3f0302,
 			0xc80763070703270f,
 			0x6787173777270707,
 		};
