@@ -12,7 +12,7 @@ namespace WsGH {
 	static class SceneRecognition {
 		// 各種定数定義
 		#region シーン認識用定数
-		public enum SceneType { Unknown, Expedition, Build, Develop, Dock };
+		public enum SceneType { Unknown, Expedition, Build, Develop, Dock, Home };
 		public static Dictionary<SceneType, string> SceneString
 			 = new Dictionary<SceneType, string> {
 				{ SceneType.Unknown, "Unknown" },
@@ -20,6 +20,7 @@ namespace WsGH {
 				{ SceneType.Build, "Build" },
 				{ SceneType.Develop, "Develop" },
 				{ SceneType.Dock, "Dock" },
+				{ SceneType.Home, "Home" },
 			 };
 		public static Dictionary<SceneType, string> SceneStringJapanese
 			 = new Dictionary<SceneType, string> {
@@ -28,6 +29,7 @@ namespace WsGH {
 				{ SceneType.Build, "建造" },
 				{ SceneType.Develop, "開発" },
 				{ SceneType.Dock, "入渠" },
+				{ SceneType.Home, "母港" },
 			 };
 		#endregion
 		#region 遠征用定数
@@ -408,6 +410,8 @@ namespace WsGH {
 				return SceneType.Develop;
 			if(IsDockScene(bitmap))
 				return SceneType.Dock;
+			if(IsHomeScene(bitmap))
+				return SceneType.Home;
 			return SceneType.Unknown;
 		}
 		#region 遠征関係
@@ -585,6 +589,24 @@ namespace WsGH {
 				output[li] = now_time + leastSecond;
 			}
 			return output;
+		}
+		#endregion
+		#region 母港関係
+		// 母港のシーン(ボタンあり)かを判定する
+		static bool IsHomeScene(Bitmap bitmap) {
+			// 左上の表示
+			var hash = getDifferenceHash(bitmap, 6.933, 1.674, 2.350, 4.184);
+			if(getHummingDistance(hash, 0x0712092214489850) >= 20)
+				return false;
+			return true;
+		}
+		// 資材量が表示されているかを判定する
+		public static bool CanReadSupplyValue(Bitmap bitmap) {
+			// 弾薬の表示
+			var hash = getDifferenceHash(bitmap, 47.12, 0.8368, 2.115, 3.766);
+			if(getHummingDistance(hash, 0xd52a264d9cbd6bd3) >= 20)
+				return false;
+			return true;
 		}
 		#endregion
 	}
