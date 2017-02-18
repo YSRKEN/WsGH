@@ -102,10 +102,10 @@ namespace WsGH {
 		static float DockTimerDigitWX = 1.880f, DockTimerDigitWY = 5.021f;
 		// 高速修復ボタンのRect
 		static RectangleF[] DockFastRepairPosition = {
-			new RectangleF(93.54f, 21.13f, 2.350f, 4.184f),
-			new RectangleF(93.54f, 42.05f, 2.350f, 4.184f),
-			new RectangleF(93.54f, 62.76f, 2.350f, 4.184f),
-			new RectangleF(93.54f, 83.68f, 2.350f, 4.184f),
+			new RectangleF(87.19f, 22.36f, 3.125f, 5.556f),
+			new RectangleF(87.19f, 43.19f, 3.125f, 5.556f),
+			new RectangleF(87.19f, 64.03f, 3.125f, 5.556f),
+			new RectangleF(87.19f, 84.86f, 3.125f, 5.556f),
 		};
 		#endregion
 		#region OCR用定数
@@ -550,7 +550,6 @@ namespace WsGH {
 				// 建造時間を取得する
 				var timerDigit = getDigitOCR(bitmap, DevTimerDigitPX, DevTimerDigitPY[li], DevTimerDigitWX, DevTimerDigitWY, 100, true);
 				var leastSecond = getLeastSecond(timerDigit);
-				Console.WriteLine($"{li + 1}番目：{leastSecond}");
 				output[li] = now_time + leastSecond;
 			}
 			return output;
@@ -580,12 +579,11 @@ namespace WsGH {
 			for(int li = 0; li < DockListHeight; ++li) {
 				// 高速修復ボタンがなければ、その行に入渠艦隊はいない
 				var bhash = getDifferenceHash(bitmap, DockFastRepairPosition[li]);
-				if(getHummingDistance(bhash, 0x28a978a9d852e923) >= 20)
+				if(getHummingDistance(bhash, 0x62cd568d66b66d9a) >= 20)
 					continue;
 				// 入渠時間を取得する
 				var timerDigit = getDigitOCR(bitmap, DockTimerDigitPX, DockTimerDigitPY[li], DockTimerDigitWX, DockTimerDigitWY, 50, true);
 				var leastSecond = getLeastSecond(timerDigit);
-				//Console.WriteLine($"{li + 1}番目：{leastSecond}");
 				output[li] = now_time + leastSecond;
 			}
 			return output;
