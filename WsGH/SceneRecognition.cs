@@ -579,7 +579,7 @@ namespace WsGH {
 			for(int li = 0; li < DockListHeight; ++li) {
 				// 高速修復ボタンがなければ、その行に入渠艦隊はいない
 				var bhash = getDifferenceHash(bitmap, DockFastRepairPosition[li]);
-				if(getHummingDistance(bhash, 0x28a978a9d852e923) >= 20)
+				if(getHummingDistance(bhash, 0x62cd568d66b66d9a) >= 20)
 					continue;
 				// 入渠時間を取得する
 				var timerDigit = getDigitOCR(bitmap, DockTimerDigitPX, DockTimerDigitPY[li], DockTimerDigitWX, DockTimerDigitWY, 50, true);
