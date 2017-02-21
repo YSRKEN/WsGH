@@ -606,6 +606,21 @@ namespace WsGH {
 				return false;
 			return true;
 		}
+		// 資材量を読み取る(MainSupply)
+		public static List<int> getMainSupply(Bitmap bitmap) {
+			var output = new List<int>();
+			// 燃料
+
+			// 弾薬
+
+			// 鋼材
+
+			// ボーキサイト
+
+			// ダイヤ
+
+			return output;
+		}
 		#endregion
 	}
 }

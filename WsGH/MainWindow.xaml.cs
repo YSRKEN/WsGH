@@ -274,6 +274,7 @@ namespace WsGH {
 			#region 毎フレーム毎の処理
 			// スクショが取得できていた場合
 			if(captureFrame != null) {
+				#region シーンによる振り分け
 				// シーンを判定する
 				var scene = SceneRecognition.JudgeScene(captureFrame);
 				// 現在認識しているシーンを表示する
@@ -304,7 +305,7 @@ namespace WsGH {
 						}
 					}
 					break;
-					#endregion
+				#endregion
 				case SceneRecognition.SceneType.Build:
 					#region 建造中なら、建造時間を読み取る
 					var buildEndTime = SceneRecognition.getBuildTimer(captureFrame);
@@ -375,10 +376,17 @@ namespace WsGH {
 					break;
 				#endregion
 				case SceneRecognition.SceneType.Home:
-					
+
 				default:
 					break;
 				}
+				#endregion
+				#region 資材ロギング
+				// MainSupplyは、前回のロギングから一定時間以上経っていて、かつ読み込み可能なシーンなら追記する
+				if(SupplyStore.CanAddMainSupply() && SceneRecognition.CanReadSupplyValue(captureFrame)) {
+					var supply = SceneRecognition.getMainSupply(captureFrame);
+				}
+				#endregion
 			}
 			#endregion
 			#region 1秒ごとの処理
