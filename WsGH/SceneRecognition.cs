@@ -108,6 +108,23 @@ namespace WsGH {
 			new RectangleF(87.19f, 84.86f, 3.125f, 5.556f),
 		};
 		#endregion
+		#region 資材用定数
+		// 資源表示の横位置
+		static float[] MainSupplyFuelDigitPX = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+		static float[] MainSupplyAmmoDigitPX = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+		static float[] MainSupplySteelDigitPX = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+		static float[] MainSupplyBauxiteDigitPX = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+		static float[] MainSupplyDiamondDigitPX = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+		static float[][] MainSupplyDigitPX = {
+			MainSupplyFuelDigitPX,
+			MainSupplyAmmoDigitPX,
+			MainSupplySteelDigitPX,
+			MainSupplyBauxiteDigitPX,
+			MainSupplyDiamondDigitPX,
+		};
+		// 資源表示の縦位置・大きさ
+		static float MainSupplyDigitPY = 1.0f, MainSupplyDigitWX = 1.0f, MainSupplyDigitWY = 1.0f;
+		#endregion
 		#region OCR用定数
 		// OCRする際にリサイズするサイズ
 		static Size TemplateSize1 = new Size(32, 32);
@@ -394,6 +411,18 @@ namespace WsGH {
 			//Console.WriteLine(hour + ":" + minute + ":" + second);
 			return (uint)((hour * 60 + minute) * 60 + second);
 		}
+		// 資材を正規化する
+		static int getMainSupply(List<int> supplyDigit) {
+			// スタブ
+			int supplyValue = 0;
+			supplyValue += supplyDigit[0] * 100000;
+			supplyValue += supplyDigit[1] * 10000;
+			supplyValue += supplyDigit[2] * 1000;
+			supplyValue += supplyDigit[3] * 100;
+			supplyValue += supplyDigit[4] * 10;
+			supplyValue += supplyDigit[5] * 1;
+			return supplyValue;
+		}
 		// UNIX時間を計算する
 		public static ulong GetUnixTime(DateTime dt) {
 			var dt2 = dt.ToUniversalTime();
@@ -609,6 +638,11 @@ namespace WsGH {
 		// 資材量を読み取る(MainSupply)
 		public static List<int> getMainSupply(Bitmap bitmap) {
 			var output = new List<int>();
+			for(int i = 0; i < MainSupplyDigitPX.Count(); ++i) {
+				var supplyDigit = getDigitOCR(bitmap, MainSupplyDigitPX[i], MainSupplyDigitPY, MainSupplyDigitWX, MainSupplyDigitWY, 100, true);
+				var supplyVaue = getMainSupply(supplyDigit);
+				output.Add(supplyVaue);
+			}
 			// 燃料
 			output.Add(0);
 			// 弾薬
