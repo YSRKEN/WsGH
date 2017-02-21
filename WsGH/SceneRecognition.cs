@@ -110,11 +110,11 @@ namespace WsGH {
 		#endregion
 		#region 資材用定数
 		// 資源表示の横位置
-		static float[] MainSupplyFuelDigitPX = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
-		static float[] MainSupplyAmmoDigitPX = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
-		static float[] MainSupplySteelDigitPX = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
-		static float[] MainSupplyBauxiteDigitPX = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
-		static float[] MainSupplyDiamondDigitPX = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+		static float[] MainSupplyFuelDigitPX    = {39.30f, 40.39f, 41.48f, 42.58f, 43.67f, 44.69f};
+		static float[] MainSupplyAmmoDigitPX    = {51.02f, 52.11f, 53.20f, 54.30f, 55.39f, 56.41f};
+		static float[] MainSupplySteelDigitPX   = {62.73f, 63.83f, 64.92f, 66.02f, 67.11f, 68.13f};
+		static float[] MainSupplyBauxiteDigitPX = {74.45f, 75.55f, 76.64f, 77.73f, 78.83f, 79.84f};
+		static float[] MainSupplyDiamondDigitPX = {87.97f, 89.06f, 90.16f, 91.09f, 92.27f, 93.28f};
 		static float[][] MainSupplyDigitPX = {
 			MainSupplyFuelDigitPX,
 			MainSupplyAmmoDigitPX,
@@ -123,7 +123,7 @@ namespace WsGH {
 			MainSupplyDiamondDigitPX,
 		};
 		// 資源表示の縦位置・大きさ
-		static float MainSupplyDigitPY = 1.0f, MainSupplyDigitWX = 1.0f, MainSupplyDigitWY = 1.0f;
+		static float MainSupplyDigitPY = 1.389f, MainSupplyDigitWX = 0.9375f, MainSupplyDigitWY = 2.222f;
 		#endregion
 		#region OCR用定数
 		// OCRする際にリサイズするサイズ
@@ -322,6 +322,7 @@ namespace WsGH {
 		/// <summary>
 		/// 数字認識を行う
 		/// 座標・大きさは画像に対する％指定なことに注意
+		/// (色反転後に閾値処理を行う)
 		/// </summary>
 		/// <param name="bitmap">画像</param>
 		/// <param name="px_per">切り取る左座標</param>
@@ -415,12 +416,12 @@ namespace WsGH {
 		static int getMainSupply(List<int> supplyDigit) {
 			// スタブ
 			int supplyValue = 0;
-			supplyValue += supplyDigit[0] * 100000;
-			supplyValue += supplyDigit[1] * 10000;
-			supplyValue += supplyDigit[2] * 1000;
-			supplyValue += supplyDigit[3] * 100;
-			supplyValue += supplyDigit[4] * 10;
-			supplyValue += supplyDigit[5] * 1;
+			supplyValue += (supplyDigit[0] > 9 ? 0 : supplyDigit[0]) * 100000;
+			supplyValue += (supplyDigit[1] > 9 ? 0 : supplyDigit[1]) * 10000;
+			supplyValue += (supplyDigit[2] > 9 ? 0 : supplyDigit[2]) * 1000;
+			supplyValue += (supplyDigit[3] > 9 ? 0 : supplyDigit[3]) * 100;
+			supplyValue += (supplyDigit[4] > 9 ? 0 : supplyDigit[4]) * 10;
+			supplyValue += (supplyDigit[5] > 9 ? 0 : supplyDigit[5]) * 1;
 			return supplyValue;
 		}
 		// UNIX時間を計算する
@@ -638,21 +639,12 @@ namespace WsGH {
 		// 資材量を読み取る(MainSupply)
 		public static List<int> getMainSupply(Bitmap bitmap) {
 			var output = new List<int>();
+			// iの値により、燃料→弾薬→鋼材→ボーキサイト→ダイヤと読み取り対象が変化する
 			for(int i = 0; i < MainSupplyDigitPX.Count(); ++i) {
-				var supplyDigit = getDigitOCR(bitmap, MainSupplyDigitPX[i], MainSupplyDigitPY, MainSupplyDigitWX, MainSupplyDigitWY, 100, true);
+				var supplyDigit = getDigitOCR(bitmap, MainSupplyDigitPX[i], MainSupplyDigitPY, MainSupplyDigitWX, MainSupplyDigitWY, 110, true);
 				var supplyVaue = getMainSupply(supplyDigit);
 				output.Add(supplyVaue);
 			}
-			// 燃料
-			output.Add(0);
-			// 弾薬
-			output.Add(0);
-			// 鋼材
-			output.Add(0);
-			// ボーキサイト
-			output.Add(0);
-			// ダイヤ
-			output.Add(0);
 			return output;
 		}
 		#endregion
