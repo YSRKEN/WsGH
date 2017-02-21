@@ -388,7 +388,8 @@ namespace WsGH {
 					var supply = SceneRecognition.getMainSupply(captureFrame);
 					SupplyStore.AddMainSupply(nowTime, supply);
 					addLog($"{Properties.Resources.LoggingTextAddSupplyData}");
-					SupplyStore.ShowMainSupply();
+					SupplyStore.SaveSupplyStore();
+					//SupplyStore.ShowMainSupply();
 				}
 				#endregion
 			}

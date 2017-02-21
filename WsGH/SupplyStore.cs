@@ -38,5 +38,14 @@ namespace WsGH {
 				Console.WriteLine($"{supplyData.DateTime},{supplyData.Fuel},{supplyData.Ammo},{supplyData.Steel},{supplyData.Bauxite},{supplyData.Diamond}");
 			}
 		}
+		// MainSupplyをCSVに保存する
+		public static void SaveSupplyStore() {
+			using(var w = new System.IO.StreamWriter(@"MainSupply.csv")) {
+				w.WriteLine("時刻,燃料,弾薬,鋼材,ボーキサイト,ダイヤ");
+				foreach(var supplyData in db.MainSupplyTable) {
+					w.WriteLine($"{supplyData.DateTime},{supplyData.Fuel},{supplyData.Ammo},{supplyData.Steel},{supplyData.Bauxite},{supplyData.Diamond}");
+				}
+			}
+		}
 	}
 }
