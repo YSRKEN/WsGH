@@ -217,4 +217,7 @@
   <data name="MenuHeaderBackgroundOther" xml:space="preserve">
     <value>Other App</value>
   </data>
+  <data name="LoggingTextAddSupplyData" xml:space="preserve">
+    <value>add SupplyData</value>
+  </data>
 </root>

@@ -599,7 +599,7 @@ namespace WsGH {
 			return true;
 		}
 		// 資材量が表示されているかを判定する
-		public static bool CanReadSupplyValue(Bitmap bitmap) {
+		public static bool CanReadMainSupply(Bitmap bitmap) {
 			// 弾薬の表示
 			var hash = getDifferenceHash(bitmap, 47.12, 0.8368, 2.115, 3.766);
 			if(getHummingDistance(hash, 0xd52a264d9cbd6bd3) >= 20)
@@ -610,15 +610,15 @@ namespace WsGH {
 		public static List<int> getMainSupply(Bitmap bitmap) {
 			var output = new List<int>();
 			// 燃料
-
+			output.Add(0);
 			// 弾薬
-
+			output.Add(0);
 			// 鋼材
-
+			output.Add(0);
 			// ボーキサイト
-
+			output.Add(0);
 			// ダイヤ
-
+			output.Add(0);
 			return output;
 		}
 		#endregion

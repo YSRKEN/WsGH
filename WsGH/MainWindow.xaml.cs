@@ -383,8 +383,12 @@ namespace WsGH {
 				#endregion
 				#region 資材ロギング
 				// MainSupplyは、前回のロギングから一定時間以上経っていて、かつ読み込み可能なシーンなら追記する
-				if(SupplyStore.CanAddMainSupply() && SceneRecognition.CanReadSupplyValue(captureFrame)) {
+				if(SupplyStore.CanAddMainSupply() && SceneRecognition.CanReadMainSupply(captureFrame)) {
+					var nowTime = DateTime.Now;
 					var supply = SceneRecognition.getMainSupply(captureFrame);
+					SupplyStore.AddMainSupply(nowTime, supply);
+					addLog($"{Properties.Resources.LoggingTextAddSupplyData}");
+					SupplyStore.ShowMainSupply();
 				}
 				#endregion
 			}

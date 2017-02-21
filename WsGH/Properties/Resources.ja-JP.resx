@@ -217,4 +217,7 @@
   <data name="MenuHeaderBackgroundOther" xml:space="preserve">
     <value>その他</value>
   </data>
+  <data name="LoggingTextAddSupplyData" xml:space="preserve">
+    <value>資材ログに追記</value>
+  </data>
 </root>

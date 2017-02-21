@@ -73,5 +73,8 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\SupplyStore.mdf;Integrated Security=True</Value>
     </Setting>
+    <Setting Name="LastUpdate" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">1900-01-01</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

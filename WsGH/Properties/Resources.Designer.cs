@@ -61,6 +61,15 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
+        ///   add SupplyData に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LoggingTextAddSupplyData {
+            get {
+                return ResourceManager.GetString("LoggingTextAddSupplyData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   fix PositionShifting に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string LoggingTextFixPS {
