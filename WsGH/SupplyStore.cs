@@ -10,6 +10,32 @@ namespace WsGH {
 		static DateTime lastUpdate = new DateTime();
 //		static DateTime lastUpdate = Properties.Settings.Default.LastUpdate;
 		static SupplyStoreDataContext db = new SupplyStoreDataContext(Properties.Settings.Default.SupplyStoreConnectionString);
+		#region 全体
+		// 描画用のデータを書き出す
+		public static Dictionary<string, List<KeyValuePair<DateTime, int>>> MakeChartData() {
+			// 中間データをListに書き出す
+			var listFuel    = new List<KeyValuePair<DateTime, int>>();
+			var listAmmo    = new List<KeyValuePair<DateTime, int>>();
+			var listSteel   = new List<KeyValuePair<DateTime, int>>();
+			var listBauxite = new List<KeyValuePair<DateTime, int>>();
+			var listDiamond = new List<KeyValuePair<DateTime, int>>();
+			foreach(var supplyData in db.MainSupplyTable) {
+				listFuel.Add(new KeyValuePair<DateTime, int>(supplyData.DateTime, supplyData.Fuel));
+				listAmmo.Add(new KeyValuePair<DateTime, int>(supplyData.DateTime, supplyData.Ammo));
+				listSteel.Add(new KeyValuePair<DateTime, int>(supplyData.DateTime, supplyData.Steel));
+				listBauxite.Add(new KeyValuePair<DateTime, int>(supplyData.DateTime, supplyData.Bauxite));
+				listDiamond.Add(new KeyValuePair<DateTime, int>(supplyData.DateTime, supplyData.Diamond));
+			}
+			// 出力データにAddで書き足す
+			var output = new Dictionary<string, List<KeyValuePair<DateTime, int>>>();
+			output.Add(Properties.Resources.SupplyTypeFuel, listFuel);
+			output.Add(Properties.Resources.SupplyTypeAmmo, listAmmo);
+			output.Add(Properties.Resources.SupplyTypeSteel, listSteel);
+			output.Add(Properties.Resources.SupplyTypeBauxite, listBauxite);
+			output.Add(Properties.Resources.SupplyTypeDiamond, listDiamond);
+			return output;
+		}
+		#endregion
 		#region MainSupply関係
 		// MainSupplyをCSVから読み込む
 		public static void ReadMainSupply() {
@@ -86,7 +112,7 @@ namespace WsGH {
 			using(var sw = new System.IO.StreamWriter(@"MainSupply.csv")) {
 				sw.WriteLine("時刻,燃料,弾薬,鋼材,ボーキサイト,ダイヤ");
 				foreach(var supplyData in db.MainSupplyTable) {
-					sw.WriteLine($"{supplyData.DateTime},{supplyData.Fuel},{supplyData.Ammo},{supplyData.Steel},{supplyData.Bauxite},{supplyData.Diamond}");
+					sw.WriteLine($"{supplyData.DateTime.ToString("yyyy/MM/dd HH:mm:ss")},{supplyData.Fuel},{supplyData.Ammo},{supplyData.Steel},{supplyData.Bauxite},{supplyData.Diamond}");
 				}
 			}
 		}

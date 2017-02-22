@@ -332,6 +332,51 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
+        ///   Ammo に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyTypeAmmo {
+            get {
+                return ResourceManager.GetString("SupplyTypeAmmo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Bauxite に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyTypeBauxite {
+            get {
+                return ResourceManager.GetString("SupplyTypeBauxite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Diamond に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyTypeDiamond {
+            get {
+                return ResourceManager.GetString("SupplyTypeDiamond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Fuel に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyTypeFuel {
+            get {
+                return ResourceManager.GetString("SupplyTypeFuel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Steel に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyTypeSteel {
+            get {
+                return ResourceManager.GetString("SupplyTypeSteel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Bld に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string TextBlockTextBld {

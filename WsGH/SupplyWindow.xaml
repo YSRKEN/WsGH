@@ -3,10 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:wfc="clr-namespace:System.Windows.Forms.DataVisualization.Charting;assembly=System.Windows.Forms.DataVisualization"
         xmlns:local="clr-namespace:WsGH"
         mc:Ignorable="d"
-        Title="{Binding Source={x:Static local:ResourceService.Current}, Path=Resources.TitleSupplyWindow, Mode=OneWay}" Height="300" Width="300" ResizeMode="NoResize" Topmost="True">
+        Title="{Binding Source={x:Static local:ResourceService.Current}, Path=Resources.TitleSupplyWindow, Mode=OneWay}" Height="300" Width="400" ResizeMode="NoResize" Topmost="True">
     <Grid>
-        
-    </Grid>
+		<WindowsFormsHost HorizontalAlignment="Left" Height="251" Margin="10,10,0,0" VerticalAlignment="Top" Width="374">
+			<wfc:Chart x:Name="SupplyChart">
+				<wfc:Chart.ChartAreas/>
+			</wfc:Chart>
+		</WindowsFormsHost>
+	</Grid>
 </Window>
