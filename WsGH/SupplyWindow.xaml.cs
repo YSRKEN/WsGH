@@ -46,7 +46,6 @@ namespace WsGH {
 		}
 		// 与えられたデータからグラフを描画する
 		public void DrawChart(Dictionary<string, List<KeyValuePair<DateTime, int>>> ChartData) {
-			SupplyChart.ChartAreas.Add("ChartArea");
 			SupplyChart.Series.Clear();
 			// グラフを追加する
 			foreach(var data in ChartData) {
@@ -64,10 +63,10 @@ namespace WsGH {
 				// SupplyChartに追加する
 				SupplyChart.Series.Add(series);
 			}
-			SupplyChart.ChartAreas[0].AxisX.Minimum = 0;
-			SupplyChart.ChartAreas[0].AxisX.Maximum = 10000;
-			SupplyChart.ChartAreas[0].AxisY.Minimum = 0;
-			SupplyChart.ChartAreas[0].AxisY.Maximum = 10000;
+			//SupplyChart.ChartAreas[0].AxisX.Minimum = 0;
+			//SupplyChart.ChartAreas[0].AxisX.Maximum = 10000;
+			//SupplyChart.ChartAreas[0].AxisY.Minimum = 0;
+			//SupplyChart.ChartAreas[0].AxisY.Maximum = 10000;
 		}
 	}
 }

@@ -10,7 +10,9 @@
     <Grid>
 		<WindowsFormsHost HorizontalAlignment="Left" Height="251" Margin="10,10,0,0" VerticalAlignment="Top" Width="374">
 			<wfc:Chart x:Name="SupplyChart">
-				<wfc:Chart.ChartAreas/>
+				<wfc:Chart.ChartAreas>
+					<wfc:ChartArea Name="ChartArea"/>
+				</wfc:Chart.ChartAreas>
 			</wfc:Chart>
 		</WindowsFormsHost>
 	</Grid>

@@ -30,12 +30,12 @@ namespace WsGH
 		
     #region 拡張メソッドの定義
     partial void OnCreated();
-    partial void InsertMainSupplyTable(MainSupplyTable instance);
-    partial void UpdateMainSupplyTable(MainSupplyTable instance);
-    partial void DeleteMainSupplyTable(MainSupplyTable instance);
     partial void InsertSubSupplyTable(SubSupplyTable instance);
     partial void UpdateSubSupplyTable(SubSupplyTable instance);
     partial void DeleteSubSupplyTable(SubSupplyTable instance);
+    partial void InsertMainSupplyTable(MainSupplyTable instance);
+    partial void UpdateMainSupplyTable(MainSupplyTable instance);
+    partial void DeleteMainSupplyTable(MainSupplyTable instance);
     #endregion
 		
 		public SupplyStoreDataContext() : 
@@ -68,14 +68,6 @@ namespace WsGH
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<MainSupplyTable> MainSupplyTable
-		{
-			get
-			{
-				return this.GetTable<MainSupplyTable>();
-			}
-		}
-		
 		public System.Data.Linq.Table<SubSupplyTable> SubSupplyTable
 		{
 			get
@@ -83,186 +75,12 @@ namespace WsGH
 				return this.GetTable<SubSupplyTable>();
 			}
 		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.MainSupplyTable")]
-	public partial class MainSupplyTable : INotifyPropertyChanging, INotifyPropertyChanged
-	{
 		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.DateTime _DateTime;
-		
-		private int _Fuel;
-		
-		private int _Ammo;
-		
-		private int _Steel;
-		
-		private int _Bauxite;
-		
-		private int _Diamond;
-		
-    #region 拡張メソッドの定義
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnDateTimeChanging(System.DateTime value);
-    partial void OnDateTimeChanged();
-    partial void OnFuelChanging(int value);
-    partial void OnFuelChanged();
-    partial void OnAmmoChanging(int value);
-    partial void OnAmmoChanged();
-    partial void OnSteelChanging(int value);
-    partial void OnSteelChanged();
-    partial void OnBauxiteChanging(int value);
-    partial void OnBauxiteChanged();
-    partial void OnDiamondChanging(int value);
-    partial void OnDiamondChanged();
-    #endregion
-		
-		public MainSupplyTable()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateTime", DbType="DateTime NOT NULL", IsPrimaryKey=true)]
-		public System.DateTime DateTime
+		public System.Data.Linq.Table<MainSupplyTable> MainSupplyTable
 		{
 			get
 			{
-				return this._DateTime;
-			}
-			set
-			{
-				if ((this._DateTime != value))
-				{
-					this.OnDateTimeChanging(value);
-					this.SendPropertyChanging();
-					this._DateTime = value;
-					this.SendPropertyChanged("DateTime");
-					this.OnDateTimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fuel", DbType="Int NOT NULL")]
-		public int Fuel
-		{
-			get
-			{
-				return this._Fuel;
-			}
-			set
-			{
-				if ((this._Fuel != value))
-				{
-					this.OnFuelChanging(value);
-					this.SendPropertyChanging();
-					this._Fuel = value;
-					this.SendPropertyChanged("Fuel");
-					this.OnFuelChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Ammo", DbType="Int NOT NULL")]
-		public int Ammo
-		{
-			get
-			{
-				return this._Ammo;
-			}
-			set
-			{
-				if ((this._Ammo != value))
-				{
-					this.OnAmmoChanging(value);
-					this.SendPropertyChanging();
-					this._Ammo = value;
-					this.SendPropertyChanged("Ammo");
-					this.OnAmmoChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Steel", DbType="Int NOT NULL")]
-		public int Steel
-		{
-			get
-			{
-				return this._Steel;
-			}
-			set
-			{
-				if ((this._Steel != value))
-				{
-					this.OnSteelChanging(value);
-					this.SendPropertyChanging();
-					this._Steel = value;
-					this.SendPropertyChanged("Steel");
-					this.OnSteelChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Bauxite", DbType="Int NOT NULL")]
-		public int Bauxite
-		{
-			get
-			{
-				return this._Bauxite;
-			}
-			set
-			{
-				if ((this._Bauxite != value))
-				{
-					this.OnBauxiteChanging(value);
-					this.SendPropertyChanging();
-					this._Bauxite = value;
-					this.SendPropertyChanged("Bauxite");
-					this.OnBauxiteChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Diamond", DbType="Int NOT NULL")]
-		public int Diamond
-		{
-			get
-			{
-				return this._Diamond;
-			}
-			set
-			{
-				if ((this._Diamond != value))
-				{
-					this.OnDiamondChanging(value);
-					this.SendPropertyChanging();
-					this._Diamond = value;
-					this.SendPropertyChanged("Diamond");
-					this.OnDiamondChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+				return this.GetTable<MainSupplyTable>();
 			}
 		}
 	}
@@ -400,6 +218,212 @@ namespace WsGH
 					this._WeaponDrawing = value;
 					this.SendPropertyChanged("WeaponDrawing");
 					this.OnWeaponDrawingChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.MainSupplyTable")]
+	public partial class MainSupplyTable : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private System.DateTime _DateTime;
+		
+		private int _Fuel;
+		
+		private int _Ammo;
+		
+		private int _Steel;
+		
+		private int _Bauxite;
+		
+		private int _Diamond;
+		
+    #region 拡張メソッドの定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnDateTimeChanging(System.DateTime value);
+    partial void OnDateTimeChanged();
+    partial void OnFuelChanging(int value);
+    partial void OnFuelChanged();
+    partial void OnAmmoChanging(int value);
+    partial void OnAmmoChanged();
+    partial void OnSteelChanging(int value);
+    partial void OnSteelChanged();
+    partial void OnBauxiteChanging(int value);
+    partial void OnBauxiteChanged();
+    partial void OnDiamondChanging(int value);
+    partial void OnDiamondChanged();
+    #endregion
+		
+		public MainSupplyTable()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateTime", DbType="DateTime NOT NULL")]
+		public System.DateTime DateTime
+		{
+			get
+			{
+				return this._DateTime;
+			}
+			set
+			{
+				if ((this._DateTime != value))
+				{
+					this.OnDateTimeChanging(value);
+					this.SendPropertyChanging();
+					this._DateTime = value;
+					this.SendPropertyChanged("DateTime");
+					this.OnDateTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fuel", DbType="Int NOT NULL")]
+		public int Fuel
+		{
+			get
+			{
+				return this._Fuel;
+			}
+			set
+			{
+				if ((this._Fuel != value))
+				{
+					this.OnFuelChanging(value);
+					this.SendPropertyChanging();
+					this._Fuel = value;
+					this.SendPropertyChanged("Fuel");
+					this.OnFuelChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Ammo", DbType="Int NOT NULL")]
+		public int Ammo
+		{
+			get
+			{
+				return this._Ammo;
+			}
+			set
+			{
+				if ((this._Ammo != value))
+				{
+					this.OnAmmoChanging(value);
+					this.SendPropertyChanging();
+					this._Ammo = value;
+					this.SendPropertyChanged("Ammo");
+					this.OnAmmoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Steel", DbType="Int NOT NULL")]
+		public int Steel
+		{
+			get
+			{
+				return this._Steel;
+			}
+			set
+			{
+				if ((this._Steel != value))
+				{
+					this.OnSteelChanging(value);
+					this.SendPropertyChanging();
+					this._Steel = value;
+					this.SendPropertyChanged("Steel");
+					this.OnSteelChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Bauxite", DbType="Int NOT NULL")]
+		public int Bauxite
+		{
+			get
+			{
+				return this._Bauxite;
+			}
+			set
+			{
+				if ((this._Bauxite != value))
+				{
+					this.OnBauxiteChanging(value);
+					this.SendPropertyChanging();
+					this._Bauxite = value;
+					this.SendPropertyChanged("Bauxite");
+					this.OnBauxiteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Diamond", DbType="Int NOT NULL")]
+		public int Diamond
+		{
+			get
+			{
+				return this._Diamond;
+			}
+			set
+			{
+				if ((this._Diamond != value))
+				{
+					this.OnDiamondChanging(value);
+					this.SendPropertyChanging();
+					this._Diamond = value;
+					this.SendPropertyChanged("Diamond");
+					this.OnDiamondChanged();
 				}
 			}
 		}

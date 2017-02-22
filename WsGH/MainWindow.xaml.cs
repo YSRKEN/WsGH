@@ -46,14 +46,12 @@ namespace WsGH {
 			ChangeLanguageCheckMenu(GetCulture());
 			// 周辺クラスの初期化
 			SceneRecognition.InitialSceneRecognition();
-			SupplyStore.ShowMainSupply();
 			try {
 				SupplyStore.ReadMainSupply();
 				addLog($"{Properties.Resources.LoggingTextReadSupplyData}：Success");
 			} catch(Exception) {
 				addLog($"{Properties.Resources.LoggingTextReadSupplyData}：Failed");
 			}
-			SupplyStore.ShowMainSupply();
 			// タイマーを作成する
 			DispatcherTimer m_Timer = new DispatcherTimer(DispatcherPriority.Normal, Dispatcher);
 			m_Timer.Interval = TimeSpan.FromMilliseconds(200.0);

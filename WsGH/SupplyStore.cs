@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace WsGH {
 	static class SupplyStore {
-		static DateTime lastUpdate = new DateTime();
-//		static DateTime lastUpdate = Properties.Settings.Default.LastUpdate;
+//		static DateTime lastUpdate = new DateTime();
+		static DateTime lastUpdate = Properties.Settings.Default.LastUpdate;
 		static SupplyStoreDataContext db = new SupplyStoreDataContext(Properties.Settings.Default.SupplyStoreConnectionString);
 		#region 全体
 		// 描画用のデータを書き出す
@@ -26,6 +26,12 @@ namespace WsGH {
 				listBauxite.Add(new KeyValuePair<DateTime, int>(supplyData.DateTime, supplyData.Bauxite));
 				listDiamond.Add(new KeyValuePair<DateTime, int>(supplyData.DateTime, supplyData.Diamond));
 			}
+			// Listをソート
+			listFuel.Sort((a, b) => (a.Key < b.Key ? -1 : 1));
+			listAmmo.Sort((a, b) => (a.Key < b.Key ? -1 : 1));
+			listSteel.Sort((a, b) => (a.Key < b.Key ? -1 : 1));
+			listBauxite.Sort((a, b) => (a.Key < b.Key ? -1 : 1));
+			listDiamond.Sort((a, b) => (a.Key < b.Key ? -1 : 1));
 			// 出力データにAddで書き足す
 			var output = new Dictionary<string, List<KeyValuePair<DateTime, int>>>();
 			output.Add(Properties.Resources.SupplyTypeFuel, listFuel);
@@ -41,6 +47,7 @@ namespace WsGH {
 		public static void ReadMainSupply() {
 			var time = lastUpdate;
 			using(var sr = new System.IO.StreamReader(@"MainSupply.csv")) {
+				int index = 0;
 				while(!sr.EndOfStream) {
 					// 1行を読み込む
 					var line = sr.ReadLine();
@@ -52,6 +59,7 @@ namespace WsGH {
 					}
 					// 取り出した数値を元に、MainSupplyに入力する
 					var supplyData = new MainSupplyTable();
+					supplyData.Id = index;
 					supplyData.DateTime = new DateTime(
 						int.Parse(match.Groups["Year"].Value),
 						int.Parse(match.Groups["Month"].Value),
@@ -68,6 +76,7 @@ namespace WsGH {
 					if(time < supplyData.DateTime) {
 						time = supplyData.DateTime;
 					}
+					++index;
 				}
 			}
 			db.SubmitChanges();
@@ -80,13 +89,14 @@ namespace WsGH {
 		// (10分以上開けないと追記できない設定とした)
 		public static bool CanAddMainSupply() {
 			var nowTime = DateTime.Now;
-			return ((nowTime - lastUpdate).TotalMinutes >= 0.1);
-			//			return ((nowTime - lastUpdate).TotalMinutes >= 10.0);
+//			return ((nowTime - lastUpdate).TotalMinutes >= 0.1);
+			return ((nowTime - lastUpdate).TotalMinutes >= 10.0);
 		}
 		// MainSupplyに追記する
 		public static void AddMainSupply(DateTime time, List<int> supply) {
 			// データを書き込み
 			var supplyData = new MainSupplyTable();
+			supplyData.Id = db.MainSupplyTable.Count();
 			supplyData.DateTime = time;
 			supplyData.Fuel = supply[0];
 			supplyData.Ammo = supply[1];
