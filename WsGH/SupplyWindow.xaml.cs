@@ -18,7 +18,15 @@ namespace WsGH {
 	/// <summary>
 	/// SupplyWindow.xaml の相互作用ロジック
 	/// </summary>
+	using dColor = System.Drawing.Color;
 	public partial class SupplyWindow : Window {
+		static Dictionary<string, dColor> SupplyChartColor = new Dictionary<string, dColor> {
+			{Properties.Resources.SupplyTypeFuel, dColor.Green},
+			{Properties.Resources.SupplyTypeAmmo, dColor.Chocolate},
+			{Properties.Resources.SupplyTypeSteel, dColor.DarkGray},
+			{Properties.Resources.SupplyTypeBauxite, dColor.OrangeRed},
+			{Properties.Resources.SupplyTypeDiamond, dColor.SkyBlue},
+		};
 		// コンストラクタ
 		public SupplyWindow() {
 			InitializeComponent();
@@ -47,6 +55,7 @@ namespace WsGH {
 		// 与えられたデータからグラフを描画する
 		public void DrawChart(Dictionary<string, List<KeyValuePair<DateTime, int>>> ChartData) {
 			SupplyChart.Series.Clear();
+			SupplyChart.Legends.Clear();
 			// グラフを追加する
 			foreach(var data in ChartData) {
 				var series = new Series();
@@ -60,8 +69,20 @@ namespace WsGH {
 				foreach(var Column in data.Value) {
 					series.Points.AddXY(Column.Key.ToOADate(), Column.Value);
 				}
+				// 表示位置を調整
+				if(data.Key == Properties.Resources.SupplyTypeDiamond) {
+					series.YAxisType = AxisType.Secondary;
+				}
+				// 表示色を選択
+				series.Color = SupplyChartColor[data.Key];
+				series.BorderWidth = 3;
 				// SupplyChartに追加する
 				SupplyChart.Series.Add(series);
+				// 凡例の設定
+				var legend = new Legend();
+				legend.DockedToChartArea = "ChartArea";
+				legend.Alignment = System.Drawing.StringAlignment.Far;
+				SupplyChart.Legends.Add(legend);
 			}
 			//SupplyChart.ChartAreas[0].AxisX.Minimum = 0;
 			//SupplyChart.ChartAreas[0].AxisX.Maximum = 10000;

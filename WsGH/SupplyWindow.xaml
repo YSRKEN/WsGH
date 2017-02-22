@@ -6,9 +6,9 @@
 		xmlns:wfc="clr-namespace:System.Windows.Forms.DataVisualization.Charting;assembly=System.Windows.Forms.DataVisualization"
         xmlns:local="clr-namespace:WsGH"
         mc:Ignorable="d"
-        Title="{Binding Source={x:Static local:ResourceService.Current}, Path=Resources.TitleSupplyWindow, Mode=OneWay}" Height="300" Width="400" ResizeMode="NoResize" Topmost="True">
-    <Grid>
-		<WindowsFormsHost HorizontalAlignment="Left" Height="251" Margin="10,10,0,0" VerticalAlignment="Top" Width="374">
+        Title="{Binding Source={x:Static local:ResourceService.Current}, Path=Resources.TitleSupplyWindow, Mode=OneWay}" Height="400" Width="500" ResizeMode="NoResize" Topmost="True">
+	<Grid>
+		<WindowsFormsHost HorizontalAlignment="Left" Height="351" Margin="10,10,0,0" VerticalAlignment="Top" Width="474">
 			<wfc:Chart x:Name="SupplyChart">
 				<wfc:Chart.ChartAreas>
 					<wfc:ChartArea Name="ChartArea"/>
