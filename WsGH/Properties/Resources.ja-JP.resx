@@ -220,4 +220,10 @@
   <data name="LoggingTextAddSupplyData" xml:space="preserve">
     <value>資材ログに追記</value>
   </data>
+  <data name="LoggingTextReadSupplyData" xml:space="preserve">
+    <value>資材ログを読み込み</value>
+  </data>
+  <data name="LoggingTextSaveSupplyData" xml:space="preserve">
+    <value>資材ログに書き込み</value>
+  </data>
 </root>

@@ -124,6 +124,24 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
+        ///   read SupplyData に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LoggingTextReadSupplyData {
+            get {
+                return ResourceManager.GetString("LoggingTextReadSupplyData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   save SupplyData に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LoggingTextSaveSupplyData {
+            get {
+                return ResourceManager.GetString("LoggingTextSaveSupplyData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Scene に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string LoggingTextScene {

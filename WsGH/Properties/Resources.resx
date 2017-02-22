@@ -220,4 +220,10 @@
   <data name="LoggingTextAddSupplyData" xml:space="preserve">
     <value>add SupplyData</value>
   </data>
+  <data name="LoggingTextReadSupplyData" xml:space="preserve">
+    <value>read SupplyData</value>
+  </data>
+  <data name="LoggingTextSaveSupplyData" xml:space="preserve">
+    <value>save SupplyData</value>
+  </data>
 </root>

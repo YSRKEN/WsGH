@@ -10,8 +10,9 @@ namespace WsGH {
 		static DateTime lastUpdate = new DateTime();
 //		static DateTime lastUpdate = Properties.Settings.Default.LastUpdate;
 		static SupplyStoreDataContext db = new SupplyStoreDataContext(Properties.Settings.Default.SupplyStoreConnectionString);
+		#region MainSupply関係
 		// MainSupplyをCSVから読み込む
-		public static void ReadSupplyStore() {
+		public static void ReadMainSupply() {
 			var time = lastUpdate;
 			using(var sr = new System.IO.StreamReader(@"MainSupply.csv")) {
 				while(!sr.EndOfStream) {
@@ -32,9 +33,9 @@ namespace WsGH {
 						int.Parse(match.Groups["Hour"].Value),
 						int.Parse(match.Groups["Minute"].Value),
 						int.Parse(match.Groups["Second"].Value));
-					supplyData.Fuel    = int.Parse(match.Groups["Fuel"].Value);
-					supplyData.Ammo    = int.Parse(match.Groups["Ammo"].Value);
-					supplyData.Steel   = int.Parse(match.Groups["Steel"].Value);
+					supplyData.Fuel = int.Parse(match.Groups["Fuel"].Value);
+					supplyData.Ammo = int.Parse(match.Groups["Ammo"].Value);
+					supplyData.Steel = int.Parse(match.Groups["Steel"].Value);
 					supplyData.Bauxite = int.Parse(match.Groups["Bauxite"].Value);
 					supplyData.Diamond = int.Parse(match.Groups["Diamond"].Value);
 					db.MainSupplyTable.InsertOnSubmit(supplyData);
@@ -54,16 +55,16 @@ namespace WsGH {
 		public static bool CanAddMainSupply() {
 			var nowTime = DateTime.Now;
 			return ((nowTime - lastUpdate).TotalMinutes >= 0.1);
-//			return ((nowTime - lastUpdate).TotalMinutes >= 10.0);
+			//			return ((nowTime - lastUpdate).TotalMinutes >= 10.0);
 		}
 		// MainSupplyに追記する
 		public static void AddMainSupply(DateTime time, List<int> supply) {
 			// データを書き込み
 			var supplyData = new MainSupplyTable();
 			supplyData.DateTime = time;
-			supplyData.Fuel    = supply[0];
-			supplyData.Ammo    = supply[1];
-			supplyData.Steel   = supply[2];
+			supplyData.Fuel = supply[0];
+			supplyData.Ammo = supply[1];
+			supplyData.Steel = supply[2];
 			supplyData.Bauxite = supply[3];
 			supplyData.Diamond = supply[4];
 			db.MainSupplyTable.InsertOnSubmit(supplyData);
@@ -81,7 +82,7 @@ namespace WsGH {
 			}
 		}
 		// MainSupplyをCSVに保存する
-		public static void SaveSupplyStore() {
+		public static void SaveMainSupply() {
 			using(var sw = new System.IO.StreamWriter(@"MainSupply.csv")) {
 				sw.WriteLine("時刻,燃料,弾薬,鋼材,ボーキサイト,ダイヤ");
 				foreach(var supplyData in db.MainSupplyTable) {
@@ -89,5 +90,9 @@ namespace WsGH {
 				}
 			}
 		}
+		#endregion
+		#region SubSupply関係
+
+		#endregion
 	}
 }

@@ -46,10 +46,10 @@ namespace WsGH {
 			// 周辺クラスの初期化
 			SceneRecognition.InitialSceneRecognition();
 			try {
-				SupplyStore.ReadSupplyStore();
-				addLog("資材ログ読み込み：Success");
+				SupplyStore.ReadMainSupply();
+				addLog($"{Properties.Resources.LoggingTextReadSupplyData}：Success");
 			} catch(Exception) {
-				addLog("資材ログ読み込み：Failed");
+				addLog($"{Properties.Resources.LoggingTextReadSupplyData}：Failed");
 			}
 			// タイマーを作成する
 			DispatcherTimer m_Timer = new DispatcherTimer(DispatcherPriority.Normal, Dispatcher);
@@ -391,11 +391,19 @@ namespace WsGH {
 				#region 資材ロギング
 				// MainSupplyは、前回のロギングから一定時間以上経っていて、かつ読み込み可能なシーンなら追記する
 				if(SupplyStore.CanAddMainSupply() && SceneRecognition.CanReadMainSupply(captureFrame)) {
+					// 現在時刻と資源量を取得
 					var nowTime = DateTime.Now;
 					var supply = SceneRecognition.getMainSupply(captureFrame);
+					// データベースに書き込み
 					SupplyStore.AddMainSupply(nowTime, supply);
 					addLog($"{Properties.Resources.LoggingTextAddSupplyData}");
-					SupplyStore.SaveSupplyStore();
+					// データベースを保存
+					try {
+						SupplyStore.SaveMainSupply();
+						addLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Success");
+					} catch(Exception) {
+						addLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Failed");
+					}
 				}
 				#endregion
 			}
