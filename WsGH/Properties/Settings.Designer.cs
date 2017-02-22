@@ -294,5 +294,17 @@ namespace WsGH.Properties {
                 this["LastUpdate"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowSupplyWindowFlg {
+            get {
+                return ((bool)(this["ShowSupplyWindowFlg"]));
+            }
+            set {
+                this["ShowSupplyWindowFlg"] = value;
+            }
+        }
     }
 }

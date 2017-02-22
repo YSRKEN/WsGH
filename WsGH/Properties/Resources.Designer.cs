@@ -304,6 +304,15 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
+        ///   SupplyWindow(_S) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderSupplyWindow {
+            get {
+                return ResourceManager.GetString("MenuHeaderSupplyWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   TimerWindow(_T) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string MenuHeaderTimerWindow {
@@ -373,6 +382,15 @@ namespace WsGH.Properties {
         public static string TextScreenShotButton {
             get {
                 return ResourceManager.GetString("TextScreenShotButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   SupplyWindow に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TitleSupplyWindow {
+            get {
+                return ResourceManager.GetString("TitleSupplyWindow", resourceCulture);
             }
         }
         

@@ -226,4 +226,10 @@
   <data name="LoggingTextSaveSupplyData" xml:space="preserve">
     <value>save SupplyData</value>
   </data>
+  <data name="MenuHeaderSupplyWindow" xml:space="preserve">
+    <value>SupplyWindow(_S)</value>
+  </data>
+  <data name="TitleSupplyWindow" xml:space="preserve">
+    <value>SupplyWindow</value>
+  </data>
 </root>

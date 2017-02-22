@@ -226,4 +226,10 @@
   <data name="LoggingTextSaveSupplyData" xml:space="preserve">
     <value>資材ログに書き込み</value>
   </data>
+  <data name="TitleSupplyWindow" xml:space="preserve">
+    <value>資材記録画面</value>
+  </data>
+  <data name="MenuHeaderSupplyWindow" xml:space="preserve">
+    <value>資材記録画面(_S)</value>
+  </data>
 </root>

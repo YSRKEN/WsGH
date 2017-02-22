@@ -94,5 +94,15 @@ namespace WsGH.Properties {
 				this["TimerWindowPlacement"] = value;
 			}
 		}
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		public WINDOWPLACEMENT SupplyWindowPlacement {
+			get {
+				return ((WINDOWPLACEMENT)(this["SupplyWindowPlacement"]));
+			}
+			set {
+				this["SupplyWindowPlacement"] = value;
+			}
+		}
 	}
 }

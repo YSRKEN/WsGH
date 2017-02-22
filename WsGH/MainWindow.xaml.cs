@@ -24,7 +24,8 @@ namespace WsGH {
 	/// </summary>
 	public partial class MainWindow : Window {
 		ScreenshotProvider sp = null;	//スクショ用の情報を記憶する
-		TimerWindow tw = null;			//TimerWindowのインスタンス
+		TimerWindow tw = null;           //TimerWindowのインスタンス
+		SupplyWindow sw = null;          //SupplyWindowのインスタンス
 		int timerWindowSecond;			//毎秒行う処理のために秒数を記憶
 		// コンストラクタ
 		public MainWindow() {
@@ -63,6 +64,11 @@ namespace WsGH {
 			if(Properties.Settings.Default.ShowTimerWindowFlg) {
 				tw.Show();
 			}
+			// 資材記録画面を作成・表示
+			sw = new SupplyWindow();
+			if(Properties.Settings.Default.ShowSupplyWindowFlg) {
+				sw.Show();
+			}
 		}
 		// ウィンドウ位置復元
 		protected override void OnSourceInitialized(EventArgs e) {
@@ -97,6 +103,16 @@ namespace WsGH {
 			Properties.Settings.Default.ShowTimerWindowFlg = true;
 			Properties.Settings.Default.Save();
 			tw.Show();
+		}
+		private void ShowSupplyWindow_Click(object sender, RoutedEventArgs e) {
+			// 2枚以上同じウィンドウを生成しないようにする
+			if(Properties.Settings.Default.ShowSupplyWindowFlg)
+				return;
+			// ウィンドウを生成
+			sw = new SupplyWindow();
+			Properties.Settings.Default.ShowSupplyWindowFlg = true;
+			Properties.Settings.Default.Save();
+			sw.Show();
 		}
 		private void ShowPicFolderMenu_Click(object sender, RoutedEventArgs e) {
 			System.Diagnostics.Process.Start(@"pic\");

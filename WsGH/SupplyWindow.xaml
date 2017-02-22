@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WsGH"
         mc:Ignorable="d"
-        Title="SupplyWindow" Height="300" Width="300">
+        Title="{Binding Source={x:Static local:ResourceService.Current}, Path=Resources.TitleSupplyWindow, Mode=OneWay}" Height="300" Width="300" ResizeMode="NoResize" Topmost="True">
     <Grid>
         
     </Grid>
