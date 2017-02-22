@@ -29,7 +29,6 @@ namespace WsGH {
 		// コンストラクタ
 		public MainWindow() {
 			InitializeComponent();
-			SceneRecognition.InitialSceneRecognition();
 			MouseLeftButtonDown += (o, e) => DragMove();
 			// フォルダの有無をチェック
 			if(!System.IO.Directory.Exists(@"pic\")) {
@@ -44,6 +43,14 @@ namespace WsGH {
 			TwitterOptionMenu.IsChecked = Properties.Settings.Default.ScreenshotForTwitterFlg;
 			SetBackgroundCheck(Properties.Settings.Default.BackgroundColorType);
 			ChangeLanguageCheckMenu(GetCulture());
+			// 周辺クラスの初期化
+			SceneRecognition.InitialSceneRecognition();
+			try {
+				SupplyStore.ReadSupplyStore();
+				addLog("資材ログ読み込み：Success");
+			} catch(Exception) {
+				addLog("資材ログ読み込み：Failed");
+			}
 			// タイマーを作成する
 			DispatcherTimer m_Timer = new DispatcherTimer(DispatcherPriority.Normal, Dispatcher);
 			m_Timer.Interval = TimeSpan.FromMilliseconds(200.0);
@@ -389,7 +396,6 @@ namespace WsGH {
 					SupplyStore.AddMainSupply(nowTime, supply);
 					addLog($"{Properties.Resources.LoggingTextAddSupplyData}");
 					SupplyStore.SaveSupplyStore();
-					//SupplyStore.ShowMainSupply();
 				}
 				#endregion
 			}
