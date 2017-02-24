@@ -102,6 +102,7 @@ namespace WsGH {
 			}
 			// グラフのスケールを設定する
 			LeastChartTime = SupplyStore.MainSupplyData.First().Max(d => d.Key);
+			chartArea.AxisX.Maximum = LeastChartTime.ToOADate();
 			ChangeChartScale();
 		}
 		// グラフのスケールを変更する
@@ -109,9 +110,12 @@ namespace WsGH {
 			ChangeChartScale();
 		}
 		void ChangeChartScale() {
-			var chartScale = ChartScale[(ChartScaleComboBox.SelectedIndex != -1 ? ChartScaleComboBox.SelectedIndex : 2)];
-			SupplyChart.ChartAreas[0].AxisX.Maximum = LeastChartTime.ToOADate();
-			SupplyChart.ChartAreas[0].AxisX.Minimum = LeastChartTime.ToOADate() - chartScale;
+			// グラフののスケールを決定する(デフォルト値は「2週間」)
+			var index = ChartScaleComboBox.SelectedIndex;
+			var chartScale = ChartScale[(index != -1 ? index : 2)];
+			// スケールに従い横軸を変更する
+			var axisX = SupplyChart.ChartAreas[0].AxisX;
+			axisX.Minimum = axisX.Maximum - chartScale;
 		}
 	}
 }

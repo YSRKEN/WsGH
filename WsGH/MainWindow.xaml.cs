@@ -24,8 +24,8 @@ namespace WsGH {
 	/// </summary>
 	public partial class MainWindow : Window {
 		ScreenshotProvider sp = null;	//スクショ用の情報を記憶する
-		TimerWindow tw = null;           //TimerWindowのインスタンス
-		SupplyWindow sw = null;          //SupplyWindowのインスタンス
+		TimerWindow tw = null;			//TimerWindowのインスタンス
+		SupplyWindow sw = null;			//SupplyWindowのインスタンス
 		int timerWindowSecond;			//毎秒行う処理のために秒数を記憶
 		// コンストラクタ
 		public MainWindow() {
@@ -84,7 +84,7 @@ namespace WsGH {
 			Properties.Settings.Default.MainWindowPlacement = NativeMethods.GetWindowPlacementHelper(this);
 			Properties.Settings.Default.Save();
 		}
-		// メニュー操作
+		#region メニュー操作
 		private void ExitMenu_Click(object sender, RoutedEventArgs e) {
 			Close();
 		}
@@ -177,6 +177,7 @@ namespace WsGH {
 			// 英語に切り替え
 			ChangeLanguage("");
 		}
+		#endregion
 		// ボタン操作
 		private void ScreenShotButton_Click(object sender, RoutedEventArgs e) {
 			saveScreenshot();
@@ -256,6 +257,7 @@ namespace WsGH {
 				addLog($"{Properties.Resources.LoggingTextGetScreenshot} : Failed");
 			}
 		}
+		#region カルチャ関連
 		// 言語切替
 		void ChangeLanguage(string culture) {
 			// カルチャの切り替え
@@ -293,6 +295,7 @@ namespace WsGH {
 				break;
 			}
 		}
+		#endregion
 		// タイマー動作
 		private void DispatcherTimer_Tick(object sender, EventArgs e) {
 			// 可能ならスクショを取得する
