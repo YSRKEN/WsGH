@@ -264,7 +264,7 @@ namespace WsGH {
 			bindData.MenuHeaderBackgroundOther = "";
 			ChangeLanguageCheckMenu(culture);
 			// その他必要な処理
-			sw.DrawChart(SupplyStore.MakeChartData());
+			sw.DrawChart();
 		}
 		/// <summary>
 		/// 現在の使用言語を取得
@@ -424,7 +424,7 @@ namespace WsGH {
 						addLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Failed");
 					}
 					// グラフに反映
-					sw.DrawChart(SupplyStore.MakeChartData());
+					sw.DrawChart();
 				}
 				#endregion
 			}
