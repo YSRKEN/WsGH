@@ -9,6 +9,7 @@ namespace WsGH {
 	using SupplyPair = KeyValuePair<DateTime, int>;
 	static class SupplyStore {
 		static DateTime lastUpdate = Properties.Settings.Default.LastUpdate;
+		static double MainSupplyIntervalMinute = 60.0;
 		static Dictionary<string, List<SupplyPair>> MainSupply;
 		#region 全体
 		// データベースを初期化する
@@ -83,10 +84,10 @@ namespace WsGH {
 			Properties.Settings.Default.Save();
 		}
 		// MainSupplyに追記できるかを判定する
-		// (10分以上開けないと追記できない設定とした)
+		// (MainSupplyIntervalMinute分以上開けないと追記できない設定とした)
 		public static bool CanAddMainSupply() {
 			var nowTime = DateTime.Now;
-			return ((nowTime - lastUpdate).TotalMinutes >= 10.0);
+			return ((nowTime - lastUpdate).TotalMinutes >= MainSupplyIntervalMinute);
 		}
 		// MainSupplyに追記する
 		public static void AddMainSupply(DateTime time, List<int> supply) {
