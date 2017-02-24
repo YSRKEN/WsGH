@@ -109,14 +109,7 @@
     <Compile Include="ResourceService.cs" />
     <Compile Include="SceneRecognition.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="SupplyStore.cs">
-      <DependentUpon>SupplyStore.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="SupplyStore.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SupplyStore.dbml</DependentUpon>
-    </Compile>
+    <Compile Include="SupplyStore.cs" />
     <Compile Include="SupplyWindow.xaml.cs">
       <DependentUpon>SupplyWindow.xaml</DependentUpon>
     </Compile>
@@ -168,20 +161,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="SupplyStore.dbml.layout">
-      <DependentUpon>SupplyStore.dbml</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="SupplyStore.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>SupplyStore.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -200,15 +185,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="SupplyStore.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SupplyStore_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>SupplyStore.mdf</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

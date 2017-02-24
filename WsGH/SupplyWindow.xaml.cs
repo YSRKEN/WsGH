@@ -49,7 +49,7 @@ namespace WsGH {
 		}
 		// 与えられたデータからグラフを描画する
 		public void DrawChart(Dictionary<string, List<KeyValuePair<DateTime, int>>> ChartData) {
-			if(ChartData.First().Value.Count == 0)
+			if(ChartData.First().Value.Count() == 0)
 				return;
 			// グラフの要素を消去する
 			SupplyChart.Series.Clear();
@@ -63,11 +63,11 @@ namespace WsGH {
 			SupplyChart.ChartAreas[0].AxisY2.MajorGrid.LineColor = dColor.LightGray;
 			// グラフを描画する際の色を設定する
 			var SupplyChartColor = new Dictionary<string, dColor> {
-				{Properties.Resources.SupplyTypeFuel, dColor.Green},
-				{Properties.Resources.SupplyTypeAmmo, dColor.Chocolate},
-				{Properties.Resources.SupplyTypeSteel, dColor.DarkGray},
-				{Properties.Resources.SupplyTypeBauxite, dColor.OrangeRed},
-				{Properties.Resources.SupplyTypeDiamond, dColor.SkyBlue},
+				{"Fuel", dColor.Green},
+				{"Ammo", dColor.Chocolate},
+				{"Steel", dColor.DarkGray},
+				{"Bauxite", dColor.OrangeRed},
+				{"Diamond", dColor.SkyBlue},
 			};
 			// グラフを追加する
 			foreach(var data in ChartData) {
@@ -83,7 +83,7 @@ namespace WsGH {
 					series.Points.AddXY(Column.Key.ToOADate(), Column.Value);
 				}
 				// 表示位置を調整
-				if(data.Key == Properties.Resources.SupplyTypeDiamond) {
+				if(data.Key == "Diamond") {
 					series.YAxisType = AxisType.Secondary;
 				}
 				// 表示色を選択
