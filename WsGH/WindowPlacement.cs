@@ -57,17 +57,58 @@ namespace WsGH {
 		const int SW_SHOWMINIMIZED = 2;
 		// ヘルパーメソッド
 		public static void SetWindowPlacementHelper(Window window, WINDOWPLACEMENT wp) {
+			// wpについて色々と設定する
 			wp.length = Marshal.SizeOf(typeof(WINDOWPLACEMENT));
 			wp.flags = 0;
 			wp.showCmd = (wp.showCmd == SW_SHOWMINIMIZED ? SW_SHOWNORMAL : wp.showCmd);
+			// ウィンドウサイズは変更しないように小細工する
+			wp.normalPosition.Right = wp.normalPosition.Left + (int)window.Width;
+			wp.normalPosition.Bottom = wp.normalPosition.Top + (int)window.Height;
+			// GetWindowPlacement関数を実行
 			var hwnd = new WindowInteropHelper(window).Handle;
 			SetWindowPlacement(hwnd, ref wp);
 		}
 		public static WINDOWPLACEMENT GetWindowPlacementHelper(Window window) {
+			
 			var wp = new WINDOWPLACEMENT();
 			var hwnd = new WindowInteropHelper(window).Handle;
 			GetWindowPlacement(hwnd, out wp);
 			return wp;
+		}
+	}
+}
+
+namespace WsGH.Properties {
+	partial class Settings {
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		public WINDOWPLACEMENT MainWindowPlacement {
+			get {
+				return ((WINDOWPLACEMENT)(this["MainWindowPlacement"]));
+			}
+			set {
+				this["MainWindowPlacement"] = value;
+			}
+		}
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		public WINDOWPLACEMENT TimerWindowPlacement {
+			get {
+				return ((WINDOWPLACEMENT)(this["TimerWindowPlacement"]));
+			}
+			set {
+				this["TimerWindowPlacement"] = value;
+			}
+		}
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		public WINDOWPLACEMENT SupplyWindowPlacement {
+			get {
+				return ((WINDOWPLACEMENT)(this["SupplyWindowPlacement"]));
+			}
+			set {
+				this["SupplyWindowPlacement"] = value;
+			}
 		}
 	}
 }

@@ -25,7 +25,7 @@ namespace WsGH.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.0.2.0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.1.0.0")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
@@ -58,7 +58,7 @@ namespace WsGH.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool ShowTimerWindowFlg {
             get {
                 return ((bool)(this["ShowTimerWindowFlg"]));
@@ -271,25 +271,29 @@ namespace WsGH.Properties {
                 this["BackgroundColorType"] = value;
             }
         }
-		[global::System.Configuration.UserScopedSettingAttribute()]
-		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-		public WINDOWPLACEMENT MainWindowPlacement {
-			get {
-				return ((WINDOWPLACEMENT)(this["MainWindowPlacement"]));
-			}
-			set {
-				this["MainWindowPlacement"] = value;
-			}
-		}
-		[global::System.Configuration.UserScopedSettingAttribute()]
-		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-		public WINDOWPLACEMENT TimerWindowPlacement {
-			get {
-				return ((WINDOWPLACEMENT)(this["TimerWindowPlacement"]));
-			}
-			set {
-				this["TimerWindowPlacement"] = value;
-			}
-		}
-	}
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1900-01-01")]
+        public global::System.DateTime LastUpdate {
+            get {
+                return ((global::System.DateTime)(this["LastUpdate"]));
+            }
+            set {
+                this["LastUpdate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowSupplyWindowFlg {
+            get {
+                return ((bool)(this["ShowSupplyWindowFlg"]));
+            }
+            set {
+                this["ShowSupplyWindowFlg"] = value;
+            }
+        }
+    }
 }

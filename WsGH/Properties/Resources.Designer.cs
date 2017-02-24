@@ -61,6 +61,15 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
+        ///   add SupplyData に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LoggingTextAddSupplyData {
+            get {
+                return ResourceManager.GetString("LoggingTextAddSupplyData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   fix PositionShifting に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string LoggingTextFixPS {
@@ -111,6 +120,24 @@ namespace WsGH.Properties {
         public static string LoggingTextrBackground {
             get {
                 return ResourceManager.GetString("LoggingTextrBackground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   read SupplyData に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LoggingTextReadSupplyData {
+            get {
+                return ResourceManager.GetString("LoggingTextReadSupplyData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   save SupplyData に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LoggingTextSaveSupplyData {
+            get {
+                return ResourceManager.GetString("LoggingTextSaveSupplyData", resourceCulture);
             }
         }
         
@@ -277,6 +304,15 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
+        ///   SupplyWindow(_S) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MenuHeaderSupplyWindow {
+            get {
+                return ResourceManager.GetString("MenuHeaderSupplyWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   TimerWindow(_T) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string MenuHeaderTimerWindow {
@@ -292,6 +328,141 @@ namespace WsGH.Properties {
             get {
                 object obj = ResourceManager.GetObject("ocr_template", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Diamond に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyChartY2Title {
+            get {
+                return ResourceManager.GetString("SupplyChartY2Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Fuel, Ammo, Steel, Bauxite に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyChartYTitle {
+            get {
+                return ResourceManager.GetString("SupplyChartYTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   1 Day に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyScale1Day {
+            get {
+                return ResourceManager.GetString("SupplyScale1Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   1 Month に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyScale1Month {
+            get {
+                return ResourceManager.GetString("SupplyScale1Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   1 Week に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyScale1Week {
+            get {
+                return ResourceManager.GetString("SupplyScale1Week", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   1 Year に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyScale1Year {
+            get {
+                return ResourceManager.GetString("SupplyScale1Year", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   2 Month に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyScale2Month {
+            get {
+                return ResourceManager.GetString("SupplyScale2Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   2 Week に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyScale2Week {
+            get {
+                return ResourceManager.GetString("SupplyScale2Week", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   3 Month に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyScale3Month {
+            get {
+                return ResourceManager.GetString("SupplyScale3Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   6 Month に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyScale6Month {
+            get {
+                return ResourceManager.GetString("SupplyScale6Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ammo に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyTypeAmmo {
+            get {
+                return ResourceManager.GetString("SupplyTypeAmmo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Bauxite に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyTypeBauxite {
+            get {
+                return ResourceManager.GetString("SupplyTypeBauxite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Diamond に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyTypeDiamond {
+            get {
+                return ResourceManager.GetString("SupplyTypeDiamond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Fuel に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyTypeFuel {
+            get {
+                return ResourceManager.GetString("SupplyTypeFuel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Steel に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyTypeSteel {
+            get {
+                return ResourceManager.GetString("SupplyTypeSteel", resourceCulture);
             }
         }
         
@@ -346,6 +517,15 @@ namespace WsGH.Properties {
         public static string TextScreenShotButton {
             get {
                 return ResourceManager.GetString("TextScreenShotButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   SupplyWindow に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TitleSupplyWindow {
+            get {
+                return ResourceManager.GetString("TitleSupplyWindow", resourceCulture);
             }
         }
         
