@@ -253,4 +253,28 @@
   <data name="SupplyChartYTitle" xml:space="preserve">
     <value>Fuel, Ammo, Steel, Bauxite</value>
   </data>
+  <data name="SupplyScale1Day" xml:space="preserve">
+    <value>1 Day</value>
+  </data>
+  <data name="SupplyScale1Month" xml:space="preserve">
+    <value>1 Month</value>
+  </data>
+  <data name="SupplyScale1Week" xml:space="preserve">
+    <value>1 Week</value>
+  </data>
+  <data name="SupplyScale1Year" xml:space="preserve">
+    <value>1 Year</value>
+  </data>
+  <data name="SupplyScale2Month" xml:space="preserve">
+    <value>2 Month</value>
+  </data>
+  <data name="SupplyScale2Week" xml:space="preserve">
+    <value>2 Week</value>
+  </data>
+  <data name="SupplyScale3Month" xml:space="preserve">
+    <value>3 Month</value>
+  </data>
+  <data name="SupplyScale6Month" xml:space="preserve">
+    <value>6 Month</value>
+  </data>
 </root>

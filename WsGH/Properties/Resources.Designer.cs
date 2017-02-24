@@ -350,6 +350,78 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
+        ///   1 Day に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyScale1Day {
+            get {
+                return ResourceManager.GetString("SupplyScale1Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   1 Month に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyScale1Month {
+            get {
+                return ResourceManager.GetString("SupplyScale1Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   1 Week に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyScale1Week {
+            get {
+                return ResourceManager.GetString("SupplyScale1Week", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   1 Year に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyScale1Year {
+            get {
+                return ResourceManager.GetString("SupplyScale1Year", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   2 Month に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyScale2Month {
+            get {
+                return ResourceManager.GetString("SupplyScale2Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   2 Week に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyScale2Week {
+            get {
+                return ResourceManager.GetString("SupplyScale2Week", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   3 Month に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyScale3Month {
+            get {
+                return ResourceManager.GetString("SupplyScale3Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   6 Month に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyScale6Month {
+            get {
+                return ResourceManager.GetString("SupplyScale6Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ammo に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SupplyTypeAmmo {

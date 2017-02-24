@@ -20,6 +20,8 @@ namespace WsGH {
 	/// </summary>
 	using dColor = System.Drawing.Color;
 	public partial class SupplyWindow : Window {
+		static int[] ChartScale = {1, 7, 14, 30, 60, 90, 180, 365};
+		static DateTime LeastChartTime;
 		// コンストラクタ
 		public SupplyWindow() {
 			InitializeComponent();
@@ -93,10 +95,18 @@ namespace WsGH {
 				legend.Alignment = System.Drawing.StringAlignment.Far;
 				SupplyChart.Legends.Add(legend);
 			}
-			//SupplyChart.ChartAreas[0].AxisX.Minimum = 0;
-			//SupplyChart.ChartAreas[0].AxisX.Maximum = 10000;
-			//SupplyChart.ChartAreas[0].AxisY.Minimum = 0;
-			//SupplyChart.ChartAreas[0].AxisY.Maximum = 10000;
+			// グラフのスケールを設定する
+			LeastChartTime = ChartData.First().Value.Max(d => d.Key);
+			ChangeChartScale();
+		}
+		// グラフのスケールを変更する
+		private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			ChangeChartScale();
+		}
+		void ChangeChartScale() {
+			var chartScale = ChartScale[(ChartScaleComboBox.SelectedIndex != -1 ? ChartScaleComboBox.SelectedIndex : 2)];
+			SupplyChart.ChartAreas[0].AxisX.Maximum = LeastChartTime.ToOADate();
+			SupplyChart.ChartAreas[0].AxisX.Minimum = LeastChartTime.ToOADate() - chartScale;
 		}
 	}
 }
