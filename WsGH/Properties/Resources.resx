@@ -247,4 +247,10 @@
   <data name="SupplyTypeSteel" xml:space="preserve">
     <value>Steel</value>
   </data>
+  <data name="SupplyChartY2Title" xml:space="preserve">
+    <value>Diamond</value>
+  </data>
+  <data name="SupplyChartYTitle" xml:space="preserve">
+    <value>Fuel, Ammo, Steel, Bauxite</value>
+  </data>
 </root>

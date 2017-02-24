@@ -332,6 +332,24 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
+        ///   Diamond に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyChartY2Title {
+            get {
+                return ResourceManager.GetString("SupplyChartY2Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Fuel, Ammo, Steel, Bauxite に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyChartYTitle {
+            get {
+                return ResourceManager.GetString("SupplyChartYTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ammo に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SupplyTypeAmmo {

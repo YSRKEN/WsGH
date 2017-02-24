@@ -56,6 +56,12 @@ namespace WsGH {
 		public void DrawChart(Dictionary<string, List<KeyValuePair<DateTime, int>>> ChartData) {
 			SupplyChart.Series.Clear();
 			SupplyChart.Legends.Clear();
+			SupplyChart.ChartAreas[0].AxisY.Title = Properties.Resources.SupplyChartYTitle;
+			SupplyChart.ChartAreas[0].AxisY2.Title = Properties.Resources.SupplyChartY2Title;
+			SupplyChart.ChartAreas[0].AxisX.MajorGrid.LineColor = dColor.LightGray;
+			SupplyChart.ChartAreas[0].AxisY.MajorGrid.LineColor = dColor.LightGray;
+			SupplyChart.ChartAreas[0].AxisX2.MajorGrid.LineColor = dColor.LightGray;
+			SupplyChart.ChartAreas[0].AxisY2.MajorGrid.LineColor = dColor.LightGray;
 			// グラフを追加する
 			foreach(var data in ChartData) {
 				var series = new Series();
@@ -75,7 +81,7 @@ namespace WsGH {
 				}
 				// 表示色を選択
 				series.Color = SupplyChartColor[data.Key];
-				series.BorderWidth = 3;
+				series.BorderWidth = 2;
 				// SupplyChartに追加する
 				SupplyChart.Series.Add(series);
 				// 凡例の設定

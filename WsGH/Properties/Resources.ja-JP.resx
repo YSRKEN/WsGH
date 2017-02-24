@@ -247,4 +247,10 @@
   <data name="SupplyTypeSteel" xml:space="preserve">
     <value>鋼材</value>
   </data>
+  <data name="SupplyChartY2Title" xml:space="preserve">
+    <value>ダイヤ</value>
+  </data>
+  <data name="SupplyChartYTitle" xml:space="preserve">
+    <value>燃料・弾薬・鋼材・ボーキ</value>
+  </data>
 </root>
