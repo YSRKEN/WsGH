@@ -165,7 +165,7 @@ namespace WsGH {
 			return gwr;
 		}
 		// ゲーム画面の座標をクリックさせるためのインナークラス
-		class ClickWindow : Window {
+		sealed class ClickWindow : Window {
 			// (thisでScreenshotProvider内の変数・メソッドを叩かせているので仕方ないね)
 			ScreenshotProvider ScreenshotProvider;
 			// 表示用ビットマップ
@@ -175,8 +175,10 @@ namespace WsGH {
 			// クリック完了時に何とかするための奴
 			AfterAction aa;
 			// BitmapSourceを引っ張るためにコレを使わざるを得ない現実
-			[System.Runtime.InteropServices.DllImport("gdi32.dll")]
-			public static extern bool DeleteObject(IntPtr hObject);
+			internal static class NativeMethods {
+				[System.Runtime.InteropServices.DllImport("gdi32.dll")]
+				public static extern bool DeleteObject(IntPtr hObject);
+			}
 			// コンストラクタ
 			public ClickWindow(ScreenshotProvider sp, Rectangle virtualDisplayRectangle, AfterAction aa) {
 				// 仕方ないね
@@ -193,7 +195,7 @@ namespace WsGH {
 				ScreenshotImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
 					hbitmap, IntPtr.Zero, Int32Rect.Empty,
 					System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
-				DeleteObject(hbitmap);
+				NativeMethods.DeleteObject(hbitmap);
 				ScreenshotImage.Height = vdr.Height;
 				ScreenshotImage.Width = vdr.Width;
 				// Gridを作成し、Imageコントロールを乗せる

@@ -49,6 +49,8 @@ namespace WsGH {
 		}
 		// 与えられたデータからグラフを描画する
 		public void DrawChart(Dictionary<string, List<KeyValuePair<DateTime, int>>> ChartData) {
+			if(ChartData.First().Value.Count == 0)
+				return;
 			// グラフの要素を消去する
 			SupplyChart.Series.Clear();
 			SupplyChart.Legends.Clear();
