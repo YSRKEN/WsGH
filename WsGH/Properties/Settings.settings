@@ -65,9 +65,6 @@
     <Setting Name="BackgroundColorType" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="LastUpdate" Type="System.DateTime" Scope="User">
-      <Value Profile="(Default)">1900-01-01</Value>
-    </Setting>
     <Setting Name="ShowSupplyWindowFlg" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>

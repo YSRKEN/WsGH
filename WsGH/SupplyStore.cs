@@ -11,7 +11,7 @@ namespace WsGH {
 	static class SupplyStore {
 		#region MainSupply関係
 		// MainSupplyの最終更新日時
-		static DateTime LastUpdate = Properties.Settings.Default.LastUpdate;
+		static DateTime LastUpdate = new DateTime();
 		// MainSupplyの本体
 		public static List<SupplyList> MainSupplyData = null;
 		// MainSupplyの種類
@@ -77,8 +77,7 @@ namespace WsGH {
 			}
 			MainSupplyListCount = MainSupplyData.First().Count;
 			// 最終更新日時を更新
-			Properties.Settings.Default.LastUpdate = LastUpdate = lastUpdate;
-			Properties.Settings.Default.Save();
+			LastUpdate = lastUpdate;
 		}
 		// MainSupplyに追記できるかを判定する
 		// (MainSupplyIntervalMinute分以上開けないと追記できない設定とした)
@@ -94,8 +93,7 @@ namespace WsGH {
 			}
 			++MainSupplyListCount;
 			// 最終更新日時を更新
-			Properties.Settings.Default.LastUpdate = LastUpdate = supplyDateTime;
-			Properties.Settings.Default.Save();
+			LastUpdate = supplyDateTime;
 		}
 		// MainSupplyを表示する
 		public static void ShowMainSupply() {
