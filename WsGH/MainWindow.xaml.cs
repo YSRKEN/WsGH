@@ -258,10 +258,13 @@ namespace WsGH {
 		}
 		// 言語切替
 		void ChangeLanguage(string culture) {
+			// カルチャの切り替え
 			ResourceService.Current.ChangeCulture(culture);
 			var bindData = DataContext as MainWindowDC;
 			bindData.MenuHeaderBackgroundOther = "";
 			ChangeLanguageCheckMenu(culture);
+			// その他必要な処理
+			sw.DrawChart(SupplyStore.MakeChartData());
 		}
 		/// <summary>
 		/// 現在の使用言語を取得

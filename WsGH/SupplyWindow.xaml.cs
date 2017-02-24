@@ -20,13 +20,6 @@ namespace WsGH {
 	/// </summary>
 	using dColor = System.Drawing.Color;
 	public partial class SupplyWindow : Window {
-		static Dictionary<string, dColor> SupplyChartColor = new Dictionary<string, dColor> {
-			{Properties.Resources.SupplyTypeFuel, dColor.Green},
-			{Properties.Resources.SupplyTypeAmmo, dColor.Chocolate},
-			{Properties.Resources.SupplyTypeSteel, dColor.DarkGray},
-			{Properties.Resources.SupplyTypeBauxite, dColor.OrangeRed},
-			{Properties.Resources.SupplyTypeDiamond, dColor.SkyBlue},
-		};
 		// コンストラクタ
 		public SupplyWindow() {
 			InitializeComponent();
@@ -54,14 +47,24 @@ namespace WsGH {
 		}
 		// 与えられたデータからグラフを描画する
 		public void DrawChart(Dictionary<string, List<KeyValuePair<DateTime, int>>> ChartData) {
+			// グラフの要素を消去する
 			SupplyChart.Series.Clear();
 			SupplyChart.Legends.Clear();
+			// グラフの軸ラベルおよび罫線の色を設定する
 			SupplyChart.ChartAreas[0].AxisY.Title = Properties.Resources.SupplyChartYTitle;
 			SupplyChart.ChartAreas[0].AxisY2.Title = Properties.Resources.SupplyChartY2Title;
 			SupplyChart.ChartAreas[0].AxisX.MajorGrid.LineColor = dColor.LightGray;
 			SupplyChart.ChartAreas[0].AxisY.MajorGrid.LineColor = dColor.LightGray;
 			SupplyChart.ChartAreas[0].AxisX2.MajorGrid.LineColor = dColor.LightGray;
 			SupplyChart.ChartAreas[0].AxisY2.MajorGrid.LineColor = dColor.LightGray;
+			// グラフを描画する際の色を設定する
+			var SupplyChartColor = new Dictionary<string, dColor> {
+				{Properties.Resources.SupplyTypeFuel, dColor.Green},
+				{Properties.Resources.SupplyTypeAmmo, dColor.Chocolate},
+				{Properties.Resources.SupplyTypeSteel, dColor.DarkGray},
+				{Properties.Resources.SupplyTypeBauxite, dColor.OrangeRed},
+				{Properties.Resources.SupplyTypeDiamond, dColor.SkyBlue},
+			};
 			// グラフを追加する
 			foreach(var data in ChartData) {
 				var series = new Series();
