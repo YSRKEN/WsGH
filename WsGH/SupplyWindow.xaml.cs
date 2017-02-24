@@ -65,12 +65,20 @@ namespace WsGH {
 			chartArea.AxisY2.MajorGrid.LineColor = dColor.LightGray;
 			// グラフを描画する際の色を設定する
 			var SupplyChartColor = new dColor[] { dColor.Green, dColor.Chocolate, dColor.DarkGray, dColor.OrangeRed, dColor.SkyBlue };
+			// グラフの凡例を設定する
+			var SupplyChartLegends = new string[] {
+				Properties.Resources.SupplyTypeFuel,
+				Properties.Resources.SupplyTypeAmmo,
+				Properties.Resources.SupplyTypeSteel,
+				Properties.Resources.SupplyTypeBauxite,
+				Properties.Resources.SupplyTypeDiamond,
+			};
 			// グラフを追加する
 			for(int i = 0; i < SupplyStore.MainSupplyTypeCount; ++i) {
 				var data = SupplyStore.MainSupplyData[i];
 				var series = new Series();
 				// 名前を設定する
-				series.Name = SupplyStore.MainSupplyType[i];
+				series.Name = SupplyChartLegends[i];
 				// 折れ線グラフに設定する
 				series.ChartType = SeriesChartType.Line;
 				// 横軸を「時間」とする
