@@ -63,8 +63,6 @@ namespace WsGH {
 			chartArea.AxisY.MajorGrid.LineColor = dColor.LightGray;
 			chartArea.AxisX2.MajorGrid.LineColor = dColor.LightGray;
 			chartArea.AxisY2.MajorGrid.LineColor = dColor.LightGray;
-			// グラフを描画する際の色を設定する
-			var SupplyChartColor = new dColor[] { dColor.Green, dColor.Chocolate, dColor.DarkGray, dColor.OrangeRed, dColor.SkyBlue };
 			// グラフの凡例を設定する
 			var SupplyChartLegends = new string[] {
 				Properties.Resources.SupplyTypeFuel,
@@ -92,7 +90,7 @@ namespace WsGH {
 					series.YAxisType = AxisType.Secondary;
 				}
 				// 表示色を選択
-				series.Color = SupplyChartColor[i];
+				series.Color = SupplyStore.SupplyChartColor[i];
 				series.BorderWidth = 2;
 				// SupplyChartに追加する
 				SupplyChart.Series.Add(series);

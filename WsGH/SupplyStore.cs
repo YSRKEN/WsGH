@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 namespace WsGH {
 	using SupplyPair = KeyValuePair<DateTime, int>;
 	using SupplyList = List<KeyValuePair<DateTime, int>>;
+	using System.Drawing;
+
 	static class SupplyStore {
 		#region MainSupply関係
 		// MainSupplyの最終更新日時
@@ -16,6 +18,8 @@ namespace WsGH {
 		public static List<SupplyList> MainSupplyData = null;
 		// MainSupplyの種類
 		public static string[] MainSupplyType = { "Fuel", "Ammo", "Steel", "Bauxite", "Diamond" };
+		// グラフを描画する際の色を設定する
+		public static Color[] SupplyChartColor = new Color[] { Color.Green, Color.Chocolate, Color.DarkGray, Color.OrangeRed, Color.SkyBlue };
 		// MainSupplyの大きさ
 		public static int MainSupplyTypeCount = MainSupplyType.Count();
 		public static int MainSupplyListCount = 0;
