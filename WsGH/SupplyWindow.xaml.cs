@@ -26,7 +26,7 @@ namespace WsGH {
 		public SupplyWindow() {
 			InitializeComponent();
 			MouseLeftButtonDown += (o, e) => DragMove();
-			DrawChart(SupplyStore.MakeChartData());
+			DrawChart();
 		}
 		// ウィンドウ位置復元
 		protected override void OnSourceInitialized(EventArgs e) {
@@ -48,46 +48,43 @@ namespace WsGH {
 			Properties.Settings.Default.Save();
 		}
 		// 与えられたデータからグラフを描画する
-		public void DrawChart(Dictionary<string, List<KeyValuePair<DateTime, int>>> ChartData) {
-			if(ChartData.First().Value.Count() == 0)
+		public void DrawChart() {
+			// データが空なら描画しない
+			if(SupplyStore.MainSupplyListCount == 0)
 				return;
 			// グラフの要素を消去する
 			SupplyChart.Series.Clear();
 			SupplyChart.Legends.Clear();
 			// グラフの軸ラベルおよび罫線の色を設定する
-			SupplyChart.ChartAreas[0].AxisY.Title = Properties.Resources.SupplyChartYTitle;
-			SupplyChart.ChartAreas[0].AxisY2.Title = Properties.Resources.SupplyChartY2Title;
-			SupplyChart.ChartAreas[0].AxisX.MajorGrid.LineColor = dColor.LightGray;
-			SupplyChart.ChartAreas[0].AxisY.MajorGrid.LineColor = dColor.LightGray;
-			SupplyChart.ChartAreas[0].AxisX2.MajorGrid.LineColor = dColor.LightGray;
-			SupplyChart.ChartAreas[0].AxisY2.MajorGrid.LineColor = dColor.LightGray;
+			var chartArea = SupplyChart.ChartAreas[0];
+			chartArea.AxisY.Title = Properties.Resources.SupplyChartYTitle;
+			chartArea.AxisY2.Title = Properties.Resources.SupplyChartY2Title;
+			chartArea.AxisX.MajorGrid.LineColor = dColor.LightGray;
+			chartArea.AxisY.MajorGrid.LineColor = dColor.LightGray;
+			chartArea.AxisX2.MajorGrid.LineColor = dColor.LightGray;
+			chartArea.AxisY2.MajorGrid.LineColor = dColor.LightGray;
 			// グラフを描画する際の色を設定する
-			var SupplyChartColor = new Dictionary<string, dColor> {
-				{"Fuel", dColor.Green},
-				{"Ammo", dColor.Chocolate},
-				{"Steel", dColor.DarkGray},
-				{"Bauxite", dColor.OrangeRed},
-				{"Diamond", dColor.SkyBlue},
-			};
+			var SupplyChartColor = new dColor[] { dColor.Green, dColor.Chocolate, dColor.DarkGray, dColor.OrangeRed, dColor.SkyBlue };
 			// グラフを追加する
-			foreach(var data in ChartData) {
+			for(int i = 0; i < SupplyStore.MainSupplyTypeCount; ++i) {
+				var data = SupplyStore.MainSupplyData[i];
 				var series = new Series();
 				// 名前を設定する
-				series.Name = data.Key;
+				series.Name = SupplyStore.MainSupplyType[i];
 				// 折れ線グラフに設定する
 				series.ChartType = SeriesChartType.Line;
 				// 横軸を「時間」とする
 				series.XValueType = ChartValueType.DateTime;
 				// 表示用データを追加する
-				foreach(var Column in data.Value) {
+				foreach(var Column in data) {
 					series.Points.AddXY(Column.Key.ToOADate(), Column.Value);
 				}
 				// 表示位置を調整
-				if(data.Key == "Diamond") {
+				if(SupplyStore.MainSupplyType[i] == "Diamond") {
 					series.YAxisType = AxisType.Secondary;
 				}
 				// 表示色を選択
-				series.Color = SupplyChartColor[data.Key];
+				series.Color = SupplyChartColor[i];
 				series.BorderWidth = 2;
 				// SupplyChartに追加する
 				SupplyChart.Series.Add(series);
@@ -98,7 +95,7 @@ namespace WsGH {
 				SupplyChart.Legends.Add(legend);
 			}
 			// グラフのスケールを設定する
-			LeastChartTime = ChartData.First().Value.Max(d => d.Key);
+			LeastChartTime = SupplyStore.MainSupplyData.First().Max(d => d.Key);
 			ChangeChartScale();
 		}
 		// グラフのスケールを変更する
