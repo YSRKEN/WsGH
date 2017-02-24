@@ -217,4 +217,64 @@
   <data name="MenuHeaderBackgroundOther" xml:space="preserve">
     <value>その他</value>
   </data>
+  <data name="LoggingTextAddSupplyData" xml:space="preserve">
+    <value>資材ログに追記</value>
+  </data>
+  <data name="LoggingTextReadSupplyData" xml:space="preserve">
+    <value>資材ログを読み込み</value>
+  </data>
+  <data name="LoggingTextSaveSupplyData" xml:space="preserve">
+    <value>資材ログに書き込み</value>
+  </data>
+  <data name="TitleSupplyWindow" xml:space="preserve">
+    <value>資材記録画面</value>
+  </data>
+  <data name="MenuHeaderSupplyWindow" xml:space="preserve">
+    <value>資材記録画面(_S)</value>
+  </data>
+  <data name="SupplyTypeAmmo" xml:space="preserve">
+    <value>弾薬</value>
+  </data>
+  <data name="SupplyTypeBauxite" xml:space="preserve">
+    <value>ボーキサイト</value>
+  </data>
+  <data name="SupplyTypeDiamond" xml:space="preserve">
+    <value>ダイヤ</value>
+  </data>
+  <data name="SupplyTypeFuel" xml:space="preserve">
+    <value>燃料</value>
+  </data>
+  <data name="SupplyTypeSteel" xml:space="preserve">
+    <value>鋼材</value>
+  </data>
+  <data name="SupplyChartY2Title" xml:space="preserve">
+    <value>ダイヤ</value>
+  </data>
+  <data name="SupplyChartYTitle" xml:space="preserve">
+    <value>燃料・弾薬・鋼材・ボーキ</value>
+  </data>
+  <data name="SupplyScale1Day" xml:space="preserve">
+    <value>1日</value>
+  </data>
+  <data name="SupplyScale1Month" xml:space="preserve">
+    <value>1ヶ月</value>
+  </data>
+  <data name="SupplyScale1Week" xml:space="preserve">
+    <value>1週間</value>
+  </data>
+  <data name="SupplyScale1Year" xml:space="preserve">
+    <value>1年</value>
+  </data>
+  <data name="SupplyScale2Month" xml:space="preserve">
+    <value>2ヶ月</value>
+  </data>
+  <data name="SupplyScale2Week" xml:space="preserve">
+    <value>2週間</value>
+  </data>
+  <data name="SupplyScale3Month" xml:space="preserve">
+    <value>3ヶ月</value>
+  </data>
+  <data name="SupplyScale6Month" xml:space="preserve">
+    <value>6ヶ月</value>
+  </data>
 </root>

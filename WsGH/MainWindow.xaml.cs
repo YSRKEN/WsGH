@@ -24,12 +24,12 @@ namespace WsGH {
 	/// </summary>
 	public partial class MainWindow : Window {
 		ScreenshotProvider sp = null;	//スクショ用の情報を記憶する
-		TimerWindow tw = null;			//TimerWindowのインスタンス
+		TimerWindow tw = null;           //TimerWindowのインスタンス
+		SupplyWindow sw = null;          //SupplyWindowのインスタンス
 		int timerWindowSecond;			//毎秒行う処理のために秒数を記憶
 		// コンストラクタ
 		public MainWindow() {
 			InitializeComponent();
-			SceneRecognition.InitialSceneRecognition();
 			MouseLeftButtonDown += (o, e) => DragMove();
 			// フォルダの有無をチェック
 			if(!System.IO.Directory.Exists(@"pic\")) {
@@ -44,6 +44,14 @@ namespace WsGH {
 			TwitterOptionMenu.IsChecked = Properties.Settings.Default.ScreenshotForTwitterFlg;
 			SetBackgroundCheck(Properties.Settings.Default.BackgroundColorType);
 			ChangeLanguageCheckMenu(GetCulture());
+			// 周辺クラスの初期化
+			SceneRecognition.InitialSceneRecognition();
+			try {
+				SupplyStore.ReadMainSupply();
+				addLog($"{Properties.Resources.LoggingTextReadSupplyData}：Success");
+			} catch(Exception) {
+				addLog($"{Properties.Resources.LoggingTextReadSupplyData}：Failed");
+			}
 			// タイマーを作成する
 			DispatcherTimer m_Timer = new DispatcherTimer(DispatcherPriority.Normal, Dispatcher);
 			m_Timer.Interval = TimeSpan.FromMilliseconds(200.0);
@@ -55,6 +63,11 @@ namespace WsGH {
 			tw = new TimerWindow();
 			if(Properties.Settings.Default.ShowTimerWindowFlg) {
 				tw.Show();
+			}
+			// 資材記録画面を作成・表示
+			sw = new SupplyWindow();
+			if(Properties.Settings.Default.ShowSupplyWindowFlg) {
+				sw.Show();
 			}
 		}
 		// ウィンドウ位置復元
@@ -90,6 +103,16 @@ namespace WsGH {
 			Properties.Settings.Default.ShowTimerWindowFlg = true;
 			Properties.Settings.Default.Save();
 			tw.Show();
+		}
+		private void ShowSupplyWindow_Click(object sender, RoutedEventArgs e) {
+			// 2枚以上同じウィンドウを生成しないようにする
+			if(Properties.Settings.Default.ShowSupplyWindowFlg)
+				return;
+			// ウィンドウを生成
+			sw = new SupplyWindow();
+			Properties.Settings.Default.ShowSupplyWindowFlg = true;
+			Properties.Settings.Default.Save();
+			sw.Show();
 		}
 		private void ShowPicFolderMenu_Click(object sender, RoutedEventArgs e) {
 			System.Diagnostics.Process.Start(@"pic\");
@@ -235,10 +258,13 @@ namespace WsGH {
 		}
 		// 言語切替
 		void ChangeLanguage(string culture) {
+			// カルチャの切り替え
 			ResourceService.Current.ChangeCulture(culture);
 			var bindData = DataContext as MainWindowDC;
 			bindData.MenuHeaderBackgroundOther = "";
 			ChangeLanguageCheckMenu(culture);
+			// その他必要な処理
+			sw.DrawChart(SupplyStore.MakeChartData());
 		}
 		/// <summary>
 		/// 現在の使用言語を取得
@@ -274,6 +300,7 @@ namespace WsGH {
 			#region 毎フレーム毎の処理
 			// スクショが取得できていた場合
 			if(captureFrame != null) {
+				#region シーンによる振り分け
 				// シーンを判定する
 				var scene = SceneRecognition.JudgeScene(captureFrame);
 				// 現在認識しているシーンを表示する
@@ -304,7 +331,7 @@ namespace WsGH {
 						}
 					}
 					break;
-					#endregion
+				#endregion
 				case SceneRecognition.SceneType.Build:
 					#region 建造中なら、建造時間を読み取る
 					var buildEndTime = SceneRecognition.getBuildTimer(captureFrame);
@@ -375,10 +402,31 @@ namespace WsGH {
 					break;
 				#endregion
 				case SceneRecognition.SceneType.Home:
-					
+
 				default:
 					break;
 				}
+				#endregion
+				#region 資材ロギング
+				// MainSupplyは、前回のロギングから一定時間以上経っていて、かつ読み込み可能なシーンなら追記する
+				if(SupplyStore.CanAddMainSupply() && SceneRecognition.CanReadMainSupply(captureFrame)) {
+					// 現在時刻と資源量を取得
+					var nowTime = DateTime.Now;
+					var supply = SceneRecognition.getMainSupply(captureFrame);
+					// データベースに書き込み
+					SupplyStore.AddMainSupply(nowTime, supply);
+					addLog($"{Properties.Resources.LoggingTextAddSupplyData}");
+					// データベースを保存
+					try {
+						SupplyStore.SaveMainSupply();
+						addLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Success");
+					} catch(Exception) {
+						addLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Failed");
+					}
+					// グラフに反映
+					sw.DrawChart(SupplyStore.MakeChartData());
+				}
+				#endregion
 			}
 			#endregion
 			#region 1秒ごとの処理

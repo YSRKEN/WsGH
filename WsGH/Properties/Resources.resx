@@ -217,4 +217,64 @@
   <data name="MenuHeaderBackgroundOther" xml:space="preserve">
     <value>Other App</value>
   </data>
+  <data name="LoggingTextAddSupplyData" xml:space="preserve">
+    <value>add SupplyData</value>
+  </data>
+  <data name="LoggingTextReadSupplyData" xml:space="preserve">
+    <value>read SupplyData</value>
+  </data>
+  <data name="LoggingTextSaveSupplyData" xml:space="preserve">
+    <value>save SupplyData</value>
+  </data>
+  <data name="MenuHeaderSupplyWindow" xml:space="preserve">
+    <value>SupplyWindow(_S)</value>
+  </data>
+  <data name="TitleSupplyWindow" xml:space="preserve">
+    <value>SupplyWindow</value>
+  </data>
+  <data name="SupplyTypeAmmo" xml:space="preserve">
+    <value>Ammo</value>
+  </data>
+  <data name="SupplyTypeBauxite" xml:space="preserve">
+    <value>Bauxite</value>
+  </data>
+  <data name="SupplyTypeDiamond" xml:space="preserve">
+    <value>Diamond</value>
+  </data>
+  <data name="SupplyTypeFuel" xml:space="preserve">
+    <value>Fuel</value>
+  </data>
+  <data name="SupplyTypeSteel" xml:space="preserve">
+    <value>Steel</value>
+  </data>
+  <data name="SupplyChartY2Title" xml:space="preserve">
+    <value>Diamond</value>
+  </data>
+  <data name="SupplyChartYTitle" xml:space="preserve">
+    <value>Fuel, Ammo, Steel, Bauxite</value>
+  </data>
+  <data name="SupplyScale1Day" xml:space="preserve">
+    <value>1 Day</value>
+  </data>
+  <data name="SupplyScale1Month" xml:space="preserve">
+    <value>1 Month</value>
+  </data>
+  <data name="SupplyScale1Week" xml:space="preserve">
+    <value>1 Week</value>
+  </data>
+  <data name="SupplyScale1Year" xml:space="preserve">
+    <value>1 Year</value>
+  </data>
+  <data name="SupplyScale2Month" xml:space="preserve">
+    <value>2 Month</value>
+  </data>
+  <data name="SupplyScale2Week" xml:space="preserve">
+    <value>2 Week</value>
+  </data>
+  <data name="SupplyScale3Month" xml:space="preserve">
+    <value>3 Month</value>
+  </data>
+  <data name="SupplyScale6Month" xml:space="preserve">
+    <value>6 Month</value>
+  </data>
 </root>

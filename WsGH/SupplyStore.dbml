@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SupplyStore" Class="SupplyStoreDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\SupplyStore.mdf;Integrated Security=True" SettingsObjectName="WsGH.Properties.Settings" SettingsPropertyName="SupplyStoreConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.SubSupplyTable" Member="SubSupplyTable">
+    <Type Name="SubSupplyTable">
+      <Column Name="DateTime" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Bucket" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Burner" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShipDrawing" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="WeaponDrawing" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MainSupplyTable" Member="MainSupplyTable">
+    <Type Name="MainSupplyTable">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Fuel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Ammo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Steel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Bauxite" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Diamond" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+</Database>
