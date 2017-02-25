@@ -446,7 +446,7 @@ namespace WsGH {
 		}
 		#region 遠征関係
 		// 遠征のシーンかを判定する
-		public static bool IsExpeditionScene(Bitmap bitmap) {
+		static bool IsExpeditionScene(Bitmap bitmap) {
 			{
 				// 左下の「母港」ボタンの近くにある装飾
 				var hash = getDifferenceHash(bitmap, 10.11, 76.36, 3.525, 6.276);

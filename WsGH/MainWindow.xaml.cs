@@ -276,14 +276,14 @@ namespace WsGH {
 			saveScreenshot();
 		}
 		// ログに内容を追加
-		private void addLog(string str) {
+		void addLog(string str) {
 			var dt = DateTime.Now;
 			var bindData = DataContext as MainWindowDC;
 			bindData.LoggingText += dt.ToString("hh:mm:ss ") + str + "\n";
 			LoggingTextBox.ScrollToEnd();
 		}
 		// 座標取得後の画面更新処理
-		private void getPosition() {
+		void getPosition() {
 			// 成功か失敗かを読み取る
 			var isGetPosition = sp.isGetPosition();
 			// 結果を記録
@@ -294,7 +294,7 @@ namespace WsGH {
 				addLog("  " + sp.getPositionStr());
 		}
 		// 画像保存処理
-		private void saveScreenshot() {
+		void saveScreenshot() {
 			var bindData = DataContext as MainWindowDC;
 			// 現在時間からファイル名を生成する
 			var dt = DateTime.Now;
