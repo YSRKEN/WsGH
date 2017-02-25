@@ -238,62 +238,44 @@ namespace WsGH {
 		// 周囲をトリミングする
 		static Rectangle GetTrimmingRectangle(Bitmap bitmap) {
 			var rect = new Rectangle(new Point(0, 0), bitmap.Size);
+			var xRange = Enumerable.Range(0, bitmap.Width).DefaultIfEmpty(-1);
+			var yRange = Enumerable.Range(0, bitmap.Height).DefaultIfEmpty(-1);
 			// 上下左右の境界を取得する
 			var borderColor = Color.FromArgb(255, 255, 255);
 			// 左
-			for(int x = 0; x < bitmap.Width; ++x) {
-				bool borderFlg = false;
-				for(int y = 0; y < bitmap.Height; ++y) {
-					if(bitmap.GetPixel(x, y) != borderColor) {
-						borderFlg = true;
-						break;
-					}
-				}
-				if(borderFlg) {
+			foreach(var x in xRange) {
+				// borderColorと等しくない色を発見した場合、pos >= 0になる
+				var pos = yRange.FirstOrDefault(y => bitmap.GetPixel(x, y) != borderColor);
+				if(pos >= 0) {
 					rect.X = x;
 					rect.Width -= x;
 					break;
 				}
 			}
 			// 上
-			for(int y = 0; y < bitmap.Height; ++y) {
-				bool borderFlg = false;
-				for(int x = 0; x < bitmap.Width; ++x) {
-					if(bitmap.GetPixel(x, y) != borderColor) {
-						borderFlg = true;
-						break;
-					}
-				}
-				if(borderFlg) {
+			foreach(var y in yRange) {
+				// borderColorと等しくない色を発見した場合、pos >= 0になる
+				var pos = xRange.FirstOrDefault(x => bitmap.GetPixel(x, y) != borderColor);
+				if(pos >= 0) {
 					rect.Y = y;
 					rect.Height -= y;
 					break;
 				}
 			}
 			// 右
-			for(int x = bitmap.Width - 1; x >= 0; --x) {
-				bool borderFlg = false;
-				for(int y = 0; y < bitmap.Height; ++y) {
-					if(bitmap.GetPixel(x, y) != borderColor) {
-						borderFlg = true;
-						break;
-					}
-				}
-				if(borderFlg) {
+			foreach(var x in xRange.Reverse()) {
+				// borderColorと等しくない色を発見した場合、pos >= 0になる
+				var pos = yRange.FirstOrDefault(y => bitmap.GetPixel(x, y) != borderColor);
+				if(pos >= 0) {
 					rect.Width -= bitmap.Width - x - 1;
 					break;
 				}
 			}
 			// 下
-			for(int y = bitmap.Height - 1; y >= 0; --y) {
-				bool borderFlg = false;
-				for(int x = 0; x < bitmap.Width; ++x) {
-					if(bitmap.GetPixel(x, y) != borderColor) {
-						borderFlg = true;
-						break;
-					}
-				}
-				if(borderFlg) {
+			foreach(var y in yRange.Reverse()) {
+				// borderColorと等しくない色を発見した場合、pos >= 0になる
+				var pos = xRange.FirstOrDefault(x => bitmap.GetPixel(x, y) != borderColor);
+				if(pos >= 0) {
 					rect.Height -= bitmap.Height - y - 1;
 					break;
 				}
