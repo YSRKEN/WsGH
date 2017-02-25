@@ -77,6 +77,47 @@ namespace WsGH {
 				Properties.Settings.Default.Save();
 			}
 		}
+		// カルチャ
+		string SoftwareCulture {
+			get {
+				if(Properties.Resources.Culture == null) {
+					// カルチャーがセットされてない際はシステムのデフォルト言語を返す
+					return System.Globalization.CultureInfo.CurrentCulture.ToString();
+				} else {
+					// さもなければセットされたカルチャーを返す
+					return Properties.Resources.Culture.ToString();
+				}
+			}
+			set {
+				string cultureMode = null;
+				switch(value) {
+				case "ja-JP":
+					cultureMode = "ja-JP";
+					break;
+				case "en-US":
+					cultureMode = "";
+					break;
+				}
+				// カルチャの切り替え
+				if(cultureMode != null)
+					ResourceService.Current.ChangeCulture(value);
+				// 画面に反映
+				switch(SoftwareCulture) {
+				case "ja-JP":
+					SelectJapaneseMenu.IsChecked = true;
+					SelectEnglishMenu.IsChecked = false;
+					break;
+				default:
+					SelectJapaneseMenu.IsChecked = false;
+					SelectEnglishMenu.IsChecked = true;
+					break;
+				}
+				var bindData = DataContext as MainWindowDC;
+				bindData.MenuHeaderBackgroundOther = "";
+				// その他必要な処理
+				sw?.DrawChart();
+			}
+		}
 		// コンストラクタ
 		public MainWindow() {
 			InitializeComponent();
@@ -92,7 +133,7 @@ namespace WsGH {
 				TwitterFlg = Properties.Settings.Default.ScreenshotForTwitterFlg,
 			};
 			BackgroundCheck = Properties.Settings.Default.BackgroundColorType;
-			ChangeLanguageCheckMenu(GetCulture());
+			SoftwareCulture = "";
 			#endregion
 			// 周辺クラスの初期化
 			SceneRecognition.InitialSceneRecognition();
@@ -215,11 +256,11 @@ namespace WsGH {
 		}
 		private void SelectLanguageJapanese_Click(object sender, RoutedEventArgs e) {
 			// 日本語に切り替え
-			ChangeLanguage("ja-JP");
+			SoftwareCulture = "ja-JP";
 		}
 		private void SelectLanguageEnglish_Click(object sender, RoutedEventArgs e) {
 			// 英語に切り替え
-			ChangeLanguage("");
+			SoftwareCulture = "en-US";
 		}
 		#endregion
 		// ボタン操作
@@ -263,45 +304,6 @@ namespace WsGH {
 		static string ColorToString(System.Drawing.Color clr) {
 			return "#" + clr.R.ToString("X2") + clr.G.ToString("X2") + clr.B.ToString("X2");
 		}
-		#region カルチャ関連
-		// 言語切替
-		void ChangeLanguage(string culture) {
-			// カルチャの切り替え
-			ResourceService.Current.ChangeCulture(culture);
-			var bindData = DataContext as MainWindowDC;
-			bindData.MenuHeaderBackgroundOther = "";
-			ChangeLanguageCheckMenu(culture);
-			// その他必要な処理
-			sw.DrawChart();
-		}
-		/// <summary>
-		/// 現在の使用言語を取得
-		/// </summary>
-		/// <returns>""なら英語、"ja-JP"なら日本語</returns>
-		string GetCulture() {
-			return (
-					// カルチャーがセットされてない際は
-					Properties.Resources.Culture == null
-					// システムのデフォルト言語を返す
-					? System.Globalization.CultureInfo.CurrentCulture
-					// さもなければセットされたカルチャーを返す
-					: Properties.Resources.Culture
-				).ToString();	//文字列化
-		}
-		// 言語切替時のチェック
-		void ChangeLanguageCheckMenu(string culture) {
-			switch(culture) {
-			case "ja-JP":
-				SelectJapaneseMenu.IsChecked = true;
-				SelectEnglishMenu.IsChecked = false;
-				break;
-			default:
-				SelectJapaneseMenu.IsChecked = false;
-				SelectEnglishMenu.IsChecked = true;
-				break;
-			}
-		}
-		#endregion
 		// タイマー動作
 		private void DispatcherTimer_Tick(object sender, EventArgs e) {
 			// 可能ならスクショを取得する
@@ -313,8 +315,7 @@ namespace WsGH {
 				// シーンを判定する
 				var scene = SceneRecognition.JudgeScene(captureFrame);
 				// 現在認識しているシーンを表示する
-				var culture = GetCulture();
-				SceneTextBlock.Text = $"{Properties.Resources.LoggingTextScene} : {(culture == "ja-JP" ? SceneRecognition.SceneStringJapanese[scene] : SceneRecognition.SceneString[scene])}";
+				SceneTextBlock.Text = $"{Properties.Resources.LoggingTextScene} : {(SoftwareCulture == "ja-JP" ? SceneRecognition.SceneStringJapanese[scene] : SceneRecognition.SceneString[scene])}";
 				// シーンごとに振り分ける
 				var bindData = tw.DataContext as TimerValue;
 				switch(scene) {
