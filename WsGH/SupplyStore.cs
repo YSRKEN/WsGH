@@ -8,24 +8,30 @@ using System.Threading.Tasks;
 namespace WsGH {
 	using SupplyPair = KeyValuePair<DateTime, int>;
 	using SupplyList = List<KeyValuePair<DateTime, int>>;
+	using System.Drawing;
 	static class SupplyStore {
 		#region MainSupply関係
+		#region メンバ変数
 		// MainSupplyの最終更新日時
-		static DateTime LastUpdate = new DateTime();
+		static DateTime lastUpdate = new DateTime();
 		// MainSupplyの本体
-		public static List<SupplyList> MainSupplyData = null;
-		// MainSupplyの種類
-		public static string[] MainSupplyType = { "Fuel", "Ammo", "Steel", "Bauxite", "Diamond" };
+		public static List<SupplyData> MainSupplyData = null;
 		// MainSupplyの大きさ
-		public static int MainSupplyTypeCount = MainSupplyType.Count();
+		public static int MainSupplyTypeCount;
 		public static int MainSupplyListCount = 0;
 		// MainSupplyの更新間隔
 		static double MainSupplyIntervalMinute = 60.0;
+		#endregion
 		// MainSupplyの初期化
 		static void InitialMainSupply() {
-			MainSupplyData = new List<SupplyList> {
-				new SupplyList(), new SupplyList(), new SupplyList(), new SupplyList(), new SupplyList()
+			MainSupplyData = new List<SupplyData> {
+				new SupplyData("Fuel", Color.Green),
+				new SupplyData("Ammo", Color.Chocolate),
+				new SupplyData("Steel", Color.DarkGray),
+				new SupplyData("Bauxite", Color.OrangeRed),
+				new SupplyData("Diamond", Color.SkyBlue),
 			};
+			MainSupplyTypeCount = MainSupplyData.Count;
 			MainSupplyListCount = 0;
 		}
 		// MainSupplyをCSVから読み込む
@@ -61,7 +67,7 @@ namespace WsGH {
 							int.Parse(match.Groups["Diamond"].Value)};
 						// データベースに入力
 						for(int ti = 0; ti < MainSupplyTypeCount; ++ti) {
-							MainSupplyData[ti].Add(new SupplyPair(supplyDateTime, supplyData[ti]));
+							MainSupplyData[ti].List.Add(new SupplyPair(supplyDateTime, supplyData[ti]));
 						}
 						if(lastUpdate < supplyDateTime) {
 							lastUpdate = supplyDateTime;
@@ -73,35 +79,35 @@ namespace WsGH {
 				}
 			}
 			foreach(var supplyData in MainSupplyData){
-				supplyData.Sort((a, b) => (a.Key < b.Key ? -1 : 1));
+				supplyData.List.Sort((a, b) => (a.Key < b.Key ? -1 : 1));
 			}
-			MainSupplyListCount = MainSupplyData.First().Count;
+			MainSupplyListCount = MainSupplyData.First().List.Count;
 			// 最終更新日時を更新
-			LastUpdate = lastUpdate;
+			SupplyStore.lastUpdate = lastUpdate;
 		}
 		// MainSupplyに追記できるかを判定する
 		// (MainSupplyIntervalMinute分以上開けないと追記できない設定とした)
 		public static bool CanAddMainSupply() {
 			var nowTime = DateTime.Now;
-			return ((nowTime - LastUpdate).TotalMinutes >= MainSupplyIntervalMinute);
+			return ((nowTime - lastUpdate).TotalMinutes >= MainSupplyIntervalMinute);
 		}
 		// MainSupplyに追記する
 		public static void AddMainSupply(DateTime supplyDateTime, List<int> supply) {
 			// データを書き込み
 			for(int ti = 0; ti < MainSupplyTypeCount; ++ti) {
-				MainSupplyData[ti].Add(new SupplyPair(supplyDateTime, supply[ti]));
+				MainSupplyData[ti].List.Add(new SupplyPair(supplyDateTime, supply[ti]));
 			}
 			++MainSupplyListCount;
 			// 最終更新日時を更新
-			LastUpdate = supplyDateTime;
+			lastUpdate = supplyDateTime;
 		}
 		// MainSupplyを表示する
 		public static void ShowMainSupply() {
 			Console.WriteLine("資材ログ：");
 			for(int li = 0; li < MainSupplyListCount; ++li) {
-				Console.Write($"{MainSupplyData.First()[li].Key}");
+				Console.Write($"{MainSupplyData.First().List[li].Key}");
 				for(int ti = 0; ti < MainSupplyTypeCount; ++ti) {
-					Console.Write($",{MainSupplyData[ti][li].Value}");
+					Console.Write($",{MainSupplyData[ti].List[li].Value}");
 				}
 				Console.WriteLine("");
 			}
@@ -111,9 +117,9 @@ namespace WsGH {
 			using(var sw = new System.IO.StreamWriter(@"MainSupply.csv")) {
 				sw.WriteLine("時刻,燃料,弾薬,鋼材,ボーキサイト,ダイヤ");
 				for(int li = 0; li < MainSupplyListCount; ++li) {
-					sw.Write($"{MainSupplyData.First()[li].Key}");
+					sw.Write($"{MainSupplyData.First().List[li].Key}");
 					for(int ti = 0; ti < MainSupplyTypeCount; ++ti) {
-						sw.Write($",{MainSupplyData[ti][li].Value}");
+						sw.Write($",{MainSupplyData[ti].List[li].Value}");
 					}
 					sw.WriteLine("");
 				}
@@ -122,6 +128,22 @@ namespace WsGH {
 		#endregion
 		#region SubSupply関係
 
+		#endregion
+		#region 内部クラス
+		public class SupplyData {
+			// 時系列データ
+			public SupplyList List;
+			// 種別
+			public string Type;
+			// グラフの描画色
+			public Color Color;
+			// コンストラクタ
+			public SupplyData(string type, Color color) {
+				List = new SupplyList();
+				Type = type;
+				Color = color;
+			}
+		}
 		#endregion
 	}
 }

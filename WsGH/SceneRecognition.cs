@@ -13,24 +13,6 @@ namespace WsGH {
 		// 各種定数定義
 		#region シーン認識用定数
 		public enum SceneType { Unknown, Expedition, Build, Develop, Dock, Home };
-		public static Dictionary<SceneType, string> SceneString
-			 = new Dictionary<SceneType, string> {
-				{ SceneType.Unknown, "Unknown" },
-				{ SceneType.Expedition, "Expedition" },
-				{ SceneType.Build, "Build" },
-				{ SceneType.Develop, "Develop" },
-				{ SceneType.Dock, "Dock" },
-				{ SceneType.Home, "Home" },
-			 };
-		public static Dictionary<SceneType, string> SceneStringJapanese
-			 = new Dictionary<SceneType, string> {
-				{ SceneType.Unknown, "不明" },
-				{ SceneType.Expedition, "遠征" },
-				{ SceneType.Build, "建造" },
-				{ SceneType.Develop, "開発" },
-				{ SceneType.Dock, "入渠" },
-				{ SceneType.Home, "母港" },
-			 };
 		#endregion
 		#region 遠征用定数
 		// 遠征艦隊数
@@ -151,7 +133,7 @@ namespace WsGH {
 		/// <param name="wx_per">切り取る幅</param>
 		/// <param name="wy_per">切り取る高さ</param>
 		/// <returns>64bitのDifferenceHash値</returns>
-		static ulong getDifferenceHash(Bitmap bitmap, double px_per, double py_per, double wx_per, double wy_per) {
+		static ulong GetDifferenceHash(Bitmap bitmap, double px_per, double py_per, double wx_per, double wy_per) {
 			// ％指定をピクセル指定に直す
 			var bitmapWidth = bitmap.Width;
 			var bitmapHeight = bitmap.Height;
@@ -188,34 +170,6 @@ namespace WsGH {
 					srcRect.Width, srcRect.Height, GraphicsUnit.Pixel, ia
 				);
 			}
-			/*var canvas2 = new Bitmap(wx, wy);
-			using(var g = Graphics.FromImage(canvas2)) {
-				// 切り取られる位置・大きさ
-				var srcRect = new Rectangle(px, py, wx, wy);
-				// 貼り付ける位置・大きさ
-				var desRect = new Rectangle(0, 0, canvas2.Width, canvas2.Height);
-				// グレースケール変換用のマトリックスを設定
-				var cm = new ColorMatrix(
-					new float[][]{
-						new float[]{0.299f, 0.299f, 0.299f, 0 ,0},
-						new float[]{0.587f, 0.587f, 0.587f, 0, 0},
-						new float[]{0.114f, 0.114f, 0.114f, 0, 0},
-						new float[]{0, 0, 0, 1, 0},
-						new float[]{0, 0, 0, 0, 1}
-					}
-				);
-				var ia = new ImageAttributes();
-				ia.SetColorMatrix(cm);
-				// 描画
-				// ImageAttributesを設定しなければ、
-				// g.DrawImage(bitmap, desRect, srcRect, GraphicsUnit.Pixel);
-				// で済むのにMSェ……
-				g.DrawImage(
-					bitmap, desRect, srcRect.X, srcRect.Y,
-					srcRect.Width, srcRect.Height, GraphicsUnit.Pixel, ia
-				);
-			}
-			canvas2.Save("canvas2.bmp");*/
 			// 隣接ピクセルとの比較結果を符号化する
 			ulong hash = 0;
 			for(int y = 0; y < 8; ++y) {
@@ -234,11 +188,11 @@ namespace WsGH {
 		/// <param name="bitmap">画像</param>
 		/// <param name="rect">切り取るRect</param>
 		/// <returns>64bitのDifferenceHash値</returns>
-		static ulong getDifferenceHash(Bitmap bitmap, RectangleF rect) {
-			return getDifferenceHash(bitmap, rect.X, rect.Y, rect.Width, rect.Height);
+		static ulong GetDifferenceHash(Bitmap bitmap, RectangleF rect) {
+			return GetDifferenceHash(bitmap, rect.X, rect.Y, rect.Width, rect.Height);
 		}
 		// ビットカウント
-		static uint popcnt(ulong x) {
+		static uint Popcnt(ulong x) {
 			x = ((x & 0xaaaaaaaaaaaaaaaa) >> 1) + (x & 0x5555555555555555);
 			x = ((x & 0xcccccccccccccccc) >> 2) + (x & 0x3333333333333333);
 			x = ((x & 0xf0f0f0f0f0f0f0f0) >> 4) + (x & 0x0f0f0f0f0f0f0f0f);
@@ -248,77 +202,55 @@ namespace WsGH {
 			return (uint)x;
 		}
 		// ハミング距離を計算する
-		static uint getHummingDistance(ulong a, ulong b) {
-			return popcnt(a ^ b);
+		static uint GetHummingDistance(ulong a, ulong b) {
+			return Popcnt(a ^ b);
 		}
 		#endregion
 		#region OCR関係
 		// 周囲をトリミングする
-		static Rectangle getTrimmingRectangle(Bitmap bitmap) {
+		static Rectangle GetTrimmingRectangle(Bitmap bitmap) {
 			var rect = new Rectangle(new Point(0, 0), bitmap.Size);
+			var xRange = Enumerable.Range(0, bitmap.Width).DefaultIfEmpty(-1);
+			var yRange = Enumerable.Range(0, bitmap.Height).DefaultIfEmpty(-1);
 			// 上下左右の境界を取得する
 			var borderColor = Color.FromArgb(255, 255, 255);
 			// 左
-			for(int x = 0; x < bitmap.Width; ++x) {
-				bool borderFlg = false;
-				for(int y = 0; y < bitmap.Height; ++y) {
-					if(bitmap.GetPixel(x, y) != borderColor) {
-						borderFlg = true;
-						break;
-					}
-				}
-				if(borderFlg) {
+			foreach(var x in xRange) {
+				// borderColorと等しくない色を発見した場合、pos >= 0になる
+				var pos = yRange.FirstOrDefault(y => bitmap.GetPixel(x, y) != borderColor);
+				if(pos >= 0) {
 					rect.X = x;
 					rect.Width -= x;
 					break;
 				}
 			}
 			// 上
-			for(int y = 0; y < bitmap.Height; ++y) {
-				bool borderFlg = false;
-				for(int x = 0; x < bitmap.Width; ++x) {
-					if(bitmap.GetPixel(x, y) != borderColor) {
-						borderFlg = true;
-						break;
-					}
-				}
-				if(borderFlg) {
+			foreach(var y in yRange) {
+				var pos = xRange.FirstOrDefault(x => bitmap.GetPixel(x, y) != borderColor);
+				if(pos >= 0) {
 					rect.Y = y;
 					rect.Height -= y;
 					break;
 				}
 			}
 			// 右
-			for(int x = bitmap.Width - 1; x >= 0; --x) {
-				bool borderFlg = false;
-				for(int y = 0; y < bitmap.Height; ++y) {
-					if(bitmap.GetPixel(x, y) != borderColor) {
-						borderFlg = true;
-						break;
-					}
-				}
-				if(borderFlg) {
+			foreach(var x in xRange.Reverse()) {
+				var pos = yRange.FirstOrDefault(y => bitmap.GetPixel(x, y) != borderColor);
+				if(pos >= 0) {
 					rect.Width -= bitmap.Width - x - 1;
 					break;
 				}
 			}
 			// 下
-			for(int y = bitmap.Height - 1; y >= 0; --y) {
-				bool borderFlg = false;
-				for(int x = 0; x < bitmap.Width; ++x) {
-					if(bitmap.GetPixel(x, y) != borderColor) {
-						borderFlg = true;
-						break;
-					}
-				}
-				if(borderFlg) {
+			foreach(var y in yRange.Reverse()) {
+				var pos = xRange.FirstOrDefault(x => bitmap.GetPixel(x, y) != borderColor);
+				if(pos >= 0) {
 					rect.Height -= bitmap.Height - y - 1;
 					break;
 				}
 			}
 			return rect;
 		}
-		// 数字認識を行う
 		/// <summary>
 		/// 数字認識を行う
 		/// 座標・大きさは画像に対する％指定なことに注意
@@ -332,7 +264,7 @@ namespace WsGH {
 		/// <param name="thresold">閾値。これより暗いと黒とみなす</param>
 		/// <param name="negaFlg">trueだと色を反転させて判定する</param>
 		/// <returns>読み取った数値。0～9および10(白色＝読めなかった)をListで返す</returns>
-		static List<int> getDigitOCR(Bitmap bitmap, float[] px_arr, float py_per, float wx_per, float wy_per, int thresold, bool negaFlg) {
+		static List<int> GetDigitOCR(Bitmap bitmap, float[] px_arr, float py_per, float wx_per, float wy_per, int thresold, bool negaFlg) {
 			var output = new List<int>();
 			foreach(var px_per in px_arr) {
 				// ％指定をピクセル指定に直す
@@ -364,7 +296,7 @@ namespace WsGH {
 				//canvas.Save("digit2.bmp");
 				// 周囲をトリミングした上で、所定のサイズにリサイズする
 				// 背景は赤色に塗りつぶすこと
-				var rect = getTrimmingRectangle(canvas);
+				var rect = GetTrimmingRectangle(canvas);
 				var canvas2 = new Bitmap(TemplateSize2.Width, TemplateSize2.Height);
 				using(var g = Graphics.FromImage(canvas2)) {
 					// 事前にcanvas2を赤色に塗りつぶす
@@ -396,10 +328,7 @@ namespace WsGH {
 		}
 		#endregion
 		// 時刻を正規化する
-		static uint getLeastSecond(List<int> timerDigit) {
-			/*foreach(var d in timerDigit)
-				Console.Write(d + " ");
-			Console.WriteLine("");*/
+		static uint GetLeastSecond(List<int> timerDigit) {
 			timerDigit[0] = (timerDigit[0] > 5 ? 0 : timerDigit[0]);
 			timerDigit[1] = (timerDigit[1] > 9 ? 0 : timerDigit[1]);
 			timerDigit[2] = (timerDigit[2] > 5 ? 0 : timerDigit[2]);
@@ -409,11 +338,10 @@ namespace WsGH {
 			var hour = timerDigit[0] * 10 + timerDigit[1];
 			var minute = timerDigit[2] * 10 + timerDigit[3];
 			var second = timerDigit[4] * 10 + timerDigit[5];
-			//Console.WriteLine(hour + ":" + minute + ":" + second);
 			return (uint)((hour * 60 + minute) * 60 + second);
 		}
 		// 資材を正規化する
-		static int getMainSupply(List<int> supplyDigit) {
+		static int GetMainSupply(List<int> supplyDigit) {
 			// スタブ
 			int supplyValue = 0;
 			supplyValue += (supplyDigit[0] > 9 ? 0 : supplyDigit[0]) * 100000;
@@ -446,42 +374,42 @@ namespace WsGH {
 		}
 		#region 遠征関係
 		// 遠征のシーンかを判定する
-		public static bool IsExpeditionScene(Bitmap bitmap) {
+		static bool IsExpeditionScene(Bitmap bitmap) {
 			{
 				// 左下の「母港」ボタンの近くにある装飾
-				var hash = getDifferenceHash(bitmap, 10.11, 76.36, 3.525, 6.276);
-				if(getHummingDistance(hash, 0x2d2f2ba7aaa22b2a) >= 20)
+				var hash = GetDifferenceHash(bitmap, 10.11, 76.36, 3.525, 6.276);
+				if(GetHummingDistance(hash, 0x2d2f2ba7aaa22b2a) >= 20)
 					return false;
 			}
 			{
 				// 3・4段目の間の隙間にある模様の一部(左の方)
-				var hash = getDifferenceHash(bitmap, 21.86, 62.76, 3.878, 1.883);
-				if(getHummingDistance(hash, 0xd0b8a8a454565652) >= 20)
+				var hash = GetDifferenceHash(bitmap, 21.86, 62.76, 3.878, 1.883);
+				if(GetHummingDistance(hash, 0xd0b8a8a454565652) >= 20)
 					return false;
 			}
 			{
 				// 2段目の枠の左下の一部
-				var hash = getDifferenceHash(bitmap, 14.69, 38.91, 2.350, 4.184);
-				if(getHummingDistance(hash, 0xa0a8a091e8743834) >= 20)
+				var hash = GetDifferenceHash(bitmap, 14.69, 38.91, 2.350, 4.184);
+				if(GetHummingDistance(hash, 0xa0a8a091e8743834) >= 20)
 					return false;
 			}
 			return true;
 		}
 		// 遠征タイマーを取得する
-		public static Dictionary<int, ulong> getExpeditionTimer(Bitmap bitmap) {
+		public static Dictionary<int, ulong> GetExpeditionTimer(Bitmap bitmap) {
 			var output = new Dictionary<int, ulong>();
 			var now_time = GetUnixTime(DateTime.Now);
 			for(int li = 0; li < ExpListHeight; ++li) {
 				// 艦隊帰投ボタンが出ていなければ、その行に遠征艦隊はいない
-				var bhash = getDifferenceHash(bitmap, ExpButtonPosition[li]);
-				if(getHummingDistance(bhash, 0x1b60c68aca2e5635) >= 20)
+				var bhash = GetDifferenceHash(bitmap, ExpButtonPosition[li]);
+				if(GetHummingDistance(bhash, 0x1b60c68aca2e5635) >= 20)
 					continue;
 				// 遠征している艦隊の番号を取得する
 				// ハッシュに対するハミング距離を計算した後、LINQで最小値のインデックス(艦隊番号)を取り出す
-				var fhash = getDifferenceHash(bitmap, ExpFleetIconPosition[li]);
+				var fhash = GetDifferenceHash(bitmap, ExpFleetIconPosition[li]);
 				var hd = new List<uint>();
 				for(int fi = 0; fi < ExpFleetCount; ++fi) {
-					hd.Add(getHummingDistance(fhash, ExtFleetIconHash[fi]));
+					hd.Add(GetHummingDistance(fhash, ExtFleetIconHash[fi]));
 				}
 				int fleetIndex = hd
 					.Select((val, idx) => new { V = val, I = idx })
@@ -491,8 +419,8 @@ namespace WsGH {
 				//Console.WriteLine((li + 1) + "番目：第" + (fleetIndex + 1) + "艦隊");
 				// 遠征完了時間を計算して書き込む
 				//bitmap.Save("ss.png");
-				var timerDigit = getDigitOCR(bitmap, ExpTimerDigitPX, ExpTimerDigitPY[li], ExpTimerDigitWX, ExpTimerDigitWY, 120, true);
-				var leastSecond = getLeastSecond(timerDigit);
+				var timerDigit = GetDigitOCR(bitmap, ExpTimerDigitPX, ExpTimerDigitPY[li], ExpTimerDigitWX, ExpTimerDigitWY, 120, true);
+				var leastSecond = GetLeastSecond(timerDigit);
 				output[fleetIndex] = now_time + leastSecond;
 			}
 			return output;
@@ -503,39 +431,39 @@ namespace WsGH {
 		static bool IsBuildScene(Bitmap bitmap) {
 			{
 				// 建造ボタン
-				var hash = getDifferenceHash(bitmap, 1.763, 7.322, 6.933, 5.649);
-				if(getHummingDistance(hash, 0x225a551d98566290) >= 20)
+				var hash = GetDifferenceHash(bitmap, 1.763, 7.322, 6.933, 5.649);
+				if(GetHummingDistance(hash, 0x225a551d98566290) >= 20)
 					return false;
 			}
 			{
 				// 建造枠
-				var hash = getDifferenceHash(bitmap, 36.78, 21.34, 2.233, 3.975);
-				if(getHummingDistance(hash, 0x56b94e5a5a52a55e) >= 20)
+				var hash = GetDifferenceHash(bitmap, 36.78, 21.34, 2.233, 3.975);
+				if(GetHummingDistance(hash, 0x56b94e5a5a52a55e) >= 20)
 					return false;
 			}
 			{
 				// 建造アイコン
-				var hash = getDifferenceHash(bitmap, 27.50, 8.996, 1.880, 4.184);
-				if(getHummingDistance(hash, 0xff555e5e807666c6) >= 20)
+				var hash = GetDifferenceHash(bitmap, 27.50, 8.996, 1.880, 4.184);
+				if(GetHummingDistance(hash, 0xff555e5e807666c6) >= 20)
 					return false;
 			}
 			return true;
 		}
 		// 建造タイマーを取得する
-		public static Dictionary<int, ulong> getBuildTimer(Bitmap bitmap) {
+		public static Dictionary<int, ulong> GetBuildTimer(Bitmap bitmap) {
 			var output = new Dictionary<int, ulong>();
 			var now_time = GetUnixTime(DateTime.Now);
 			for(int li = 0; li < BuildListHeight; ++li) {
 				// スタンバイ表示ならば、その行に入渠艦隊はいない
-				var bhash = getDifferenceHash(bitmap, BuildStatusPosition[li]);
-				if(getHummingDistance(bhash, 0x4147b56a9d33cb1c) < 20)
+				var bhash = GetDifferenceHash(bitmap, BuildStatusPosition[li]);
+				if(GetHummingDistance(bhash, 0x4147b56a9d33cb1c) < 20)
 					continue;
 				// 建造中でなければ、その行に入渠艦隊はいない
-				if(getHummingDistance(bhash, 0x254565276737c138) >= 20)
+				if(GetHummingDistance(bhash, 0x254565276737c138) >= 20)
 					continue;
 				// 建造時間を取得する
-				var timerDigit = getDigitOCR(bitmap, BuildTimerDigitPX, BuildTimerDigitPY[li], BuildTimerDigitWX, BuildTimerDigitWY, 100, true);
-				var leastSecond = getLeastSecond(timerDigit);
+				var timerDigit = GetDigitOCR(bitmap, BuildTimerDigitPX, BuildTimerDigitPY[li], BuildTimerDigitWX, BuildTimerDigitWY, 100, true);
+				var leastSecond = GetLeastSecond(timerDigit);
 				//Console.WriteLine($"{li + 1}番目：{leastSecond}");
 				output[li] = now_time + leastSecond;
 			}
@@ -547,39 +475,39 @@ namespace WsGH {
 		static bool IsDevelopScene(Bitmap bitmap) {
 			{
 				// 開発ボタン
-				var hash = getDifferenceHash(bitmap, 1.880, 33.26, 7.051, 6.276);
-				if(getHummingDistance(hash, 0x02595a5aa939c8ab) >= 20)
+				var hash = GetDifferenceHash(bitmap, 1.880, 33.26, 7.051, 6.276);
+				if(GetHummingDistance(hash, 0x02595a5aa939c8ab) >= 20)
 					return false;
 			}
 			{
 				// 開発枠
-				var hash = getDifferenceHash(bitmap, 36.78, 21.34, 2.233, 3.975);
-				if(getHummingDistance(hash, 0x56b94e5a5a52a55e) >= 20)
+				var hash = GetDifferenceHash(bitmap, 36.78, 21.34, 2.233, 3.975);
+				if(GetHummingDistance(hash, 0x56b94e5a5a52a55e) >= 20)
 					return false;
 			}
 			{
 				// 開発アイコン
-				var hash = getDifferenceHash(bitmap, 27.50, 8.996, 1.880, 4.184);
-				if(getHummingDistance(hash, 0xffdd5a8ddadcd896) >= 20)
+				var hash = GetDifferenceHash(bitmap, 27.50, 8.996, 1.880, 4.184);
+				if(GetHummingDistance(hash, 0xffdd5a8ddadcd896) >= 20)
 					return false;
 			}
 			return true;
 		}
 		// 開発タイマーを取得する
-		public static Dictionary<int, ulong> getDevTimer(Bitmap bitmap) {
+		public static Dictionary<int, ulong> GetDevTimer(Bitmap bitmap) {
 			var output = new Dictionary<int, ulong>();
 			var now_time = GetUnixTime(DateTime.Now);
 			for(int li = 0; li < DevListHeight; ++li) {
 				// スタンバイ表示ならば、その行に入渠艦隊はいない
-				var bhash = getDifferenceHash(bitmap, DevStatusPosition[li]);
-				if(getHummingDistance(bhash, 0x4147b56a9d33cb1c) < 20)
+				var bhash = GetDifferenceHash(bitmap, DevStatusPosition[li]);
+				if(GetHummingDistance(bhash, 0x4147b56a9d33cb1c) < 20)
 					continue;
 				// 開発中でなければ、その行に入渠艦隊はいない
-				if(getHummingDistance(bhash, 0x545471565654659a) >= 20)
+				if(GetHummingDistance(bhash, 0x545471565654659a) >= 20)
 					continue;
 				// 建造時間を取得する
-				var timerDigit = getDigitOCR(bitmap, DevTimerDigitPX, DevTimerDigitPY[li], DevTimerDigitWX, DevTimerDigitWY, 100, true);
-				var leastSecond = getLeastSecond(timerDigit);
+				var timerDigit = GetDigitOCR(bitmap, DevTimerDigitPX, DevTimerDigitPY[li], DevTimerDigitWX, DevTimerDigitWY, 100, true);
+				var leastSecond = GetLeastSecond(timerDigit);
 				output[li] = now_time + leastSecond;
 			}
 			return output;
@@ -590,30 +518,30 @@ namespace WsGH {
 		static bool IsDockScene(Bitmap bitmap) {
 			{
 				// 修復ボタン
-				var hash = getDifferenceHash(bitmap, 1.880, 20.29, 6.933, 5.858);
-				if(getHummingDistance(hash, 0x846db65c641d5526) >= 20)
+				var hash = GetDifferenceHash(bitmap, 1.880, 20.29, 6.933, 5.858);
+				if(GetHummingDistance(hash, 0x846db65c641d5526) >= 20)
 					return false;
 			}
 			{
 				// 修復アイコン
-				var hash = getDifferenceHash(bitmap, 24.09, 9.205, 4.465, 4.393);
-				if(getHummingDistance(hash, 0x8776335455555522) >= 20)
+				var hash = GetDifferenceHash(bitmap, 24.09, 9.205, 4.465, 4.393);
+				if(GetHummingDistance(hash, 0x8776335455555522) >= 20)
 					return false;
 			}
 			return true;
 		}
 		// 入渠タイマーを取得する
-		public static Dictionary<int, ulong> getDockTimer(Bitmap bitmap) {
+		public static Dictionary<int, ulong> GetDockTimer(Bitmap bitmap) {
 			var output = new Dictionary<int, ulong>();
 			var now_time = GetUnixTime(DateTime.Now);
 			for(int li = 0; li < DockListHeight; ++li) {
 				// 高速修復ボタンがなければ、その行に入渠艦隊はいない
-				var bhash = getDifferenceHash(bitmap, DockFastRepairPosition[li]);
-				if(getHummingDistance(bhash, 0x62cd568d66b66d9a) >= 20)
+				var bhash = GetDifferenceHash(bitmap, DockFastRepairPosition[li]);
+				if(GetHummingDistance(bhash, 0x62cd568d66b66d9a) >= 20)
 					continue;
 				// 入渠時間を取得する
-				var timerDigit = getDigitOCR(bitmap, DockTimerDigitPX, DockTimerDigitPY[li], DockTimerDigitWX, DockTimerDigitWY, 50, true);
-				var leastSecond = getLeastSecond(timerDigit);
+				var timerDigit = GetDigitOCR(bitmap, DockTimerDigitPX, DockTimerDigitPY[li], DockTimerDigitWX, DockTimerDigitWY, 50, true);
+				var leastSecond = GetLeastSecond(timerDigit);
 				output[li] = now_time + leastSecond;
 			}
 			return output;
@@ -623,26 +551,26 @@ namespace WsGH {
 		// 母港のシーン(ボタンあり)かを判定する
 		static bool IsHomeScene(Bitmap bitmap) {
 			// 左上の表示
-			var hash = getDifferenceHash(bitmap, 6.933, 1.674, 2.350, 4.184);
-			if(getHummingDistance(hash, 0x0712092214489850) >= 20)
+			var hash = GetDifferenceHash(bitmap, 6.933, 1.674, 2.350, 4.184);
+			if(GetHummingDistance(hash, 0x0712092214489850) >= 20)
 				return false;
 			return true;
 		}
 		// 資材量が表示されているかを判定する
 		public static bool CanReadMainSupply(Bitmap bitmap) {
 			// 弾薬の表示
-			var hash = getDifferenceHash(bitmap, 47.12, 0.8368, 2.115, 3.766);
-			if(getHummingDistance(hash, 0xd52a264d9cbd6bd3) >= 20)
+			var hash = GetDifferenceHash(bitmap, 47.12, 0.8368, 2.115, 3.766);
+			if(GetHummingDistance(hash, 0xd52a264d9cbd6bd3) >= 20)
 				return false;
 			return true;
 		}
 		// 資材量を読み取る(MainSupply)
-		public static List<int> getMainSupply(Bitmap bitmap) {
+		public static List<int> GetMainSupply(Bitmap bitmap) {
 			var output = new List<int>();
 			// iの値により、燃料→弾薬→鋼材→ボーキサイト→ダイヤと読み取り対象が変化する
 			for(int i = 0; i < MainSupplyDigitPX.Count(); ++i) {
-				var supplyDigit = getDigitOCR(bitmap, MainSupplyDigitPX[i], MainSupplyDigitPY, MainSupplyDigitWX, MainSupplyDigitWY, 110, true);
-				var supplyVaue = getMainSupply(supplyDigit);
+				var supplyDigit = GetDigitOCR(bitmap, MainSupplyDigitPX[i], MainSupplyDigitPY, MainSupplyDigitWX, MainSupplyDigitWY, 110, true);
+				var supplyVaue = GetMainSupply(supplyDigit);
 				output.Add(supplyVaue);
 			}
 			return output;

@@ -61,7 +61,7 @@ namespace WsGH {
 			Properties.Settings.Default.TimerWindowPlacement = NativeMethods.GetWindowPlacementHelper(this);
 			Properties.Settings.Default.Save();
 		}
-
+		#region タイマーのテキストをクリックした際の処理
 		private void ExpTimer1TextBlock_MouseDown(object sender, MouseButtonEventArgs e) {
 			var bindData = DataContext as TimerValue;
 			bindData.ExpTimer1 = 0;
@@ -126,6 +126,7 @@ namespace WsGH {
 			var bindData = DataContext as TimerValue;
 			bindData.DockTimer4 = 0;
 		}
+		#endregion
 	}
 	// コンバータ
 	public class TimerConverter : IValueConverter {
