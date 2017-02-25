@@ -122,20 +122,20 @@ namespace WsGH {
 		public MainWindow() {
 			InitializeComponent();
 			MouseLeftButtonDown += (o, e) => DragMove();
-			// フォルダの有無をチェック
 			if(!System.IO.Directory.Exists(@"pic\")) {
+				// picフォルダが存在しない場合は作成する
 				System.IO.Directory.CreateDirectory(@"pic\");
 			}
 			#region 画面表示を初期化
 			DataContext = new MainWindowDC() {
 				LoggingText = "",
-				MenuHeaderBackgroundOther = "",
 				TwitterFlg = Properties.Settings.Default.ScreenshotForTwitterFlg,
+				MenuHeaderBackgroundOther = "",
 			};
 			BackgroundCheck = Properties.Settings.Default.BackgroundColorType;
 			SoftwareCulture = "";
 			#endregion
-			// 周辺クラスの初期化
+			#region 周辺クラスの初期化
 			SceneRecognition.InitialSceneRecognition();
 			try {
 				SupplyStore.ReadMainSupply();
@@ -143,13 +143,17 @@ namespace WsGH {
 			} catch(Exception) {
 				addLog($"{Properties.Resources.LoggingTextReadSupplyData}：Failed");
 			}
+			#endregion
+			#region DispatcherTimerの初期化
 			// タイマーを作成する
-			DispatcherTimer m_Timer = new DispatcherTimer(DispatcherPriority.Normal, Dispatcher);
+			var m_Timer = new DispatcherTimer(DispatcherPriority.Normal, Dispatcher);
 			m_Timer.Interval = TimeSpan.FromMilliseconds(200.0);
 			m_Timer.Tick += new EventHandler(DispatcherTimer_Tick);
 			// タイマーの実行開始
 			m_Timer.Start();
 			timerWindowSecond = DateTime.Now.Second;
+			#endregion
+			#region 周辺ウィンドウを表示
 			// タイマー画面を作成・表示
 			tw = new TimerWindow();
 			if(Properties.Settings.Default.ShowTimerWindowFlg) {
@@ -160,7 +164,9 @@ namespace WsGH {
 			if(Properties.Settings.Default.ShowSupplyWindowFlg) {
 				sw.Show();
 			}
+			#endregion
 		}
+		#region ウィンドウ位置復元・保存
 		// ウィンドウ位置復元
 		protected override void OnSourceInitialized(EventArgs e) {
 			base.OnSourceInitialized(e);
@@ -175,6 +181,7 @@ namespace WsGH {
 			Properties.Settings.Default.MainWindowPlacement = NativeMethods.GetWindowPlacementHelper(this);
 			Properties.Settings.Default.Save();
 		}
+		#endregion
 		#region メニュー操作
 		private void ExitMenu_Click(object sender, RoutedEventArgs e) {
 			Close();
@@ -226,6 +233,7 @@ namespace WsGH {
 				Attribute.GetCustomAttribute(
 				System.Reflection.Assembly.GetExecutingAssembly(),
 				typeof(System.Reflection.AssemblyProductAttribute))).Product;
+			// AssemblyVersion
 			var asmver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 			System.Windows.MessageBox.Show(asmttl + " Ver." + asmver + "\n" + asmcpy + "\n" + asmprd);
 		}
