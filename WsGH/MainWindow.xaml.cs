@@ -352,7 +352,7 @@ namespace WsGH {
 				// シーンごとに振り分ける
 				var bindData = tw.DataContext as TimerValue;
 				switch(scene) {
-				case SceneRecognition.SceneType.Expedition:
+				case SceneType.Expedition:
 					#region 遠征中なら、遠征時間を読み取る
 					var expEndTime = SceneRecognition.GetExpeditionTimer(captureFrame);
 					foreach(var pair in expEndTime) {
@@ -375,7 +375,7 @@ namespace WsGH {
 					}
 					break;
 				#endregion
-				case SceneRecognition.SceneType.Build:
+				case SceneType.Build:
 					#region 建造中なら、建造時間を読み取る
 					var buildEndTime = SceneRecognition.GetBuildTimer(captureFrame);
 					foreach(var pair in buildEndTime) {
@@ -398,7 +398,7 @@ namespace WsGH {
 					}
 					break;
 				#endregion
-				case SceneRecognition.SceneType.Develop:
+				case SceneType.Develop:
 					#region 開発中なら、開発時間を読み取る
 					var devEndTime = SceneRecognition.GetDevTimer(captureFrame);
 					foreach(var pair in devEndTime) {
@@ -421,7 +421,7 @@ namespace WsGH {
 					}
 					break;
 				#endregion
-				case SceneRecognition.SceneType.Dock:
+				case SceneType.Dock:
 					#region 入渠中なら、入渠時間を読み取る
 					var dockEndTime = SceneRecognition.GetDockTimer(captureFrame);
 					foreach(var pair in dockEndTime) {
@@ -444,7 +444,7 @@ namespace WsGH {
 					}
 					break;
 				#endregion
-				case SceneRecognition.SceneType.Home:
+				case SceneType.Home:
 
 				default:
 					break;

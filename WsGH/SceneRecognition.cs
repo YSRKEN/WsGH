@@ -170,34 +170,6 @@ namespace WsGH {
 					srcRect.Width, srcRect.Height, GraphicsUnit.Pixel, ia
 				);
 			}
-			/*var canvas2 = new Bitmap(wx, wy);
-			using(var g = Graphics.FromImage(canvas2)) {
-				// 切り取られる位置・大きさ
-				var srcRect = new Rectangle(px, py, wx, wy);
-				// 貼り付ける位置・大きさ
-				var desRect = new Rectangle(0, 0, canvas2.Width, canvas2.Height);
-				// グレースケール変換用のマトリックスを設定
-				var cm = new ColorMatrix(
-					new float[][]{
-						new float[]{0.299f, 0.299f, 0.299f, 0 ,0},
-						new float[]{0.587f, 0.587f, 0.587f, 0, 0},
-						new float[]{0.114f, 0.114f, 0.114f, 0, 0},
-						new float[]{0, 0, 0, 1, 0},
-						new float[]{0, 0, 0, 0, 1}
-					}
-				);
-				var ia = new ImageAttributes();
-				ia.SetColorMatrix(cm);
-				// 描画
-				// ImageAttributesを設定しなければ、
-				// g.DrawImage(bitmap, desRect, srcRect, GraphicsUnit.Pixel);
-				// で済むのにMSェ……
-				g.DrawImage(
-					bitmap, desRect, srcRect.X, srcRect.Y,
-					srcRect.Width, srcRect.Height, GraphicsUnit.Pixel, ia
-				);
-			}
-			canvas2.Save("canvas2.bmp");*/
 			// 隣接ピクセルとの比較結果を符号化する
 			ulong hash = 0;
 			for(int y = 0; y < 8; ++y) {
@@ -254,7 +226,6 @@ namespace WsGH {
 			}
 			// 上
 			foreach(var y in yRange) {
-				// borderColorと等しくない色を発見した場合、pos >= 0になる
 				var pos = xRange.FirstOrDefault(x => bitmap.GetPixel(x, y) != borderColor);
 				if(pos >= 0) {
 					rect.Y = y;
@@ -264,7 +235,6 @@ namespace WsGH {
 			}
 			// 右
 			foreach(var x in xRange.Reverse()) {
-				// borderColorと等しくない色を発見した場合、pos >= 0になる
 				var pos = yRange.FirstOrDefault(y => bitmap.GetPixel(x, y) != borderColor);
 				if(pos >= 0) {
 					rect.Width -= bitmap.Width - x - 1;
@@ -273,7 +243,6 @@ namespace WsGH {
 			}
 			// 下
 			foreach(var y in yRange.Reverse()) {
-				// borderColorと等しくない色を発見した場合、pos >= 0になる
 				var pos = xRange.FirstOrDefault(x => bitmap.GetPixel(x, y) != borderColor);
 				if(pos >= 0) {
 					rect.Height -= bitmap.Height - y - 1;
@@ -282,7 +251,6 @@ namespace WsGH {
 			}
 			return rect;
 		}
-		// 数字認識を行う
 		/// <summary>
 		/// 数字認識を行う
 		/// 座標・大きさは画像に対する％指定なことに注意
@@ -361,9 +329,6 @@ namespace WsGH {
 		#endregion
 		// 時刻を正規化する
 		static uint GetLeastSecond(List<int> timerDigit) {
-			/*foreach(var d in timerDigit)
-				Console.Write(d + " ");
-			Console.WriteLine("");*/
 			timerDigit[0] = (timerDigit[0] > 5 ? 0 : timerDigit[0]);
 			timerDigit[1] = (timerDigit[1] > 9 ? 0 : timerDigit[1]);
 			timerDigit[2] = (timerDigit[2] > 5 ? 0 : timerDigit[2]);
@@ -373,7 +338,6 @@ namespace WsGH {
 			var hour = timerDigit[0] * 10 + timerDigit[1];
 			var minute = timerDigit[2] * 10 + timerDigit[3];
 			var second = timerDigit[4] * 10 + timerDigit[5];
-			//Console.WriteLine(hour + ":" + minute + ":" + second);
 			return (uint)((hour * 60 + minute) * 60 + second);
 		}
 		// 資材を正規化する
