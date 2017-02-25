@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using System.Drawing;
 
 namespace WsGH {
+	using SceneType = SceneRecognition.SceneType;
 	/// <summary>
 	/// MainWindow.xaml の相互作用ロジック
 	/// </summary>
@@ -25,7 +26,27 @@ namespace WsGH {
 		ScreenshotProvider sp = null;	//スクショ用の情報を記憶する
 		TimerWindow tw = null;			//TimerWindowのインスタンス
 		SupplyWindow sw = null;			//SupplyWindowのインスタンス
-		int timerWindowSecond;			//毎秒行う処理のために秒数を記憶
+		int timerWindowSecond;          //毎秒行う処理のために秒数を記憶
+		#region シーン判別用文字列
+		static Dictionary<SceneType, string> SceneString
+			 = new Dictionary<SceneType, string> {
+				{ SceneType.Unknown, "Unknown" },
+				{ SceneType.Expedition, "Expedition" },
+				{ SceneType.Build, "Build" },
+				{ SceneType.Develop, "Develop" },
+				{ SceneType.Dock, "Dock" },
+				{ SceneType.Home, "Home" },
+			 };
+		static Dictionary<SceneType, string> SceneStringJapanese
+			 = new Dictionary<SceneType, string> {
+				{ SceneType.Unknown, "不明" },
+				{ SceneType.Expedition, "遠征" },
+				{ SceneType.Build, "建造" },
+				{ SceneType.Develop, "開発" },
+				{ SceneType.Dock, "入渠" },
+				{ SceneType.Home, "母港" },
+			 };
+		#endregion
 		// 背景チェック
 		int BackgroundCheck {
 			get { return Properties.Settings.Default.BackgroundColorType; }
@@ -323,7 +344,7 @@ namespace WsGH {
 				// シーンを判定する
 				var scene = SceneRecognition.JudgeScene(captureFrame);
 				// 現在認識しているシーンを表示する
-				SceneTextBlock.Text = $"{Properties.Resources.LoggingTextScene} : {(SoftwareCulture == "ja-JP" ? SceneRecognition.SceneStringJapanese[scene] : SceneRecognition.SceneString[scene])}";
+				SceneTextBlock.Text = $"{Properties.Resources.LoggingTextScene} : {(SoftwareCulture == "ja-JP" ? SceneStringJapanese[scene] : SceneString[scene])}";
 				// シーンごとに振り分ける
 				var bindData = tw.DataContext as TimerValue;
 				switch(scene) {

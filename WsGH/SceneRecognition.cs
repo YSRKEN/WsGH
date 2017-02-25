@@ -13,24 +13,6 @@ namespace WsGH {
 		// 各種定数定義
 		#region シーン認識用定数
 		public enum SceneType { Unknown, Expedition, Build, Develop, Dock, Home };
-		public static Dictionary<SceneType, string> SceneString
-			 = new Dictionary<SceneType, string> {
-				{ SceneType.Unknown, "Unknown" },
-				{ SceneType.Expedition, "Expedition" },
-				{ SceneType.Build, "Build" },
-				{ SceneType.Develop, "Develop" },
-				{ SceneType.Dock, "Dock" },
-				{ SceneType.Home, "Home" },
-			 };
-		public static Dictionary<SceneType, string> SceneStringJapanese
-			 = new Dictionary<SceneType, string> {
-				{ SceneType.Unknown, "不明" },
-				{ SceneType.Expedition, "遠征" },
-				{ SceneType.Build, "建造" },
-				{ SceneType.Develop, "開発" },
-				{ SceneType.Dock, "入渠" },
-				{ SceneType.Home, "母港" },
-			 };
 		#endregion
 		#region 遠征用定数
 		// 遠征艦隊数
