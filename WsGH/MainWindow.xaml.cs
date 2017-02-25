@@ -38,21 +38,21 @@ namespace WsGH {
 					BackgroundOptionMenuBS.IsChecked = true;
 					BackgroundOptionMenuNox.IsChecked = false;
 					BackgroundOptionMenuOther.IsChecked = false;
-					addLog($"{Properties.Resources.LoggingTextrBackground} : #000000");
+					AddLog($"{Properties.Resources.LoggingTextrBackground} : #000000");
 					break;
 				case 1:
 					// Nox
 					BackgroundOptionMenuBS.IsChecked = false;
 					BackgroundOptionMenuNox.IsChecked = true;
 					BackgroundOptionMenuOther.IsChecked = false;
-					addLog($"{Properties.Resources.LoggingTextrBackground} : #1C1B20");
+					AddLog($"{Properties.Resources.LoggingTextrBackground} : #1C1B20");
 					break;
 				case 2:
 					// Other
 					BackgroundOptionMenuBS.IsChecked = false;
 					BackgroundOptionMenuNox.IsChecked = false;
 					BackgroundOptionMenuOther.IsChecked = true;
-					addLog($"{Properties.Resources.LoggingTextrBackground} : {ColorToString(Properties.Settings.Default.BackgroundColor)}");
+					AddLog($"{Properties.Resources.LoggingTextrBackground} : {ColorToString(Properties.Settings.Default.BackgroundColor)}");
 					break;
 				}
 			}
@@ -139,9 +139,9 @@ namespace WsGH {
 			SceneRecognition.InitialSceneRecognition();
 			try {
 				SupplyStore.ReadMainSupply();
-				addLog($"{Properties.Resources.LoggingTextReadSupplyData}：Success");
+				AddLog($"{Properties.Resources.LoggingTextReadSupplyData}：Success");
 			} catch(Exception) {
-				addLog($"{Properties.Resources.LoggingTextReadSupplyData}：Failed");
+				AddLog($"{Properties.Resources.LoggingTextReadSupplyData}：Failed");
 			}
 			#endregion
 			#region DispatcherTimerの初期化
@@ -187,10 +187,10 @@ namespace WsGH {
 			Close();
 		}
 		private void GetPositionMenu_Click(object sender, RoutedEventArgs e) {
-			sp = new ScreenshotProvider(new AfterAction(getPosition), BackgroundColor);
+			sp = new ScreenshotProvider(new AfterAction(GetPosition), BackgroundColor);
 		}
 		private void GetScreenshotMenu_Click(object sender, RoutedEventArgs e) {
-			saveScreenshot();
+			SaveScreenshot();
 		}
 		private void ShowTimerWindow_Click(object sender, RoutedEventArgs e) {
 			// 2枚以上同じウィンドウを生成しないようにする
@@ -242,7 +242,7 @@ namespace WsGH {
 			// チェックの状態を反映させる
 			bindData.TwitterFlg = TwitterOptionMenu.IsChecked;
 			// チェックの状態をログに記録する
-			addLog($"{Properties.Resources.LoggingTextForTwitter} : {(bindData.TwitterFlg ? "True" : "False")}");
+			AddLog($"{Properties.Resources.LoggingTextForTwitter} : {(bindData.TwitterFlg ? "True" : "False")}");
 		}
 		private void BackgroundOptionMenuBS_Click(object sender, RoutedEventArgs e) {
 			BackgroundCheck = 0;
@@ -273,49 +273,49 @@ namespace WsGH {
 		#endregion
 		// ボタン操作
 		private void ScreenShotButton_Click(object sender, RoutedEventArgs e) {
-			saveScreenshot();
+			SaveScreenshot();
 		}
 		// ログに内容を追加
-		void addLog(string str) {
+		void AddLog(string str) {
 			var dt = DateTime.Now;
 			var bindData = DataContext as MainWindowDC;
 			bindData.LoggingText += dt.ToString("hh:mm:ss ") + str + "\n";
 			LoggingTextBox.ScrollToEnd();
 		}
 		// 座標取得後の画面更新処理
-		void getPosition() {
+		void GetPosition() {
 			// 成功か失敗かを読み取る
-			var isGetPosition = sp.isGetPosition();
+			var isGetPosition = sp.IsGetPosition();
 			// 結果を記録
 			GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = isGetPosition;
-			addLog($"{Properties.Resources.LoggingTextGetPosition} : {(isGetPosition ? "Success" : "Failed")}");
+			AddLog($"{Properties.Resources.LoggingTextGetPosition} : {(isGetPosition ? "Success" : "Failed")}");
 			// 成功時は座標を表示する
 			if(isGetPosition)
-				addLog("  " + sp.getPositionStr());
+				AddLog("  " + sp.GetPositionStr());
 		}
 		// 画像保存処理
-		void saveScreenshot() {
+		void SaveScreenshot() {
 			var bindData = DataContext as MainWindowDC;
 			// 現在時間からファイル名を生成する
 			var dt = DateTime.Now;
 			var fileName = dt.ToString("yyyy-MM-dd hh-mm-ss-fff") + (bindData.TwitterFlg ? "_twi" : "") + ".png";
 			// 画像を保存する
 			try {
-				sp.getScreenShot(bindData.TwitterFlg).Save(@"pic\" + fileName);
-				addLog($"{Properties.Resources.LoggingTextGetScreenshot} : Success");
-				addLog("  (" + fileName + ")");
+				sp.GetScreenShot(bindData.TwitterFlg).Save(@"pic\" + fileName);
+				AddLog($"{Properties.Resources.LoggingTextGetScreenshot} : Success");
+				AddLog("  (" + fileName + ")");
 			} catch(Exception) {
-				addLog($"{Properties.Resources.LoggingTextGetScreenshot} : Failed");
+				AddLog($"{Properties.Resources.LoggingTextGetScreenshot} : Failed");
 			}
 		}
 		// 色情報を文字列に変換
-		static string ColorToString(System.Drawing.Color clr) {
+		static string ColorToString(Color clr) {
 			return "#" + clr.R.ToString("X2") + clr.G.ToString("X2") + clr.B.ToString("X2");
 		}
 		// タイマー動作
 		private void DispatcherTimer_Tick(object sender, EventArgs e) {
 			// 可能ならスクショを取得する
-			Bitmap captureFrame = sp?.getScreenShot();
+			Bitmap captureFrame = sp?.GetScreenShot();
 			#region 毎フレーム毎の処理
 			// スクショが取得できていた場合
 			if(captureFrame != null) {
@@ -329,7 +329,7 @@ namespace WsGH {
 				switch(scene) {
 				case SceneRecognition.SceneType.Expedition:
 					#region 遠征中なら、遠征時間を読み取る
-					var expEndTime = SceneRecognition.getExpeditionTimer(captureFrame);
+					var expEndTime = SceneRecognition.GetExpeditionTimer(captureFrame);
 					foreach(var pair in expEndTime) {
 						switch(pair.Key) {
 						case 0:
@@ -352,7 +352,7 @@ namespace WsGH {
 				#endregion
 				case SceneRecognition.SceneType.Build:
 					#region 建造中なら、建造時間を読み取る
-					var buildEndTime = SceneRecognition.getBuildTimer(captureFrame);
+					var buildEndTime = SceneRecognition.GetBuildTimer(captureFrame);
 					foreach(var pair in buildEndTime) {
 						switch(pair.Key) {
 						case 0:
@@ -375,7 +375,7 @@ namespace WsGH {
 				#endregion
 				case SceneRecognition.SceneType.Develop:
 					#region 開発中なら、開発時間を読み取る
-					var devEndTime = SceneRecognition.getDevTimer(captureFrame);
+					var devEndTime = SceneRecognition.GetDevTimer(captureFrame);
 					foreach(var pair in devEndTime) {
 						switch(pair.Key) {
 						case 0:
@@ -398,7 +398,7 @@ namespace WsGH {
 				#endregion
 				case SceneRecognition.SceneType.Dock:
 					#region 入渠中なら、入渠時間を読み取る
-					var dockEndTime = SceneRecognition.getDockTimer(captureFrame);
+					var dockEndTime = SceneRecognition.GetDockTimer(captureFrame);
 					foreach(var pair in dockEndTime) {
 						switch(pair.Key) {
 						case 0:
@@ -430,16 +430,16 @@ namespace WsGH {
 				if(SupplyStore.CanAddMainSupply() && SceneRecognition.CanReadMainSupply(captureFrame)) {
 					// 現在時刻と資源量を取得
 					var nowTime = DateTime.Now;
-					var supply = SceneRecognition.getMainSupply(captureFrame);
+					var supply = SceneRecognition.GetMainSupply(captureFrame);
 					// データベースに書き込み
 					SupplyStore.AddMainSupply(nowTime, supply);
-					addLog($"{Properties.Resources.LoggingTextAddSupplyData}");
+					AddLog($"{Properties.Resources.LoggingTextAddSupplyData}");
 					// データベースを保存
 					try {
 						SupplyStore.SaveMainSupply();
-						addLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Success");
+						AddLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Success");
 					} catch(Exception) {
-						addLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Failed");
+						AddLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Failed");
 					}
 					// グラフに反映
 					sw.DrawChart();
@@ -455,14 +455,14 @@ namespace WsGH {
 				if(captureFrame != null) {
 					// ズレチェック
 					if(sp.IsPositionShifting()) {
-						addLog(Properties.Resources.LoggingTextFoundPS);
-						addLog(Properties.Resources.LoggingTextTryFixPS);
+						AddLog(Properties.Resources.LoggingTextFoundPS);
+						AddLog(Properties.Resources.LoggingTextTryFixPS);
 						// ズレ修復の結果を代入
 						var tryFixPositionShifting = sp.TryPositionShifting();
 						GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = tryFixPositionShifting;
-						addLog($"{Properties.Resources.LoggingTextFixPS} : {(tryFixPositionShifting ? "Success" : "Failed")}");
+						AddLog($"{Properties.Resources.LoggingTextFixPS} : {(tryFixPositionShifting ? "Success" : "Failed")}");
 						if(tryFixPositionShifting)
-							addLog("  " + sp.getPositionStr());
+							AddLog("  " + sp.GetPositionStr());
 					}
 				}
 				// タイマーの表示を更新する

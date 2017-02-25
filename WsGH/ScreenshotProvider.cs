@@ -16,12 +16,12 @@ namespace WsGH {
 		Color backgroundColor;
 		public ScreenshotProvider(AfterAction aa, Color backgroundColor) {
 			this.backgroundColor = backgroundColor;
-			virtualDisplayRectangle = calcVirtualDisplayRectangle();
+			virtualDisplayRectangle = CalcVirtualDisplayRectangle();
 			var cw = new ClickWindow(this, virtualDisplayRectangle, aa);
 			cw.Show();
 		}
 		// 全てのディスプレイを覆う仮想スクリーンの位置および大きさを計算
-		Rectangle calcVirtualDisplayRectangle() {
+		Rectangle CalcVirtualDisplayRectangle() {
 			// 仮想スクリーンの位置および大きさを、1枚目のディスプレイで初期化
 			Rectangle vdr = Screen.AllScreens.First().Bounds;
 			// 各ディスプレイについて計算を行う
@@ -41,7 +41,7 @@ namespace WsGH {
 			return vdr;
 		}
 		// 仮想スクリーンのビットマップを生成する
-		Bitmap getVirtualDisplayBitmap(Rectangle virtualDisplayRectangle) {
+		Bitmap GetVirtualDisplayBitmap(Rectangle virtualDisplayRectangle) {
 			var vdb = new Bitmap(virtualDisplayRectangle.Width, virtualDisplayRectangle.Height);
 			using(var g = Graphics.FromImage(vdb)) {
 				g.CopyFromScreen(virtualDisplayRectangle.Location, new System.Drawing.Point(), vdb.Size);
@@ -49,7 +49,7 @@ namespace WsGH {
 			return vdb;
 		}
 		// 座標取得に成功したかを判定する
-		public bool isGetPosition() {
+		public bool IsGetPosition() {
 			if(screenshotRectangle.Width <= 0)
 				return false;
 			if(screenshotRectangle.Height <= 0)
@@ -57,12 +57,12 @@ namespace WsGH {
 			return true;
 		}
 		// 取得した座標を表示する
-		public string getPositionStr() {
+		public string GetPositionStr() {
 			return "(" + screenshotRectangle.X.ToString() + "," + screenshotRectangle.Y.ToString() + ") " + screenshotRectangle.Width.ToString() + "x" + screenshotRectangle.Height.ToString();
 		}
 		// スクショを取得する(スクショ出来ない際はnullが返る)
-		public Bitmap getScreenShot(bool forTwitterFlg = false) {
-			if(!isGetPosition())
+		public Bitmap GetScreenShot(bool forTwitterFlg = false) {
+			if(!IsGetPosition())
 				return null;
 			var bitmap = new Bitmap(screenshotRectangle.Width, screenshotRectangle.Height);
 			using(var g = Graphics.FromImage(bitmap)) {
@@ -97,15 +97,15 @@ namespace WsGH {
 		}
 		// ズレを自動修正する
 		public bool TryPositionShifting() {
-			var vdb = getVirtualDisplayBitmap(virtualDisplayRectangle);
+			var vdb = GetVirtualDisplayBitmap(virtualDisplayRectangle);
 			// クリックした座標から、ゲーム画面の座標を逆算する
-			var gameWindowRectangle = getGameWindowRectangle(vdb, backgroundColor, clickPointX, clickPointY);
+			var gameWindowRectangle = GetGameWindowRectangle(vdb, backgroundColor, clickPointX, clickPointY);
 			// ゲーム画面の座標をスクリーン座標に変換する
 			screenshotRectangle.X = gameWindowRectangle.X + virtualDisplayRectangle.X;
 			screenshotRectangle.Y = gameWindowRectangle.Y + virtualDisplayRectangle.Y;
 			screenshotRectangle.Size = gameWindowRectangle.Size;
 			// サイズ判定
-			if(!isGetPosition())
+			if(!IsGetPosition())
 				return false;
 			// ズレ判定
 			if(IsPositionShifting())
@@ -113,7 +113,7 @@ namespace WsGH {
 			return true;
 		}
 		// ゲーム画面の座標を逆算する
-		static Rectangle getGameWindowRectangle(Bitmap bitmap, Color backgroundColor, int clickPointX, int clickPointY) {
+		static Rectangle GetGameWindowRectangle(Bitmap bitmap, Color backgroundColor, int clickPointX, int clickPointY) {
 			var gwr = new Rectangle(clickPointX, clickPointY, 0, 0);
 			// 上下左右の境界を取得する
 			var borderColor = Color.FromArgb(backgroundColor.R, backgroundColor.G, backgroundColor.B);
@@ -187,7 +187,7 @@ namespace WsGH {
 				// クリック完了時にGUIに反映するための細工
 				this.aa = aa;
 				// 表示用に仮想スクリーンのビットマップを生成する
-				vdb = sp.getVirtualDisplayBitmap(vdr);
+				vdb = sp.GetVirtualDisplayBitmap(vdr);
 				// 画像を表示するためImageコントロールを用意する
 				// (http://bacchus.ivory.ne.jp/gin/post-979/)
 				var ScreenshotImage = new System.Windows.Controls.Image();
@@ -223,7 +223,7 @@ namespace WsGH {
 				ScreenshotProvider.clickPointX = Control.MousePosition.X - vdr.Left;
 				ScreenshotProvider.clickPointY = Control.MousePosition.Y - vdr.Top;
 				// クリックした座標から、ゲーム画面の座標を逆算する
-				var gameWindowRectangle = getGameWindowRectangle(vdb, ScreenshotProvider.backgroundColor, ScreenshotProvider.clickPointX, ScreenshotProvider.clickPointY);
+				var gameWindowRectangle = GetGameWindowRectangle(vdb, ScreenshotProvider.backgroundColor, ScreenshotProvider.clickPointX, ScreenshotProvider.clickPointY);
 				// ゲーム画面の座標をスクリーン座標に変換する
 				ScreenshotProvider.screenshotRectangle.X = gameWindowRectangle.X + vdr.X;
 				ScreenshotProvider.screenshotRectangle.Y = gameWindowRectangle.Y + vdr.Y;

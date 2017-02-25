@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,6 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
@@ -18,7 +18,6 @@ namespace WsGH {
 	/// <summary>
 	/// SupplyWindow.xaml の相互作用ロジック
 	/// </summary>
-	using dColor = System.Drawing.Color;
 	public partial class SupplyWindow : Window {
 		static int[] ChartScale = {1, 7, 14, 30, 60, 90, 180, 365};
 		static DateTime LeastChartTime;
@@ -59,10 +58,10 @@ namespace WsGH {
 			var chartArea = SupplyChart.ChartAreas[0];
 			chartArea.AxisY.Title = Properties.Resources.SupplyChartYTitle;
 			chartArea.AxisY2.Title = Properties.Resources.SupplyChartY2Title;
-			chartArea.AxisX.MajorGrid.LineColor = dColor.LightGray;
-			chartArea.AxisY.MajorGrid.LineColor = dColor.LightGray;
-			chartArea.AxisX2.MajorGrid.LineColor = dColor.LightGray;
-			chartArea.AxisY2.MajorGrid.LineColor = dColor.LightGray;
+			chartArea.AxisX.MajorGrid.LineColor = Color.LightGray;
+			chartArea.AxisY.MajorGrid.LineColor = Color.LightGray;
+			chartArea.AxisX2.MajorGrid.LineColor = Color.LightGray;
+			chartArea.AxisY2.MajorGrid.LineColor = Color.LightGray;
 			// グラフの凡例を設定する
 			var SupplyChartLegends = new string[] {
 				Properties.Resources.SupplyTypeFuel,
@@ -106,7 +105,7 @@ namespace WsGH {
 			ChangeChartScale();
 		}
 		// グラフのスケールを変更する
-		private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+		private void ChartScaleComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
 			ChangeChartScale();
 		}
 		void ChangeChartScale() {

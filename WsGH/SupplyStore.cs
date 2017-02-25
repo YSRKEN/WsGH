@@ -9,7 +9,6 @@ namespace WsGH {
 	using SupplyPair = KeyValuePair<DateTime, int>;
 	using SupplyList = List<KeyValuePair<DateTime, int>>;
 	using System.Drawing;
-
 	static class SupplyStore {
 		#region MainSupply関係
 		// MainSupplyの最終更新日時
