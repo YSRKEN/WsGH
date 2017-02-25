@@ -190,11 +190,6 @@ namespace WsGH {
 			// クリック完了時に何とかするための奴
 			AfterAction aa;
 			AfterAction2 aa2;
-			// BitmapSourceを引っ張るためにコレを使わざるを得ない現実
-			internal static class NativeMethods {
-				[System.Runtime.InteropServices.DllImport("gdi32.dll")]
-				public static extern bool DeleteObject(IntPtr hObject);
-			}
 			// コンストラクタ
 			public ClickWindow(Rectangle virtualDisplayRectangle, Bitmap virtualDisplayBitmap, AfterAction aa, AfterAction2 aa2) {
 				// 仕方ないね

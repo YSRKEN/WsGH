@@ -18,15 +18,18 @@ using System.Windows.Threading;
 using System.Drawing;
 
 namespace WsGH {
+	using System.Runtime.InteropServices;
+	using System.Windows.Interop;
 	using SceneType = SceneRecognition.SceneType;
 	/// <summary>
 	/// MainWindow.xaml の相互作用ロジック
 	/// </summary>
 	public partial class MainWindow : Window {
 		ScreenshotProvider sp = null;	//スクショ用の情報を記憶する
-		TimerWindow tw = null;			//TimerWindowのインスタンス
-		SupplyWindow sw = null;			//SupplyWindowのインスタンス
-		int timerWindowSecond;          //毎秒行う処理のために秒数を記憶
+		TimerWindow tw = null;	//TimerWindowのインスタンス
+		SupplyWindow sw = null;	//SupplyWindowのインスタンス
+		int timerWindowSecond;	//毎秒行う処理のために秒数を記憶
+		const int WM_DPICHANGED = 0x02E0;
 		#region シーン判別用文字列
 		static Dictionary<SceneType, string> SceneString
 			 = new Dictionary<SceneType, string> {
@@ -192,19 +195,71 @@ namespace WsGH {
 			#endregion
 		}
 		#region ウィンドウ位置復元・保存
-		// ウィンドウ位置復元
 		protected override void OnSourceInitialized(EventArgs e) {
 			base.OnSourceInitialized(e);
+			// ウィンドウ位置復元
 			try {
 				NativeMethods.SetWindowPlacementHelper(this, Properties.Settings.Default.MainWindowPlacement);
 			}
 			catch { }
+			// ウィンドウメッセージを横取り
+			// http://akinoware.blogspot.jp/2012/02/wpf.html
+			var helper = new WindowInteropHelper(this);
+			var source = HwndSource.FromHwnd(helper.Handle);
+			source.AddHook(new HwndSourceHook(WndProc));
+			// 初回のDPI変更を掛ける
+			ChangeDpi();
 		}
 		// ウィンドウ位置保存
 		protected override void OnClosing(CancelEventArgs e) {
 			base.OnClosing(e);
 			Properties.Settings.Default.MainWindowPlacement = NativeMethods.GetWindowPlacementHelper(this);
 			Properties.Settings.Default.Save();
+		}
+		#endregion
+		#region Hight DPI対応
+		// ウィンドウプロシージャ
+		// http://grabacr.net/archives/1132
+		IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) {
+			if(msg == WM_DPICHANGED) {
+				var dpiX = (uint)wParam & 0xFFFF;
+				var dpiY = (uint)wParam >> 16;
+				ChangeDpi(dpiX, dpiY);
+				handled = true;
+			}
+			return IntPtr.Zero;
+		}
+		// DPIを取得する
+		// http://grabacr.net/archives/1132
+		public static void GetDpi(
+			HwndSource hwndSource,
+			ref uint dpiX,
+			ref uint dpiY,
+			MonitorDpiType dpiType = MonitorDpiType.MDT_DEFAULT) {
+			//if(!IsSupported)
+			//	return Dpi.Default;
+			// ディスプレイ番号を取得する
+			var hmonitor = NativeMethods.MonitorFromWindow(
+				hwndSource.Handle,
+				MonitorDefaultTo.MONITOR_DEFAULTTONEAREST);
+			// DPIを取得する
+			dpiX = 1;
+			dpiY = 1;
+			NativeMethods.GetDpiForMonitor(hmonitor, dpiType, ref dpiX, ref dpiY);
+		}
+		// DPIを変更する(ウィンドウをリサイズする)
+		void ChangeDpi(uint dpiX, uint dpiY) {
+			var bindData = DataContext as MainWindowDC;
+			bindData.DpiX = 1.0 * dpiX / 96;
+			bindData.DpiY = 1.0 * dpiY / 96;
+		}
+		void ChangeDpi() {
+			uint dpiX = 96, dpiY = 96;
+			var helper = new WindowInteropHelper(this);
+			var source = HwndSource.FromHwnd(helper.Handle);
+			GetDpi(source, ref dpiX, ref dpiY);
+			ChangeDpi(dpiX, dpiY);
+			return;
 		}
 		#endregion
 		#region メニュー操作
@@ -497,6 +552,7 @@ namespace WsGH {
 			#endregion
 			captureFrame?.Dispose();
 		}
+		// Binding処理
 		class MainWindowDC : INotifyPropertyChanged {
 			// ログテキスト
 			string loggingText;
@@ -524,6 +580,27 @@ namespace WsGH {
 				}
 				set {
 					NotifyPropertyChanged("MenuHeaderBackgroundOther");
+				}
+			}
+			// DPI
+			double dpiX = 1.0;
+			public double DpiX {
+				get {
+					return dpiX;
+				}
+				set {
+					dpiX = value;
+					NotifyPropertyChanged("DpiX");
+				}
+			}
+			double dpiY = 1.0;
+			public double DpiY {
+				get {
+					return dpiY;
+				}
+				set {
+					dpiY = value;
+					NotifyPropertyChanged("DpiY");
 				}
 			}
 			//

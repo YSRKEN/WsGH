@@ -45,37 +45,6 @@ namespace WsGH {
 		public POINT maxPosition;
 		public RECT normalPosition;
 	}
-	// WINDOWPLACEMENT構造体でウィンドウ位置・サイズを変更するためのAPI
-	static class NativeMethods {
-		// API宣言
-		[DllImport("user32.dll")]
-		static extern bool SetWindowPlacement(IntPtr hWnd, [In] ref WINDOWPLACEMENT lpwndpl);
-		[DllImport("user32.dll")]
-		static extern bool GetWindowPlacement(IntPtr hWnd, out WINDOWPLACEMENT lpwndpl);
-		// 定数宣言
-		const int SW_SHOWNORMAL = 1;
-		const int SW_SHOWMINIMIZED = 2;
-		// ヘルパーメソッド
-		public static void SetWindowPlacementHelper(Window window, WINDOWPLACEMENT wp) {
-			// wpについて色々と設定する
-			wp.length = Marshal.SizeOf(typeof(WINDOWPLACEMENT));
-			wp.flags = 0;
-			wp.showCmd = (wp.showCmd == SW_SHOWMINIMIZED ? SW_SHOWNORMAL : wp.showCmd);
-			// ウィンドウサイズは変更しないように小細工する
-			wp.normalPosition.Right = wp.normalPosition.Left + (int)window.Width;
-			wp.normalPosition.Bottom = wp.normalPosition.Top + (int)window.Height;
-			// GetWindowPlacement関数を実行
-			var hwnd = new WindowInteropHelper(window).Handle;
-			SetWindowPlacement(hwnd, ref wp);
-		}
-		public static WINDOWPLACEMENT GetWindowPlacementHelper(Window window) {
-			
-			var wp = new WINDOWPLACEMENT();
-			var hwnd = new WindowInteropHelper(window).Handle;
-			GetWindowPlacement(hwnd, out wp);
-			return wp;
-		}
-	}
 }
 
 namespace WsGH.Properties {
