@@ -7,9 +7,9 @@
 		xmlns:app="clr-namespace:WsGH"
         mc:Ignorable="d"
         Title="WarshipGirls Helper" Height="200" Width="300" ResizeMode="CanMinimize" Topmost="True">
-	<Window.RenderTransform>
+	<Window.LayoutTransform>
 		<ScaleTransform ScaleX="{Binding DpiX}" ScaleY="{Binding DpiY}" />
-	</Window.RenderTransform>
+	</Window.LayoutTransform>
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition />
