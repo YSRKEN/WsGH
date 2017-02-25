@@ -48,27 +48,28 @@ namespace WsGH {
 			 };
 		#endregion
 		// 背景チェック
-		int BackgroundCheck {
-			get { return Properties.Settings.Default.BackgroundColorType; }
+		enum BackgroundType { BlueStacks, Nox, Other };
+		BackgroundType BackgroundCheck {
+			get { return (BackgroundType)Properties.Settings.Default.BackgroundColorType; }
 			set {
-				Properties.Settings.Default.BackgroundColorType = value;
+				Properties.Settings.Default.BackgroundColorType = (int)value;
 				Properties.Settings.Default.Save();
-				switch(Properties.Settings.Default.BackgroundColorType) {
-				case 0:
+				switch(value) {
+				case BackgroundType.BlueStacks:
 					// BlueStacks
 					BackgroundOptionMenuBS.IsChecked = true;
 					BackgroundOptionMenuNox.IsChecked = false;
 					BackgroundOptionMenuOther.IsChecked = false;
 					AddLog($"{Properties.Resources.LoggingTextrBackground} : #000000");
 					break;
-				case 1:
+				case BackgroundType.Nox:
 					// Nox
 					BackgroundOptionMenuBS.IsChecked = false;
 					BackgroundOptionMenuNox.IsChecked = true;
 					BackgroundOptionMenuOther.IsChecked = false;
 					AddLog($"{Properties.Resources.LoggingTextrBackground} : #1C1B20");
 					break;
-				case 2:
+				case BackgroundType.Other:
 					// Other
 					BackgroundOptionMenuBS.IsChecked = false;
 					BackgroundOptionMenuNox.IsChecked = false;
@@ -82,14 +83,17 @@ namespace WsGH {
 		Color BackgroundColor {
 			get {
 				switch(BackgroundCheck) {
-				case 0:
+				case BackgroundType.BlueStacks:
 					// BlueStacks
 					return Color.FromArgb(0, 0, 0);
-				case 1:
+				case BackgroundType.Nox:
 					// Nox
 					return Color.FromArgb(28, 27, 32);
-				default:
+				case BackgroundType.Other:
 					// Other
+					return Properties.Settings.Default.BackgroundColor;
+				default:
+					// ダミー
 					return Properties.Settings.Default.BackgroundColor;
 				}
 			}
@@ -153,7 +157,7 @@ namespace WsGH {
 				TwitterFlg = Properties.Settings.Default.ScreenshotForTwitterFlg,
 				MenuHeaderBackgroundOther = "",
 			};
-			BackgroundCheck = Properties.Settings.Default.BackgroundColorType;
+			BackgroundCheck = (BackgroundType)Properties.Settings.Default.BackgroundColorType;
 			SoftwareCulture = "";
 			#endregion
 			#region 周辺クラスの初期化
@@ -266,10 +270,10 @@ namespace WsGH {
 			AddLog($"{Properties.Resources.LoggingTextForTwitter} : {(bindData.TwitterFlg ? "True" : "False")}");
 		}
 		private void BackgroundOptionMenuBS_Click(object sender, RoutedEventArgs e) {
-			BackgroundCheck = 0;
+			BackgroundCheck = BackgroundType.BlueStacks;
 		}
 		private void BackgroundOptionMenuNox_Click(object sender, RoutedEventArgs e) {
-			BackgroundCheck = 1;
+			BackgroundCheck = BackgroundType.Nox;
 		}
 		private void BackgroundOptionMenuOther_Click(object sender, RoutedEventArgs e) {
 			// ゲーム背景色を変更するため、色変更ダイアログを表示する
@@ -279,7 +283,7 @@ namespace WsGH {
 				BackgroundColor = cd.Color;
 			}
 			// 画面にも反映させる
-			BackgroundCheck = 2;
+			BackgroundCheck = BackgroundType.Other;
 			var bindData = DataContext as MainWindowDC;
 			bindData.MenuHeaderBackgroundOther = "";
 		}
