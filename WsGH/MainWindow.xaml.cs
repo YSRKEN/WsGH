@@ -35,15 +35,15 @@ namespace WsGH {
 			if(!System.IO.Directory.Exists(@"pic\")) {
 				System.IO.Directory.CreateDirectory(@"pic\");
 			}
-			// 画面表示を初期化
+			#region 画面表示を初期化
 			DataContext = new MainWindowDC() {
 				LoggingText = "",
 				MenuHeaderBackgroundOther = "",
+				TwitterFlg = Properties.Settings.Default.ScreenshotForTwitterFlg,
 			};
-			// アプリの設定を初期化
-			TwitterOptionMenu.IsChecked = Properties.Settings.Default.ScreenshotForTwitterFlg;
 			SetBackgroundCheck(Properties.Settings.Default.BackgroundColorType);
 			ChangeLanguageCheckMenu(GetCulture());
+			#endregion
 			// 周辺クラスの初期化
 			SceneRecognition.InitialSceneRecognition();
 			try {
@@ -139,11 +139,11 @@ namespace WsGH {
 			System.Windows.MessageBox.Show(asmttl + " Ver." + asmver + "\n" + asmcpy + "\n" + asmprd);
 		}
 		private void TwitterOption_Changed(object sender, RoutedEventArgs e) {
-			// チェックの状態をログに記録する
-			addLog($"{Properties.Resources.LoggingTextForTwitter} : {(TwitterOptionMenu.IsChecked ? "True" : "False")}");
+			var bindData = DataContext as MainWindowDC;
 			// チェックの状態を反映させる
-			Properties.Settings.Default.ScreenshotForTwitterFlg = TwitterOptionMenu.IsChecked;
-			Properties.Settings.Default.Save();
+			bindData.TwitterFlg = TwitterOptionMenu.IsChecked;
+			// チェックの状態をログに記録する
+			addLog($"{Properties.Resources.LoggingTextForTwitter} : {(bindData.TwitterFlg ? "True" : "False")}");
 		}
 		private void BackgroundOptionMenuBS_Click(object sender, RoutedEventArgs e) {
 			SetBackgroundCheck(0);
@@ -245,12 +245,13 @@ namespace WsGH {
 		}
 		// 画像保存処理
 		private void saveScreenshot() {
+			var bindData = DataContext as MainWindowDC;
 			// 現在時間からファイル名を生成する
 			var dt = DateTime.Now;
-			var fileName = dt.ToString("yyyy-MM-dd hh-mm-ss-fff") + (TwitterOptionMenu.IsChecked ? "_twi" : "") + ".png";
+			var fileName = dt.ToString("yyyy-MM-dd hh-mm-ss-fff") + (bindData.TwitterFlg ? "_twi" : "") + ".png";
 			// 画像を保存する
 			try {
-				sp.getScreenShot(TwitterOptionMenu.IsChecked).Save(@"pic\" + fileName);
+				sp.getScreenShot(bindData.TwitterFlg).Save(@"pic\" + fileName);
 				addLog($"{Properties.Resources.LoggingTextGetScreenshot} : Success");
 				addLog("  (" + fileName + ")");
 			} catch(Exception) {
@@ -299,7 +300,7 @@ namespace WsGH {
 		// タイマー動作
 		private void DispatcherTimer_Tick(object sender, EventArgs e) {
 			// 可能ならスクショを取得する
-			Bitmap captureFrame = sp?.getScreenShot(TwitterOptionMenu.IsChecked);
+			Bitmap captureFrame = sp?.getScreenShot();
 			#region 毎フレーム毎の処理
 			// スクショが取得できていた場合
 			if(captureFrame != null) {
@@ -468,6 +469,16 @@ namespace WsGH {
 				NotifyPropertyChanged("LoggingText");
 			}
 		}
+		// Twitter投稿フラグ
+		bool twitterFlg;
+		public bool TwitterFlg {
+			get { return twitterFlg; }
+			set {
+				Properties.Settings.Default.ScreenshotForTwitterFlg = twitterFlg = value;
+				Properties.Settings.Default.Save();
+				NotifyPropertyChanged("TwitterFlg");
+			}
+		}
 		// 背景オプション
 		public string MenuHeaderBackgroundOther {
 			get {
@@ -477,6 +488,7 @@ namespace WsGH {
 				NotifyPropertyChanged("MenuHeaderBackgroundOther");
 			}
 		}
+		// 
 		// 色情報を文字列に変換
 		public static string ColorToString(System.Drawing.Color clr) {
 			return "#" + clr.R.ToString("X2") + clr.G.ToString("X2") + clr.B.ToString("X2");

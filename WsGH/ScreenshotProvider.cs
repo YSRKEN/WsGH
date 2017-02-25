@@ -61,7 +61,7 @@ namespace WsGH {
 			return "(" + screenshotRectangle.X.ToString() + "," + screenshotRectangle.Y.ToString() + ") " + screenshotRectangle.Width.ToString() + "x" + screenshotRectangle.Height.ToString();
 		}
 		// スクショを取得する(スクショ出来ない際はnullが返る)
-		public Bitmap getScreenShot(bool forTwitterFlg) {
+		public Bitmap getScreenShot(bool forTwitterFlg = false) {
 			if(!isGetPosition())
 				return null;
 			var bitmap = new Bitmap(screenshotRectangle.Width, screenshotRectangle.Height);
