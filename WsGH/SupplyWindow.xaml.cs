@@ -63,44 +63,46 @@ namespace WsGH {
 			chartArea.AxisX2.MajorGrid.LineColor = Color.LightGray;
 			chartArea.AxisY2.MajorGrid.LineColor = Color.LightGray;
 			// グラフの凡例を設定する
-			var SupplyChartLegends = new string[] {
-				Properties.Resources.SupplyTypeFuel,
-				Properties.Resources.SupplyTypeAmmo,
-				Properties.Resources.SupplyTypeSteel,
-				Properties.Resources.SupplyTypeBauxite,
-				Properties.Resources.SupplyTypeDiamond,
+			var SupplyChartLegends = new Dictionary<string, string> {
+				{"Fuel", Properties.Resources.SupplyTypeFuel },
+				{"Ammo", Properties.Resources.SupplyTypeAmmo },
+				{"Steel", Properties.Resources.SupplyTypeSteel },
+				{"Bauxite", Properties.Resources.SupplyTypeBauxite },
+				{"Diamond", Properties.Resources.SupplyTypeDiamond },
 			};
 			// グラフを追加する
-			for(int i = 0; i < SupplyStore.MainSupplyTypeCount; ++i) {
-				var data = SupplyStore.MainSupplyData[i];
+			int index = 0;
+			foreach(var data in SupplyStore.MainSupplyData) {
 				var series = new Series();
 				// 名前を設定する
-				series.Name = SupplyChartLegends[i];
+				series.Name = SupplyChartLegends[data.Type];
 				// 折れ線グラフに設定する
 				series.ChartType = SeriesChartType.Line;
 				// 横軸を「時間」とする
 				series.XValueType = ChartValueType.DateTime;
 				// 表示用データを追加する
-				foreach(var Column in data) {
+				foreach(var Column in data.List) {
 					series.Points.AddXY(Column.Key.ToOADate(), Column.Value);
 				}
 				// 表示位置を調整
-				if(SupplyStore.MainSupplyType[i] == "Diamond") {
+				if(data.Type == "Diamond") {
 					series.YAxisType = AxisType.Secondary;
 				}
 				// 表示色を選択
-				series.Color = SupplyStore.SupplyChartColor[i];
+				series.Color = data.Color;
 				series.BorderWidth = 2;
 				// SupplyChartに追加する
 				SupplyChart.Series.Add(series);
 				// 凡例の設定
 				var legend = new Legend();
 				legend.DockedToChartArea = "ChartArea";
-				legend.Alignment = System.Drawing.StringAlignment.Far;
+				legend.Alignment = StringAlignment.Far;
 				SupplyChart.Legends.Add(legend);
+				// インクリメント
+				++index;
 			}
 			// グラフのスケールを設定する
-			LeastChartTime = SupplyStore.MainSupplyData.First().Max(d => d.Key);
+			LeastChartTime = SupplyStore.MainSupplyData.First().List.Max(d => d.Key);
 			chartArea.AxisX.Maximum = LeastChartTime.ToOADate();
 			ChangeChartScale();
 		}
