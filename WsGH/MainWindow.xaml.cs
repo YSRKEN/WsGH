@@ -8,7 +8,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -27,6 +26,57 @@ namespace WsGH {
 		TimerWindow tw = null;			//TimerWindowのインスタンス
 		SupplyWindow sw = null;			//SupplyWindowのインスタンス
 		int timerWindowSecond;			//毎秒行う処理のために秒数を記憶
+		// 背景チェック
+		int BackgroundCheck {
+			get { return Properties.Settings.Default.BackgroundColorType; }
+			set {
+				Properties.Settings.Default.BackgroundColorType = value;
+				Properties.Settings.Default.Save();
+				switch(Properties.Settings.Default.BackgroundColorType) {
+				case 0:
+					// BlueStacks
+					BackgroundOptionMenuBS.IsChecked = true;
+					BackgroundOptionMenuNox.IsChecked = false;
+					BackgroundOptionMenuOther.IsChecked = false;
+					addLog($"{Properties.Resources.LoggingTextrBackground} : #000000");
+					break;
+				case 1:
+					// Nox
+					BackgroundOptionMenuBS.IsChecked = false;
+					BackgroundOptionMenuNox.IsChecked = true;
+					BackgroundOptionMenuOther.IsChecked = false;
+					addLog($"{Properties.Resources.LoggingTextrBackground} : #1C1B20");
+					break;
+				case 2:
+					// Other
+					BackgroundOptionMenuBS.IsChecked = false;
+					BackgroundOptionMenuNox.IsChecked = false;
+					BackgroundOptionMenuOther.IsChecked = true;
+					addLog($"{Properties.Resources.LoggingTextrBackground} : {ColorToString(Properties.Settings.Default.BackgroundColor)}");
+					break;
+				}
+			}
+		}
+		// 背景色
+		Color BackgroundColor {
+			get {
+				switch(BackgroundCheck) {
+				case 0:
+					// BlueStacks
+					return Color.FromArgb(0, 0, 0);
+				case 1:
+					// Nox
+					return Color.FromArgb(28, 27, 32);
+				default:
+					// Other
+					return Properties.Settings.Default.BackgroundColor;
+				}
+			}
+			set {
+				Properties.Settings.Default.BackgroundColor = value;
+				Properties.Settings.Default.Save();
+			}
+		}
 		// コンストラクタ
 		public MainWindow() {
 			InitializeComponent();
@@ -41,7 +91,7 @@ namespace WsGH {
 				MenuHeaderBackgroundOther = "",
 				TwitterFlg = Properties.Settings.Default.ScreenshotForTwitterFlg,
 			};
-			SetBackgroundCheck(Properties.Settings.Default.BackgroundColorType);
+			BackgroundCheck = Properties.Settings.Default.BackgroundColorType;
 			ChangeLanguageCheckMenu(GetCulture());
 			#endregion
 			// 周辺クラスの初期化
@@ -89,7 +139,7 @@ namespace WsGH {
 			Close();
 		}
 		private void GetPositionMenu_Click(object sender, RoutedEventArgs e) {
-			sp = new ScreenshotProvider(new AfterAction(getPosition), GetBackgroundColor());
+			sp = new ScreenshotProvider(new AfterAction(getPosition), BackgroundColor);
 		}
 		private void GetScreenshotMenu_Click(object sender, RoutedEventArgs e) {
 			saveScreenshot();
@@ -146,28 +196,22 @@ namespace WsGH {
 			addLog($"{Properties.Resources.LoggingTextForTwitter} : {(bindData.TwitterFlg ? "True" : "False")}");
 		}
 		private void BackgroundOptionMenuBS_Click(object sender, RoutedEventArgs e) {
-			SetBackgroundCheck(0);
-			// 画面にも反映させる
-			addLog($"{Properties.Resources.LoggingTextrBackground} : #000000");
+			BackgroundCheck = 0;
 		}
 		private void BackgroundOptionMenuNox_Click(object sender, RoutedEventArgs e) {
-			SetBackgroundCheck(1);
-			// 画面にも反映させる
-			addLog($"{Properties.Resources.LoggingTextrBackground} : #1C1B20");
+			BackgroundCheck = 1;
 		}
 		private void BackgroundOptionMenuOther_Click(object sender, RoutedEventArgs e) {
-			SetBackgroundCheck(2);
 			// ゲーム背景色を変更するため、色変更ダイアログを表示する
 			var cd = new ColorDialog();
 			if(cd.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
 				// 色変更を行う
-				Properties.Settings.Default.BackgroundColor = cd.Color;
-				Properties.Settings.Default.Save();
-				// 画面にも反映させる
-				addLog($"{Properties.Resources.LoggingTextrBackground} : {MainWindowDC.ColorToString(Properties.Settings.Default.BackgroundColor)}");
-				var bindData = DataContext as MainWindowDC;
-				bindData.MenuHeaderBackgroundOther = "";
+				BackgroundColor = cd.Color;
 			}
+			// 画面にも反映させる
+			BackgroundCheck = 2;
+			var bindData = DataContext as MainWindowDC;
+			bindData.MenuHeaderBackgroundOther = "";
 		}
 		private void SelectLanguageJapanese_Click(object sender, RoutedEventArgs e) {
 			// 日本語に切り替え
@@ -188,49 +232,6 @@ namespace WsGH {
 			var bindData = DataContext as MainWindowDC;
 			bindData.LoggingText += dt.ToString("hh:mm:ss ") + str + "\n";
 			LoggingTextBox.ScrollToEnd();
-		}
-		// 背景色のチェックを切り替え
-		void SetBackgroundCheck(int colorType) {
-			Properties.Settings.Default.BackgroundColorType = colorType;
-			Properties.Settings.Default.Save();
-			switch(colorType) {
-			case 0:
-				// BlueStacks
-				BackgroundOptionMenuBS.IsChecked = true;
-				BackgroundOptionMenuNox.IsChecked = false;
-				BackgroundOptionMenuOther.IsChecked = false;
-				break;
-			case 1:
-				// Nox
-				BackgroundOptionMenuBS.IsChecked = false;
-				BackgroundOptionMenuNox.IsChecked = true;
-				BackgroundOptionMenuOther.IsChecked = false;
-				break;
-			case 2:
-				// Other
-				BackgroundOptionMenuBS.IsChecked = false;
-				BackgroundOptionMenuNox.IsChecked = false;
-				BackgroundOptionMenuOther.IsChecked = true;
-				break;
-			default:
-				break;
-			}
-		}
-		// 背景色を取得
-		System.Drawing.Color GetBackgroundColor() {
-			switch(Properties.Settings.Default.BackgroundColorType) {
-			case 0:
-				// BlueStacks
-				return System.Drawing.Color.FromArgb(0, 0, 0);
-			case 1:
-				// Nox
-				return System.Drawing.Color.FromArgb(28, 27, 32);
-			case 2:
-				// Other
-				return Properties.Settings.Default.BackgroundColor;
-			default:
-				return System.Drawing.Color.FromArgb(0, 0, 0);
-			}
 		}
 		// 座標取得後の画面更新処理
 		private void getPosition() {
@@ -257,6 +258,10 @@ namespace WsGH {
 			} catch(Exception) {
 				addLog($"{Properties.Resources.LoggingTextGetScreenshot} : Failed");
 			}
+		}
+		// 色情報を文字列に変換
+		static string ColorToString(System.Drawing.Color clr) {
+			return "#" + clr.R.ToString("X2") + clr.G.ToString("X2") + clr.B.ToString("X2");
 		}
 		#region カルチャ関連
 		// 言語切替
@@ -458,45 +463,40 @@ namespace WsGH {
 			#endregion
 			captureFrame?.Dispose();
 		}
-	}
-	class MainWindowDC : INotifyPropertyChanged {
-		// ログテキスト
-		string loggingText;
-		public string LoggingText {
-			get { return loggingText; }
-			set {
-				loggingText = value;
-				NotifyPropertyChanged("LoggingText");
+		class MainWindowDC : INotifyPropertyChanged {
+			// ログテキスト
+			string loggingText;
+			public string LoggingText {
+				get { return loggingText; }
+				set {
+					loggingText = value;
+					NotifyPropertyChanged("LoggingText");
+				}
 			}
-		}
-		// Twitter投稿フラグ
-		bool twitterFlg;
-		public bool TwitterFlg {
-			get { return twitterFlg; }
-			set {
-				Properties.Settings.Default.ScreenshotForTwitterFlg = twitterFlg = value;
-				Properties.Settings.Default.Save();
-				NotifyPropertyChanged("TwitterFlg");
+			// Twitter投稿フラグ
+			bool twitterFlg;
+			public bool TwitterFlg {
+				get { return twitterFlg; }
+				set {
+					Properties.Settings.Default.ScreenshotForTwitterFlg = twitterFlg = value;
+					Properties.Settings.Default.Save();
+					NotifyPropertyChanged("TwitterFlg");
+				}
 			}
-		}
-		// 背景オプション
-		public string MenuHeaderBackgroundOther {
-			get {
-				return $"{Properties.Resources.MenuHeaderBackgroundOther} : {ColorToString(Properties.Settings.Default.BackgroundColor)} ...";
+			// 背景オプション
+			public string MenuHeaderBackgroundOther {
+				get {
+					return $"{Properties.Resources.MenuHeaderBackgroundOther} : {ColorToString(Properties.Settings.Default.BackgroundColor)} ...";
+				}
+				set {
+					NotifyPropertyChanged("MenuHeaderBackgroundOther");
+				}
 			}
-			set {
-				NotifyPropertyChanged("MenuHeaderBackgroundOther");
+			//
+			public event PropertyChangedEventHandler PropertyChanged = (s, e) => { };
+			public void NotifyPropertyChanged(string parameter) {
+				PropertyChanged(this, new PropertyChangedEventArgs(parameter));
 			}
-		}
-		// 
-		// 色情報を文字列に変換
-		public static string ColorToString(System.Drawing.Color clr) {
-			return "#" + clr.R.ToString("X2") + clr.G.ToString("X2") + clr.B.ToString("X2");
-		}
-		//
-		public event PropertyChangedEventHandler PropertyChanged = (s, e) => { };
-		public void NotifyPropertyChanged(string parameter) {
-			PropertyChanged(this, new PropertyChangedEventArgs(parameter));
 		}
 	}
 }
