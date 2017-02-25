@@ -7,7 +7,9 @@
         xmlns:local="clr-namespace:WsGH"
 		xmlns:app="clr-namespace:WsGH"
         mc:Ignorable="d"
-        Title="{Binding Source={x:Static local:ResourceService.Current}, Path=Resources.TitleSupplyWindow, Mode=OneWay}" Height="400" Width="600" ResizeMode="NoResize" Topmost="True">
+        Title="{Binding Source={x:Static local:ResourceService.Current}, Path=Resources.TitleSupplyWindow, Mode=OneWay}"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize" Topmost="True">
 	<Grid>
 		<WindowsFormsHost HorizontalAlignment="Left" Height="334" VerticalAlignment="Top" Width="594" Margin="0,37,0,0">
 			<wfc:Chart x:Name="SupplyChart">

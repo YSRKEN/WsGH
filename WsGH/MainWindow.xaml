@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:WsGH"
 		xmlns:app="clr-namespace:WsGH"
         mc:Ignorable="d"
-        Title="WarshipGirls Helper" Height="200" Width="300" ResizeMode="CanMinimize" Topmost="True">
+        Title="WarshipGirls Helper"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="CanMinimize" Topmost="True">
 	<Grid Margin="0,0,0,0">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition />
