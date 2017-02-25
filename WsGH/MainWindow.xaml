@@ -7,7 +7,10 @@
 		xmlns:app="clr-namespace:WsGH"
         mc:Ignorable="d"
         Title="WarshipGirls Helper" Height="200" Width="300" ResizeMode="CanMinimize" Topmost="True">
-	<Grid Margin="0,0,0,0">
+	<Window.RenderTransform>
+		<ScaleTransform ScaleX="{Binding DpiX}" ScaleY="{Binding DpiY}" />
+	</Window.RenderTransform>
+	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
@@ -16,9 +19,6 @@
 			<RowDefinition />
 		</Grid.RowDefinitions>
 		<Menu>
-	<Window.RenderTransform>
-		<ScaleTransform ScaleX="{Binding DpiX}" ScaleY="{Binding DpiY}" />
-	</Window.RenderTransform>
 			<MenuItem Header="{Binding Source={x:Static app:ResourceService.Current}, Path=Resources.MenuHeaderFile, Mode=OneWay}">
 				<MenuItem Header="{Binding Source={x:Static app:ResourceService.Current}, Path=Resources.MenuHeaderExit, Mode=OneWay}" Click="ExitMenu_Click" />
 			</MenuItem>

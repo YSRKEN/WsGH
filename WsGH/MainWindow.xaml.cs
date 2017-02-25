@@ -252,6 +252,8 @@ namespace WsGH {
 			var bindData = DataContext as MainWindowDC;
 			bindData.DpiX = 1.0 * dpiX / 96;
 			bindData.DpiY = 1.0 * dpiY / 96;
+			this.Width = 300.0 * bindData.DpiX;
+			this.Height = 200.0 * bindData.DpiY;
 		}
 		void ChangeDpi() {
 			uint dpiX = 96, dpiY = 96;
