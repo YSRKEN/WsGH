@@ -5,33 +5,52 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WsGH"
         mc:Ignorable="d"
-        Title="{Binding Source={x:Static local:ResourceService.Current}, Path=Resources.TitleTimerWindow, Mode=OneWay}" Height="170" Width="340" ResizeMode="NoResize" Topmost="True">
+        Title="{Binding Source={x:Static local:ResourceService.Current}, Path=Resources.TitleTimerWindow, Mode=OneWay}"
+        Height="170" Width="340" ResizeMode="NoResize" Topmost="True">
 	<Window.DataContext>
 		<local:TimerValue/>
 	</Window.DataContext>
 	<Window.Resources>
 		<local:TimerConverter x:Key="TimerConverter"/>
 	</Window.Resources>
-	<Grid>
-		<TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding Source={x:Static local:ResourceService.Current}, Path=Resources.TextBlockTextExp, Mode=OneWay}" VerticalAlignment="Top" RenderTransformOrigin="0.537,0.084" FontSize="20"/>
-		<TextBlock HorizontalAlignment="Left" Margin="88,10,0,0" TextWrapping="Wrap" Text="{Binding Source={x:Static local:ResourceService.Current}, Path=Resources.TextBlockTextBld, Mode=OneWay}" VerticalAlignment="Top" RenderTransformOrigin="0.771,-0.334" FontSize="20"/>
-		<TextBlock HorizontalAlignment="Left" Margin="166,10,0,0" TextWrapping="Wrap" Text="{Binding Source={x:Static local:ResourceService.Current}, Path=Resources.TextBlockTextDev, Mode=OneWay}" VerticalAlignment="Top" FontSize="20" RenderTransformOrigin="1.321,0.489"/>
-		<TextBlock HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" Text="{Binding Source={x:Static local:ResourceService.Current}, Path=Resources.TextBlockTextDock, Mode=OneWay}" VerticalAlignment="Top" FontSize="20"/>
-		<TextBlock x:Name="ExpTimer1TextBlock" HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" Text="{Binding ExpTimer1,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="ExpTimer1TextBlock_MouseDown"/>
-		<TextBlock x:Name="ExpTimer2TextBlock" HorizontalAlignment="Left" Margin="10,52,0,0" TextWrapping="Wrap" Text="{Binding ExpTimer2,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="ExpTimer2TextBlock_MouseDown"/>
-		<TextBlock x:Name="ExpTimer3TextBlock" HorizontalAlignment="Left" Margin="10,73,0,0" TextWrapping="Wrap" Text="{Binding ExpTimer3,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="ExpTimer3TextBlock_MouseDown"/>
-		<TextBlock x:Name="ExpTimer4TextBlock" HorizontalAlignment="Left" Margin="10,94,0,0" TextWrapping="Wrap" Text="{Binding ExpTimer4,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="ExpTimer4TextBlock_MouseDown"/>
-		<TextBlock x:Name="BuildTimer1TextBlock" HorizontalAlignment="Left" Margin="88,31,0,0" TextWrapping="Wrap" Text="{Binding BuildTimer1,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="BuildTimer1TextBlock_MouseDown"/>
-		<TextBlock x:Name="BuildTimer2TextBlock" HorizontalAlignment="Left" Margin="88,52,0,0" TextWrapping="Wrap" Text="{Binding BuildTimer2,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="BuildTimer2TextBlock_MouseDown"/>
-		<TextBlock x:Name="BuildTimer3TextBlock" HorizontalAlignment="Left" Margin="88,73,0,0" TextWrapping="Wrap" Text="{Binding BuildTimer3,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="BuildTimer3TextBlock_MouseDown"/>
-		<TextBlock x:Name="BuildTimer4TextBlock" HorizontalAlignment="Left" Margin="88,94,0,0" TextWrapping="Wrap" Text="{Binding BuildTimer4,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="BuildTimer4TextBlock_MouseDown"/>
-		<TextBlock x:Name="DevTimer1TextBlock" HorizontalAlignment="Left" Margin="166,31,0,0" TextWrapping="Wrap" Text="{Binding DevTimer1,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="DevTimer1TextBlock_MouseDown"/>
-		<TextBlock x:Name="DevTimer2TextBlock" HorizontalAlignment="Left" Margin="166,52,0,0" TextWrapping="Wrap" Text="{Binding DevTimer2,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="DevTimer2TextBlock_MouseDown"/>
-		<TextBlock x:Name="DevTimer3TextBlock" HorizontalAlignment="Left" Margin="166,73,0,0" TextWrapping="Wrap" Text="{Binding DevTimer3,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="DevTimer3TextBlock_MouseDown"/>
-		<TextBlock x:Name="DevTimer4TextBlock" HorizontalAlignment="Left" Margin="166,94,0,0" TextWrapping="Wrap" Text="{Binding DevTimer4,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="DevTimer4TextBlock_MouseDown"/>
-		<TextBlock x:Name="DckTimer1TextBlock" HorizontalAlignment="Left" Margin="244,31,0,0" TextWrapping="Wrap" Text="{Binding DockTimer1,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="DockTimer1TextBlock_MouseDown"/>
-		<TextBlock x:Name="DckTimer2TextBlock" HorizontalAlignment="Left" Margin="244,52,0,0" TextWrapping="Wrap" Text="{Binding DockTimer2,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="DockTimer2TextBlock_MouseDown"/>
-		<TextBlock x:Name="DckTimer3TextBlock" HorizontalAlignment="Left" Margin="244,72,0,0" TextWrapping="Wrap" Text="{Binding DockTimer3,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="DockTimer3TextBlock_MouseDown"/>
-		<TextBlock x:Name="DckTimer4TextBlock" HorizontalAlignment="Left" Margin="244,94,0,0" TextWrapping="Wrap" Text="{Binding DockTimer4,Converter={StaticResource TimerConverter}}" VerticalAlignment="Top" FontSize="20" MouseDown="DockTimer4TextBlock_MouseDown"/>
+	<Grid Margin="10,10,10,10">
+		<Grid.RowDefinitions>
+			<RowDefinition/>
+			<RowDefinition/>
+			<RowDefinition/>
+			<RowDefinition/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition/>
+			<ColumnDefinition/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+		<!-- ラベル -->
+		<TextBlock Grid.Row="0" Grid.Column="0" FontSize="18" HorizontalAlignment="Center" Text="{Binding Source={x:Static local:ResourceService.Current}, Path=Resources.TextBlockTextExp,  Mode=OneWay}"/>
+		<TextBlock Grid.Row="0" Grid.Column="1" FontSize="18" HorizontalAlignment="Center" Text="{Binding Source={x:Static local:ResourceService.Current}, Path=Resources.TextBlockTextBld,  Mode=OneWay}"/>
+		<TextBlock Grid.Row="0" Grid.Column="2" FontSize="18" HorizontalAlignment="Center" Text="{Binding Source={x:Static local:ResourceService.Current}, Path=Resources.TextBlockTextDev,  Mode=OneWay}"/>
+		<TextBlock Grid.Row="0" Grid.Column="3" FontSize="18" HorizontalAlignment="Center" Text="{Binding Source={x:Static local:ResourceService.Current}, Path=Resources.TextBlockTextDock, Mode=OneWay}"/>
+		<!-- 遠征 -->
+		<TextBlock Grid.Row="1" Grid.Column="0" FontSize="18" HorizontalAlignment="Center" Text="{Binding ExpTimer1,Converter={StaticResource TimerConverter}}" x:Name="ExpTimer1TextBlock" MouseDown="ExpTimer1TextBlock_MouseDown"/>
+		<TextBlock Grid.Row="2" Grid.Column="0" FontSize="18" HorizontalAlignment="Center" Text="{Binding ExpTimer2,Converter={StaticResource TimerConverter}}" x:Name="ExpTimer2TextBlock" MouseDown="ExpTimer2TextBlock_MouseDown"/>
+		<TextBlock Grid.Row="3" Grid.Column="0" FontSize="18" HorizontalAlignment="Center" Text="{Binding ExpTimer3,Converter={StaticResource TimerConverter}}" x:Name="ExpTimer3TextBlock" MouseDown="ExpTimer3TextBlock_MouseDown"/>
+		<TextBlock Grid.Row="4" Grid.Column="0" FontSize="18" HorizontalAlignment="Center" Text="{Binding ExpTimer4,Converter={StaticResource TimerConverter}}" x:Name="ExpTimer4TextBlock" MouseDown="ExpTimer4TextBlock_MouseDown"/>
+		<!-- 建造 -->
+		<TextBlock Grid.Row="1" Grid.Column="1" FontSize="18" HorizontalAlignment="Center" Text="{Binding BuildTimer1,Converter={StaticResource TimerConverter}}" x:Name="BuildTimer1TextBlock" MouseDown="BuildTimer1TextBlock_MouseDown"/>
+		<TextBlock Grid.Row="2" Grid.Column="1" FontSize="18" HorizontalAlignment="Center" Text="{Binding BuildTimer2,Converter={StaticResource TimerConverter}}" x:Name="BuildTimer2TextBlock" MouseDown="BuildTimer2TextBlock_MouseDown"/>
+		<TextBlock Grid.Row="3" Grid.Column="1" FontSize="18" HorizontalAlignment="Center" Text="{Binding BuildTimer3,Converter={StaticResource TimerConverter}}" x:Name="BuildTimer3TextBlock" MouseDown="BuildTimer3TextBlock_MouseDown"/>
+		<TextBlock Grid.Row="4" Grid.Column="1" FontSize="18" HorizontalAlignment="Center" Text="{Binding BuildTimer4,Converter={StaticResource TimerConverter}}" x:Name="BuildTimer4TextBlock" MouseDown="BuildTimer4TextBlock_MouseDown"/>
+		<!-- 開発 -->
+		<TextBlock Grid.Row="1" Grid.Column="2" FontSize="18" HorizontalAlignment="Center" Text="{Binding DevTimer1,Converter={StaticResource TimerConverter}}" x:Name="DevTimer1TextBlock" MouseDown="DevTimer1TextBlock_MouseDown"/>
+		<TextBlock Grid.Row="2" Grid.Column="2" FontSize="18" HorizontalAlignment="Center" Text="{Binding DevTimer2,Converter={StaticResource TimerConverter}}" x:Name="DevTimer2TextBlock" MouseDown="DevTimer2TextBlock_MouseDown"/>
+		<TextBlock Grid.Row="3" Grid.Column="2" FontSize="18" HorizontalAlignment="Center" Text="{Binding DevTimer3,Converter={StaticResource TimerConverter}}" x:Name="DevTimer3TextBlock" MouseDown="DevTimer3TextBlock_MouseDown"/>
+		<TextBlock Grid.Row="4" Grid.Column="2" FontSize="18" HorizontalAlignment="Center" Text="{Binding DevTimer4,Converter={StaticResource TimerConverter}}" x:Name="DevTimer4TextBlock" MouseDown="DevTimer4TextBlock_MouseDown"/>
+		<!-- 入渠 -->
+		<TextBlock Grid.Row="1" Grid.Column="3" FontSize="18" HorizontalAlignment="Center" Text="{Binding DockTimer1,Converter={StaticResource TimerConverter}}" x:Name="DckTimer1TextBlock" MouseDown="DockTimer1TextBlock_MouseDown"/>
+		<TextBlock Grid.Row="2" Grid.Column="3" FontSize="18" HorizontalAlignment="Center" Text="{Binding DockTimer2,Converter={StaticResource TimerConverter}}" x:Name="DckTimer2TextBlock" MouseDown="DockTimer2TextBlock_MouseDown"/>
+		<TextBlock Grid.Row="3" Grid.Column="3" FontSize="18" HorizontalAlignment="Center" Text="{Binding DockTimer3,Converter={StaticResource TimerConverter}}" x:Name="DckTimer3TextBlock" MouseDown="DockTimer3TextBlock_MouseDown"/>
+		<TextBlock Grid.Row="4" Grid.Column="3" FontSize="18" HorizontalAlignment="Center" Text="{Binding DockTimer4,Converter={StaticResource TimerConverter}}" x:Name="DckTimer4TextBlock" MouseDown="DockTimer4TextBlock_MouseDown"/>
 	</Grid>
 </Window>
