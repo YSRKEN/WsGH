@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WsGH"
         mc:Ignorable="d"
         Title="{Binding Source={x:Static local:ResourceService.Current}, Path=Resources.TitleTimerWindow, Mode=OneWay}"
-        Height="170" Width="340" ResizeMode="NoResize" Topmost="True">
+        Height="170" Width="340" MinHeight="170" MinWidth="340" Topmost="True">
 	<Window.DataContext>
 		<local:TimerValue/>
 	</Window.DataContext>
