@@ -111,6 +111,8 @@ namespace WsGH {
 			ChangeChartScale();
 		}
 		void ChangeChartScale() {
+			if(SupplyChart == null)
+				return;
 			// グラフののスケールを決定する(デフォルト値は「2週間」)
 			var index = ChartScaleComboBox.SelectedIndex;
 			var chartScale = ChartScale[(index != -1 ? index : 2)];
