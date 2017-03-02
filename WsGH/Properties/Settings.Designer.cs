@@ -25,7 +25,7 @@ namespace WsGH.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.1.0.0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.1.1.0")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
@@ -269,18 +269,6 @@ namespace WsGH.Properties {
             }
             set {
                 this["BackgroundColorType"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1900-01-01")]
-        public global::System.DateTime LastUpdate {
-            get {
-                return ((global::System.DateTime)(this["LastUpdate"]));
-            }
-            set {
-                this["LastUpdate"] = value;
             }
         }
         
