@@ -113,7 +113,7 @@ namespace WsGH {
 		// OCRする際にマッチングさせる元のサイズ
 		static Size TemplateSize2 = new Size(TemplateSize1.Width + 2, TemplateSize1.Height + 2);
 		// OCRする際にマッチングさせる先の画像
-		static IplImage TemplateSource;
+		static IplImage TemplateSource, TemplateSource2;
 		#endregion
 		#region その他定数
 		static DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0);
@@ -121,6 +121,7 @@ namespace WsGH {
 		// 認識用初期化
 		public static void InitialSceneRecognition() {
 			TemplateSource = BitmapConverter.ToIplImage(Properties.Resources.ocr_template);
+			TemplateSource2 = BitmapConverter.ToIplImage(Properties.Resources.ocr_template_2);
 		}
 		#region DifferenceHash関係
 		/// <summary>
@@ -209,43 +210,49 @@ namespace WsGH {
 		#region OCR関係
 		// 周囲をトリミングする
 		static Rectangle GetTrimmingRectangle(Bitmap bitmap) {
+			// Rangeを意図的に1スタートにしているのは、
+			// FirstOrDefaultメソッドが検索して見つからなかった際、
+			// Rangeが参照型ではなく値型なので0が帰ってくるから。
+			// つまり、発見できず0が返ってくるのか、
+			// 座標0で発見したから0が返ってくるのかが判別できない。
+			// なのであえて1スタートにしている
 			var rect = new Rectangle(new Point(0, 0), bitmap.Size);
-			var xRange = Enumerable.Range(0, bitmap.Width).DefaultIfEmpty(-1);
-			var yRange = Enumerable.Range(0, bitmap.Height).DefaultIfEmpty(-1);
+			var xRange = Enumerable.Range(1, bitmap.Width);
+			var yRange = Enumerable.Range(1, bitmap.Height);
 			// 上下左右の境界を取得する
 			var borderColor = Color.FromArgb(255, 255, 255);
 			// 左
 			foreach(var x in xRange) {
 				// borderColorと等しくない色を発見した場合、pos >= 0になる
-				var pos = yRange.FirstOrDefault(y => bitmap.GetPixel(x, y) != borderColor);
-				if(pos >= 0) {
-					rect.X = x;
-					rect.Width -= x;
+				var pos = yRange.FirstOrDefault(y => bitmap.GetPixel(x - 1, y - 1) != borderColor);
+				if(pos >= 1) {
+					rect.X = x - 1;
+					rect.Width -= rect.X;
 					break;
 				}
 			}
 			// 上
 			foreach(var y in yRange) {
-				var pos = xRange.FirstOrDefault(x => bitmap.GetPixel(x, y) != borderColor);
-				if(pos >= 0) {
-					rect.Y = y;
-					rect.Height -= y;
+				var pos = xRange.FirstOrDefault(x => bitmap.GetPixel(x - 1, y - 1) != borderColor);
+				if(pos >= 1) {
+					rect.Y = y - 1;
+					rect.Height -= rect.Y;
 					break;
 				}
 			}
 			// 右
 			foreach(var x in xRange.Reverse()) {
-				var pos = yRange.FirstOrDefault(y => bitmap.GetPixel(x, y) != borderColor);
-				if(pos >= 0) {
-					rect.Width -= bitmap.Width - x - 1;
+				var pos = yRange.FirstOrDefault(y => bitmap.GetPixel(x - 1, y - 1) != borderColor);
+				if(pos >= 1) {
+					rect.Width -= bitmap.Width - x;
 					break;
 				}
 			}
 			// 下
 			foreach(var y in yRange.Reverse()) {
-				var pos = xRange.FirstOrDefault(x => bitmap.GetPixel(x, y) != borderColor);
-				if(pos >= 0) {
-					rect.Height -= bitmap.Height - y - 1;
+				var pos = xRange.FirstOrDefault(x => bitmap.GetPixel(x - 1, y - 1) != borderColor);
+				if(pos >= 1) {
+					rect.Height -= bitmap.Height - y;
 					break;
 				}
 			}
@@ -264,7 +271,7 @@ namespace WsGH {
 		/// <param name="thresold">閾値。これより暗いと黒とみなす</param>
 		/// <param name="negaFlg">trueだと色を反転させて判定する</param>
 		/// <returns>読み取った数値。0～9および10(白色＝読めなかった)をListで返す</returns>
-		static List<int> GetDigitOCR(Bitmap bitmap, float[] px_arr, float py_per, float wx_per, float wy_per, int thresold, bool negaFlg) {
+		static List<int> GetDigitOCR(Bitmap bitmap, float[] px_arr, float py_per, float wx_per, float wy_per, int thresold, bool negaFlg, int templateSourceIndex = 0) {
 			var output = new List<int>();
 			foreach(var px_per in px_arr) {
 				// ％指定をピクセル指定に直す
@@ -283,7 +290,7 @@ namespace WsGH {
 					var desRect = new Rectangle(0, 0, canvas.Width, canvas.Height);
 					g.DrawImage(bitmap, desRect, srcRect, GraphicsUnit.Pixel);
 				}
-				//canvas.Save("digit1.bmp");
+				canvas.Save("digit1.bmp");
 				// 二値化する
 				using(var image = BitmapConverter.ToIplImage(canvas))
 				using(var image2 = new IplImage(image.Size, BitDepth.U8, 1)) {
@@ -293,7 +300,7 @@ namespace WsGH {
 					Cv.Threshold(image2, image2, thresold, 255, ThresholdType.Binary);
 					canvas = image2.ToBitmap();
 				}
-				//canvas.Save("digit2.bmp");
+				canvas.Save("digit2.bmp");
 				// 周囲をトリミングした上で、所定のサイズにリサイズする
 				// 背景は赤色に塗りつぶすこと
 				var rect = GetTrimmingRectangle(canvas);
@@ -307,22 +314,29 @@ namespace WsGH {
 					var desRect = new Rectangle(1, 1, TemplateSize1.Width, TemplateSize1.Height);
 					g.DrawImage(canvas, desRect, srcRect, GraphicsUnit.Pixel);
 				}
-				//canvas2.Save("digit3.bmp");
+				canvas2.Save("digit3.bmp");
 				// マッチングを行う
 				Point matchPosition;
 				using(var image = BitmapConverter.ToIplImage(canvas2)) {
-					var resultSize = new CvSize(TemplateSource.Width - image.Width + 1, TemplateSource.Height - image.Height + 1);
+					var templateSource = (templateSourceIndex == 0 ? TemplateSource : TemplateSource2);
+					var resultSize = new CvSize(templateSource.Width - image.Width + 1, templateSource.Height - image.Height + 1);
 					using(var resultImage = Cv.CreateImage(resultSize, BitDepth.F32, 1)) {
-						Cv.MatchTemplate(TemplateSource, image, resultImage, MatchTemplateMethod.SqDiff);
+						Cv.MatchTemplate(templateSource, image, resultImage, MatchTemplateMethod.SqDiff);
 						CvPoint minPosition, maxPosition;
 						Cv.MinMaxLoc(resultImage, out minPosition, out maxPosition);
 						matchPosition = new Point(minPosition.X, minPosition.Y);
 					}
 				}
 				// マッチング結果を数値に翻訳する
-				int matchNumber = (int)Math.Round(1.0 * matchPosition.X / TemplateSize2.Width / 2, 0);
-				matchNumber = (matchNumber < 0 ? 0 : matchNumber > 10 ? 10 : matchNumber);
-				output.Add(matchNumber);
+				if(templateSourceIndex == 0) {
+					int matchNumber = (int)Math.Round(1.0 * matchPosition.X / TemplateSize2.Width / 2, 0);
+					matchNumber = (matchNumber < 0 ? 0 : matchNumber > 10 ? 10 : matchNumber);
+					output.Add(matchNumber);
+				} else {
+					int matchNumber = (int)Math.Round(1.0 * matchPosition.X / TemplateSize2.Width / 2, 0);
+					matchNumber = (matchNumber < 0 ? 0 : matchNumber >= ExpFleetCount ? 3 : matchNumber);
+					output.Add(matchNumber);
+				}
 			}
 			return output;
 		}
@@ -405,16 +419,15 @@ namespace WsGH {
 				if(GetHummingDistance(bhash, 0x1b60c68aca2e5635) >= 20)
 					continue;
 				// 遠征している艦隊の番号を取得する
-				// ハッシュに対するハミング距離を計算した後、LINQで最小値のインデックス(艦隊番号)を取り出す
-				var fhash = GetDifferenceHash(bitmap, ExpFleetIconPosition[li]);
-				var hd = new List<uint>();
-				for(int fi = 0; fi < ExpFleetCount; ++fi) {
-					hd.Add(GetHummingDistance(fhash, ExtFleetIconHash[fi]));
-				}
-				int fleetIndex = hd
-					.Select((val, idx) => new { V = val, I = idx })
-					.Aggregate((min, working) => (min.V < working.V) ? min : working)
-					.I;
+				// テンプレートマッチング作戦
+				var fleetDigit = GetDigitOCR(
+					bitmap,
+					new float[] { ExpFleetIconPosition[li].X },
+					ExpFleetIconPosition[li].Y,
+					ExpFleetIconPosition[li].Width,
+					ExpFleetIconPosition[li].Height,
+					120, true, 1);
+				int fleetIndex = fleetDigit[0];
 				// 遠征時間を取得する
 				//Console.WriteLine((li + 1) + "番目：第" + (fleetIndex + 1) + "艦隊");
 				// 遠征完了時間を計算して書き込む
@@ -506,7 +519,7 @@ namespace WsGH {
 				if(GetHummingDistance(bhash, 0x545471565654659a) >= 20)
 					continue;
 				// 建造時間を取得する
-				var timerDigit = GetDigitOCR(bitmap, DevTimerDigitPX, DevTimerDigitPY[li], DevTimerDigitWX, DevTimerDigitWY, 100, true);
+				var timerDigit = GetDigitOCR(bitmap, DevTimerDigitPX, DevTimerDigitPY[li], DevTimerDigitWX, DevTimerDigitWY, 140, true);
 				var leastSecond = GetLeastSecond(timerDigit);
 				output[li] = now_time + leastSecond;
 			}

@@ -332,6 +332,16 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        public static System.Drawing.Bitmap ocr_template_2 {
+            get {
+                object obj = ResourceManager.GetObject("ocr_template_2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Diamond に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SupplyChartY2Title {
