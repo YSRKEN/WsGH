@@ -290,7 +290,7 @@ namespace WsGH {
 					var desRect = new Rectangle(0, 0, canvas.Width, canvas.Height);
 					g.DrawImage(bitmap, desRect, srcRect, GraphicsUnit.Pixel);
 				}
-				canvas.Save("digit1.bmp");
+				//canvas.Save("digit1.bmp");
 				// 二値化する
 				using(var image = BitmapConverter.ToIplImage(canvas))
 				using(var image2 = new IplImage(image.Size, BitDepth.U8, 1)) {
@@ -300,7 +300,7 @@ namespace WsGH {
 					Cv.Threshold(image2, image2, thresold, 255, ThresholdType.Binary);
 					canvas = image2.ToBitmap();
 				}
-				canvas.Save("digit2.bmp");
+				//canvas.Save("digit2.bmp");
 				// 周囲をトリミングした上で、所定のサイズにリサイズする
 				// 背景は赤色に塗りつぶすこと
 				var rect = GetTrimmingRectangle(canvas);
@@ -314,7 +314,7 @@ namespace WsGH {
 					var desRect = new Rectangle(1, 1, TemplateSize1.Width, TemplateSize1.Height);
 					g.DrawImage(canvas, desRect, srcRect, GraphicsUnit.Pixel);
 				}
-				canvas2.Save("digit3.bmp");
+				//canvas2.Save("digit3.bmp");
 				// マッチングを行う
 				Point matchPosition;
 				using(var image = BitmapConverter.ToIplImage(canvas2)) {
