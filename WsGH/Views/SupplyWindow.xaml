@@ -14,7 +14,7 @@
 			<RowDefinition Height="Auto"/>
 			<RowDefinition/>
 		</Grid.RowDefinitions>
-		<ComboBox Grid.Row="0" x:Name="ChartScaleComboBox" Margin="10,10,0,10" Width="80" Height="20" SelectedIndex="2" SelectionChanged="ChartScaleComboBox_SelectionChanged" HorizontalAlignment="Left">
+		<ComboBox Grid.Row="0" x:Name="ChartScaleComboBox" Margin="10,10,0,10" Width="80" Height="24" SelectedIndex="2" SelectionChanged="ChartScaleComboBox_SelectionChanged" HorizontalAlignment="Left">
 			<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale1Day   }"/>
 			<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale1Week  }"/>
 			<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale2Week  }"/>
