@@ -563,10 +563,24 @@ namespace WsGH {
 		#region 母港関係
 		// 母港のシーン(ボタンあり)かを判定する
 		static bool IsHomeScene(Bitmap bitmap) {
-			// 左上の表示
-			var hash = GetDifferenceHash(bitmap, 6.933, 1.674, 2.350, 4.184);
-			if(GetHummingDistance(hash, 0x0712092214489850) >= 20)
-				return false;
+			{
+				// 左上の表示
+				var hash = GetDifferenceHash(bitmap, 6.933, 1.674, 2.350, 4.184);
+				if (GetHummingDistance(hash, 0x0712092214489850) >= 20)
+					return false;
+			}
+			{
+				// 右上の表示
+				var hash = GetDifferenceHash(bitmap, 96.72, 2.64, 1.250, 2.222);
+				if (GetHummingDistance(hash, 0x713333b333030101) >= 20)
+					return false;
+			}
+			{
+				// 出撃ボタン
+				var hash = GetDifferenceHash(bitmap, 70.31, 24.72, 1.250, 2.222);
+				if (GetHummingDistance(hash, 0xb6d6f63633f1e1e0) >= 20)
+					return false;
+			}
 			return true;
 		}
 		// 資材量が表示されているかを判定する
