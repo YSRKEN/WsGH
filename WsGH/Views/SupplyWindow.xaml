@@ -32,7 +32,7 @@
 				</wfc:Chart.ChartAreas>
 			</wfc:Chart>
 		</WindowsFormsHost>
-		<ListView Name="SupplyDiffListView" Grid.Row="2" ItemsSource="{Binding}">
+		<ListView Name="SupplyDiffListView" Grid.Row="2" ItemsSource="{Binding}" Margin="10,10,10,10">
 			<ListView.View>
 				<GridView>
 					<GridView.Columns>
