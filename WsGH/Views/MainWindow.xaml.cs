@@ -304,7 +304,7 @@ namespace WsGH {
 		void AddLog(string str) {
 			var dt = DateTime.Now;
 			var bindData = DataContext as MainWindowDC;
-			bindData.LoggingText += dt.ToString("hh:mm:ss ") + str + "\n";
+			bindData.LoggingText += dt.ToString("HH:mm:ss ") + str + "\n";
 			LoggingTextBox.ScrollToEnd();
 		}
 		// 座標取得後の画面更新処理
@@ -323,7 +323,7 @@ namespace WsGH {
 			var bindData = DataContext as MainWindowDC;
 			// 現在時間からファイル名を生成する
 			var dt = DateTime.Now;
-			var fileName = dt.ToString("yyyy-MM-dd hh-mm-ss-fff") + (bindData.TwitterFlg ? "_twi" : "") + ".png";
+			var fileName = dt.ToString("yyyy-MM-dd HH-mm-ss-fff") + (bindData.TwitterFlg ? "_twi" : "") + ".png";
 			// 画像を保存する
 			try {
 				sp.GetScreenShot(bindData.TwitterFlg).Save(@"pic\" + fileName);
