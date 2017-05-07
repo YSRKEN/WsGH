@@ -113,12 +113,12 @@ namespace WsGH {
 			DrawListView();
 		}
 		// 与えられたデータから増分値を描画する
-		public void DrawListView() {
+		void DrawListView() {
 			// データが空なら描画しない
 			if (SupplyStore.MainSupplyListCount == 0)
 				return;
 			// 描画分を消去する
-			SupplyDiffList = new ObservableCollection<SupplyDiff>();
+			SupplyDiffList.Clear();
 			// 順次追加していく
 			int diffIndex = SupplyStore.MainSupplyListCount - 1;
 			var alias = SupplyStore.MainSupplyData.First();	//冗長部分を一時的に略す
@@ -135,8 +135,10 @@ namespace WsGH {
 						Diamond = (SupplyStore.MainSupplyData[4].List[diffIndex].Value - SupplyStore.MainSupplyData[4].List[i].Value).ToString(),
 					};
 					SupplyDiffList.Add(sd);
+					diffIndex = i;
 				}
 			}
+			return;
 		}
 		// グラフのスケールを変更する
 		private void ChartScaleComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
