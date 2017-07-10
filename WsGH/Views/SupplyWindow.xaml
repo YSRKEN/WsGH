@@ -11,8 +11,9 @@
         Height="400" Width="600" MinHeight="400" MinWidth="600" Topmost="True">
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition/>
+			<RowDefinition Height="44"/>
+			<RowDefinition Height="2*"/>
+			<RowDefinition Height="1*"/>
 		</Grid.RowDefinitions>
 		<ComboBox Grid.Row="0" x:Name="ChartScaleComboBox" Margin="10,10,0,10" Width="80" Height="24" SelectedIndex="2" SelectionChanged="ChartScaleComboBox_SelectionChanged" HorizontalAlignment="Left">
 			<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale1Day   }"/>
@@ -31,5 +32,19 @@
 				</wfc:Chart.ChartAreas>
 			</wfc:Chart>
 		</WindowsFormsHost>
+		<ListView Name="SupplyDiffListView" Grid.Row="2" ItemsSource="{Binding}" Margin="10,10,10,10">
+			<ListView.View>
+				<GridView>
+					<GridView.Columns>
+						<GridViewColumn Header="日付" DisplayMemberBinding="{Binding Date}" Width="80" />
+						<GridViewColumn Header="燃料" DisplayMemberBinding="{Binding Fuel}" Width="80" />
+						<GridViewColumn Header="弾薬" DisplayMemberBinding="{Binding Ammo}" Width="80" />
+						<GridViewColumn Header="鋼材" DisplayMemberBinding="{Binding Steel}" Width="80" />
+						<GridViewColumn Header="ボーキ" DisplayMemberBinding="{Binding Bauxite}" Width="80" />
+						<GridViewColumn Header="ダイヤ" DisplayMemberBinding="{Binding Diamond}" Width="80" />
+					</GridView.Columns>
+				</GridView>
+			</ListView.View>
+		</ListView>
 	</Grid>
 </Window>

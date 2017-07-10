@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
@@ -21,10 +22,13 @@ namespace WsGH {
 	public partial class SupplyWindow : Window {
 		static int[] ChartScale = {1, 7, 14, 30, 60, 90, 180, 365};
 		static DateTime LeastChartTime;
+		ObservableCollection<SupplyDiff> SupplyDiffList;
 		// コンストラクタ
 		public SupplyWindow() {
 			InitializeComponent();
 			MouseLeftButtonDown += (o, e) => DragMove();
+			SupplyDiffList = new ObservableCollection<SupplyDiff>();
+			SupplyDiffListView.DataContext = SupplyDiffList;
 			DrawChart();
 		}
 		// ウィンドウ位置復元
@@ -105,6 +109,36 @@ namespace WsGH {
 			LeastChartTime = SupplyStore.MainSupplyData.First().List.Max(d => d.Key);
 			chartArea.AxisX.Maximum = LeastChartTime.ToOADate();
 			ChangeChartScale();
+			// ListViewを再描画する
+			DrawListView();
+		}
+		// 与えられたデータから増分値を描画する
+		void DrawListView() {
+			// データが空なら描画しない
+			if (SupplyStore.MainSupplyListCount == 0)
+				return;
+			// 描画分を消去する
+			SupplyDiffList.Clear();
+			// 順次追加していく
+			int diffIndex = SupplyStore.MainSupplyListCount - 1;
+			var alias = SupplyStore.MainSupplyData.First();	//冗長部分を一時的に略す
+			for (int i = SupplyStore.MainSupplyListCount - 2; i >= 0; --i) {
+				var diffIndexDate = alias.List[diffIndex].Key.Date;
+				var newDate = alias.List[i].Key.Date;
+				if (diffIndexDate != newDate) {
+					var sd = new SupplyDiff() {
+						Date = diffIndexDate.ToString("MM/dd"),
+						Fuel = (SupplyStore.MainSupplyData[0].List[diffIndex].Value - SupplyStore.MainSupplyData[0].List[i].Value).ToString(),
+						Ammo = (SupplyStore.MainSupplyData[1].List[diffIndex].Value - SupplyStore.MainSupplyData[1].List[i].Value).ToString(),
+						Steel = (SupplyStore.MainSupplyData[2].List[diffIndex].Value - SupplyStore.MainSupplyData[2].List[i].Value).ToString(),
+						Bauxite = (SupplyStore.MainSupplyData[3].List[diffIndex].Value - SupplyStore.MainSupplyData[3].List[i].Value).ToString(),
+						Diamond = (SupplyStore.MainSupplyData[4].List[diffIndex].Value - SupplyStore.MainSupplyData[4].List[i].Value).ToString(),
+					};
+					SupplyDiffList.Add(sd);
+					diffIndex = i;
+				}
+			}
+			return;
 		}
 		// グラフのスケールを変更する
 		private void ChartScaleComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -120,5 +154,15 @@ namespace WsGH {
 			var axisX = SupplyChart.ChartAreas[0].AxisX;
 			axisX.Minimum = axisX.Maximum - chartScale;
 		}
+	}
+	// SupplyDiffクラス
+	public class SupplyDiff
+	{
+		public string Date { get; set; }
+		public string Fuel { get; set; }
+		public string Ammo { get; set; }
+		public string Steel { get; set; }
+		public string Bauxite { get; set; }
+		public string Diamond { get; set; }
 	}
 }

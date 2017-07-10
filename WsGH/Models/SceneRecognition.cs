@@ -264,23 +264,24 @@ namespace WsGH {
 		/// (色反転後に閾値処理を行う)
 		/// </summary>
 		/// <param name="bitmap">画像</param>
-		/// <param name="px_per">切り取る左座標</param>
+		/// <param name="px_arr">切り取る左座標</param>
 		/// <param name="py_per">切り取る上座標</param>
 		/// <param name="wx_per">切り取る幅</param>
 		/// <param name="wy_per">切り取る高さ</param>
 		/// <param name="thresold">閾値。これより暗いと黒とみなす</param>
 		/// <param name="negaFlg">trueだと色を反転させて判定する</param>
+		/// <param name="templateSourceIndex">数値の上限・下限を設定する</param>
 		/// <returns>読み取った数値。0～9および10(白色＝読めなかった)をListで返す</returns>
 		static List<int> GetDigitOCR(Bitmap bitmap, float[] px_arr, float py_per, float wx_per, float wy_per, int thresold, bool negaFlg, int templateSourceIndex = 0) {
 			var output = new List<int>();
-			foreach(var px_per in px_arr) {
+			foreach(float px_per in px_arr) {
 				// ％指定をピクセル指定に直す
-				var bitmapWidth = bitmap.Width;
-				var bitmapHeight = bitmap.Height;
-				var px = (int)(bitmapWidth * px_per / 100 + 0.5);
-				var py = (int)(bitmapHeight * py_per / 100 + 0.5);
-				var wx = (int)(bitmapWidth * wx_per / 100 + 0.5);
-				var wy = (int)(bitmapHeight * wy_per / 100 + 0.5);
+				int bitmapWidth = bitmap.Width;
+				int bitmapHeight = bitmap.Height;
+				int px = (int)(bitmapWidth * px_per / 100 + 0.5);
+				int py = (int)(bitmapHeight * py_per / 100 + 0.5);
+				int wx = (int)(bitmapWidth * wx_per / 100 + 0.5);
+				int wy = (int)(bitmapHeight * wy_per / 100 + 0.5);
 				// 画像を切り取る
 				var canvas = new Bitmap(wx, wy);
 				using(var g = Graphics.FromImage(canvas)) {
@@ -412,10 +413,10 @@ namespace WsGH {
 		// 遠征タイマーを取得する
 		public static Dictionary<int, ulong> GetExpeditionTimer(Bitmap bitmap) {
 			var output = new Dictionary<int, ulong>();
-			var now_time = GetUnixTime(DateTime.Now);
+			ulong now_time = GetUnixTime(DateTime.Now);
 			for(int li = 0; li < ExpListHeight; ++li) {
 				// 艦隊帰投ボタンが出ていなければ、その行に遠征艦隊はいない
-				var bhash = GetDifferenceHash(bitmap, ExpButtonPosition[li]);
+				ulong bhash = GetDifferenceHash(bitmap, ExpButtonPosition[li]);
 				if(GetHummingDistance(bhash, 0x1b60c68aca2e5635) >= 20)
 					continue;
 				// 遠征している艦隊の番号を取得する
@@ -433,7 +434,7 @@ namespace WsGH {
 				// 遠征完了時間を計算して書き込む
 				//bitmap.Save("ss.png");
 				var timerDigit = GetDigitOCR(bitmap, ExpTimerDigitPX, ExpTimerDigitPY[li], ExpTimerDigitWX, ExpTimerDigitWY, 120, true);
-				var leastSecond = GetLeastSecond(timerDigit);
+				uint leastSecond = GetLeastSecond(timerDigit);
 				output[fleetIndex] = now_time + leastSecond;
 			}
 			return output;
@@ -563,10 +564,24 @@ namespace WsGH {
 		#region 母港関係
 		// 母港のシーン(ボタンあり)かを判定する
 		static bool IsHomeScene(Bitmap bitmap) {
-			// 左上の表示
-			var hash = GetDifferenceHash(bitmap, 6.933, 1.674, 2.350, 4.184);
-			if(GetHummingDistance(hash, 0x0712092214489850) >= 20)
-				return false;
+			{
+				// 左上の表示
+				var hash = GetDifferenceHash(bitmap, 6.933, 1.674, 2.350, 4.184);
+				if (GetHummingDistance(hash, 0x0712092214489850) >= 20)
+					return false;
+			}
+			{
+				// 右上の表示
+				var hash = GetDifferenceHash(bitmap, 96.72, 2.64, 1.250, 2.222);
+				if (GetHummingDistance(hash, 0x713333b333030101) >= 20)
+					return false;
+			}
+			{
+				// 出撃ボタン
+				var hash = GetDifferenceHash(bitmap, 70.31, 24.72, 1.250, 2.222);
+				if (GetHummingDistance(hash, 0xb6d6f63633f1e1e0) >= 20)
+					return false;
+			}
 			return true;
 		}
 		// 資材量が表示されているかを判定する
