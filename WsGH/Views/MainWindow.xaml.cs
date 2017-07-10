@@ -473,7 +473,7 @@ namespace WsGH {
 			}
 			#endregion
 			#region 1秒ごとの処理
-			var timerWindowSecondNow = DateTime.Now.Second;
+			int timerWindowSecondNow = DateTime.Now.Second;
 			if(timerWindowSecond != timerWindowSecondNow) {
 				timerWindowSecond = timerWindowSecondNow;
 				// スクショが取得できていた場合
@@ -483,7 +483,7 @@ namespace WsGH {
 						AddLog(Properties.Resources.LoggingTextFoundPS);
 						AddLog(Properties.Resources.LoggingTextTryFixPS);
 						// ズレ修復の結果を代入
-						var tryFixPositionShifting = sp.TryPositionShifting();
+						bool tryFixPositionShifting = sp.TryPositionShifting();
 						GetScreenshotMenu.IsEnabled = ScreenShotButton.IsEnabled = tryFixPositionShifting;
 						AddLog($"{Properties.Resources.LoggingTextFixPS} : {(tryFixPositionShifting ? "Success" : "Failed")}");
 						if(tryFixPositionShifting)
