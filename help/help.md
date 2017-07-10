@@ -37,7 +37,7 @@
 - 画面下の方には実行ログが表示されています
 
 ## タイマー画面
-![timerwindow](https://cloud.githubusercontent.com/assets/3734392/22851278/2fa1bd38-f060-11e6-8b5c-8a66f8dd2099.png)
+![timerwindow](https://user-images.githubusercontent.com/3734392/28028893-08b1902e-65d9-11e7-8743-4bfbeb406d9d.png)
 
 - ウィンドウタイトル：《タイマー画面|TimerWindow》
 - 遠征・建造・開発・入渠における残時間が表示されます
@@ -46,7 +46,7 @@
 - ソフトを一旦終了させて、再起動してもタイマーはカウントを続けています
 
 ## 資材記録画面
-![supplywindow](https://cloud.githubusercontent.com/assets/3734392/23305471/4387fc0e-fae2-11e6-8f0c-8d344062a600.png)
+![supplywindow](https://user-images.githubusercontent.com/3734392/28028872-ef0d0464-65d8-11e7-8869-f7ca2c99774e.png)
 
 - ウィンドウタイトル：《資材記録画面|SupplyWindow》
 - 燃料・弾薬・鋼材・ボーキサイト・ダイヤモンドの推移が表示されます
