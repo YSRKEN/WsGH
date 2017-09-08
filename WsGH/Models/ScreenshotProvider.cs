@@ -13,6 +13,8 @@ namespace WsGH {
 	delegate void AfterAction2(dPoint point);
 	class ScreenshotProvider {
 		Rectangle screenshotRectangle = new Rectangle(0, 0, 0, 0);
+		static int MinGameWindowX = 800;
+		static int MinGameWindowY = 450;
 		Rectangle virtualDisplayRectangle;
 		int clickPointX, clickPointY;
 		Color backgroundColor;
@@ -129,9 +131,101 @@ namespace WsGH {
 				return false;
 			return true;
 		}
+		// 色同士の距離を算出し、遠すぎる場合に「違う色」と判定する
+		static bool IsNearColor(Color A, Color B) {
+			int diffR = A.R - B.R;
+			int diffG = A.G - B.G;
+			int diffB = A.B - B.B;
+			return (diffR * diffR + diffG * diffG + diffB * diffB) < 500;
+		}
 		// ゲーム画面の座標を逆算する
 		static Rectangle GetGameWindowRectangle(Bitmap bitmap, Color backgroundColor, int clickPointX, int clickPointY) {
 			var gwr = new Rectangle(clickPointX, clickPointY, 0, 0);
+			var borderColor = Color.FromArgb(backgroundColor.R, backgroundColor.G, backgroundColor.B);
+			// 画面を探索し、ゲーム画面と思わしき部分を検出する
+			for (int y = 0; y < Math.Min(bitmap.Height - MinGameWindowY, clickPointY); ++y) {
+				for (int x = 0; x < Math.Min(bitmap.Width - MinGameWindowX, clickPointX); ++x) {
+					// 枠の左上座標
+					if (!IsNearColor(bitmap.GetPixel(x, y), borderColor))
+						continue;
+					// その右
+					if (!IsNearColor(bitmap.GetPixel(x + 1, y), borderColor))
+						continue;
+					// その下
+					if (!IsNearColor(bitmap.GetPixel(x, y + 1), borderColor))
+						continue;
+					// その右下
+					if (IsNearColor(bitmap.GetPixel(x + 1, y + 1), borderColor))
+						continue;
+					// MinGameWindowX×MinGameWindowYまで走査
+					{
+						bool flg = true;
+						for (int i = 2; i <= MinGameWindowX; ++i) {
+							if (!IsNearColor(bitmap.GetPixel(x + i, y), borderColor)) {
+								flg = false;
+								break;
+							}
+						}
+						if (!flg)
+							continue;
+					}
+					{
+						bool flg = true;
+						for (int i = 2; i <= MinGameWindowY; ++i) {
+							if (!IsNearColor(bitmap.GetPixel(x, y + i), borderColor)) {
+								flg = false;
+								break;
+							}
+						}
+						if (!flg)
+							continue;
+					}
+					// 反対側の辺についても調査
+					for(int x2 = Math.Max(x + MinGameWindowX + 1, clickPointX + 1); x2 < bitmap.Width; ++x2) {
+						// 探索の起点となるy座標は逆算する
+						int y2 = y + (x2 - x - 1) * MinGameWindowY / MinGameWindowX + 1;
+						int width = x2 - x - 1;
+						// クリック点を覆う範囲になりうるかをチェック
+						if (y2 <= clickPointY)
+							continue;
+						// 探索開始
+						if (!IsNearColor(bitmap.GetPixel(x2, y2), borderColor))
+							continue;
+						if (!IsNearColor(bitmap.GetPixel(x2 - 1, y2), borderColor))
+							continue;
+						if (!IsNearColor(bitmap.GetPixel(x2, y2 - 1), borderColor))
+							continue;
+						if (IsNearColor(bitmap.GetPixel(x2 - 1, y2 - 1), borderColor))
+							continue;
+						{
+							bool flg = true;
+							for (int x3 = x + MinGameWindowX + 1; x3 < x2; ++x3) {
+								if (!IsNearColor(bitmap.GetPixel(x3, y2), borderColor)) {
+									flg = false;
+									break;
+								}
+							}
+							if (!flg)
+								continue;
+						}
+						{
+							bool flg = true;
+							for (int y3 = y + MinGameWindowY + 1; y3 < y2; ++y3) {
+								if (!IsNearColor(bitmap.GetPixel(x2, y3), borderColor)) {
+									flg = false;
+									break;
+								}
+							}
+							if (!flg)
+								continue;
+						}
+						// 全てのチェックを通過したので座標登録
+						gwr = new Rectangle(x + 1, y + 1, x2 - x - 1, y2 - y - 1);
+						return gwr;
+					}
+				}
+			}
+			/*
 			// 上下左右の境界を取得する
 			var borderColor = Color.FromArgb(backgroundColor.R, backgroundColor.G, backgroundColor.B);
 			const int borderDiff = 5;
@@ -178,7 +272,7 @@ namespace WsGH {
 					continue;
 				gwr.Height = y - gwr.Y;
 				break;
-			}
+			}*/
 			return gwr;
 		}
 		// ゲーム画面の座標をクリックさせるためのインナークラス
