@@ -357,7 +357,6 @@ namespace WsGH {
 		}
 		// 資材を正規化する
 		static int GetMainSupply(List<int> supplyDigit) {
-			// スタブ
 			int supplyValue = 0;
 			supplyValue += (supplyDigit[0] > 9 ? 0 : supplyDigit[0]) * 100000;
 			supplyValue += (supplyDigit[1] > 9 ? 0 : supplyDigit[1]) * 10000;
@@ -649,6 +648,10 @@ namespace WsGH {
 				output.Add(supplyVaue);
 			}
 			return output;
+		}
+		// 資材量を読み取る(GetSubSupply)
+		public static int GetSubSupply(int ti, Bitmap bitmap) {
+			return 0;	//スタブ
 		}
 		#endregion
 	}

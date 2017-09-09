@@ -19,7 +19,7 @@ namespace WsGH.Properties {
     // または Visual Studio のようなツールを使用して自動生成されました。
     // メンバーを追加または削除するには、.ResX ファイルを編集して、/str オプションと共に
     // ResGen を実行し直すか、または VS プロジェクトをビルドし直します。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -61,7 +61,34 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
-        ///   add SupplyData に類似しているローカライズされた文字列を検索します。
+        ///   add SubSupplyData に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LoggingText2AddSupplyData {
+            get {
+                return ResourceManager.GetString("LoggingText2AddSupplyData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   read SubSupplyData に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LoggingText2ReadSupplyData {
+            get {
+                return ResourceManager.GetString("LoggingText2ReadSupplyData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   save SubSupplyData に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string LoggingText2SaveSupplyData {
+            get {
+                return ResourceManager.GetString("LoggingText2SaveSupplyData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   add MainSupplyData に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string LoggingTextAddSupplyData {
             get {
@@ -124,7 +151,7 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
-        ///   read SupplyData に類似しているローカライズされた文字列を検索します。
+        ///   read MainSupplyData に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string LoggingTextReadSupplyData {
             get {
@@ -133,7 +160,7 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
-        ///   save SupplyData に類似しているローカライズされた文字列を検索します。
+        ///   save MainSupplyData に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string LoggingTextSaveSupplyData {
             get {

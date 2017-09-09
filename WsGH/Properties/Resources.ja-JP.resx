@@ -277,4 +277,13 @@
   <data name="SupplyScale6Month" xml:space="preserve">
     <value>6ヶ月</value>
   </data>
+  <data name="LoggingText2ReadSupplyData" xml:space="preserve">
+    <value>特殊資材ログを読み込み</value>
+  </data>
+  <data name="LoggingText2SaveSupplyData" xml:space="preserve">
+    <value>特殊資材ログに書き込み</value>
+  </data>
+  <data name="LoggingText2AddSupplyData" xml:space="preserve">
+    <value>特殊資材ログに追記</value>
+  </data>
 </root>

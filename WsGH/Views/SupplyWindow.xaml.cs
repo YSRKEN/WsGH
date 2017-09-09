@@ -160,6 +160,7 @@ namespace WsGH {
 		private void ReloadSupplyDataButton_Click(object sender, RoutedEventArgs e) {
 			try {
 				SupplyStore.ReadMainSupply();
+				SupplyStore.ReadSubSupply();
 				DrawChart();
 			}
 			catch (Exception) {}

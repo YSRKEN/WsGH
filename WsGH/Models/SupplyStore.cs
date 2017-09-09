@@ -129,7 +129,7 @@ namespace WsGH {
 		#region SubSupply 関係
 		#region メンバ変数
 		// SubSupply の種類数
-		static int SubSupplyTypes = 4;
+		public static int SubSupplyTypes = 4;
 		// SubSupply の最終更新日時
 		static DateTime[] lastUpdateSub;
 		// SubSupply の本体
