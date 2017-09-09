@@ -225,54 +225,6 @@ namespace WsGH {
 					}
 				}
 			}
-			/*
-			// 上下左右の境界を取得する
-			var borderColor = Color.FromArgb(backgroundColor.R, backgroundColor.G, backgroundColor.B);
-			const int borderDiff = 5;
-			// 左
-			for(int x = clickPointX - 1; x >= 0; --x) {
-				if(bitmap.GetPixel(x, clickPointY) != borderColor)
-					continue;
-				if(bitmap.GetPixel(x, clickPointY - borderDiff) != borderColor)
-					continue;
-				if(bitmap.GetPixel(x, clickPointY + borderDiff) != borderColor)
-					continue;
-				gwr.X = x + 1;
-				break;
-			}
-			// 上
-			for(int y = clickPointY - 1; y >= 0; --y) {
-				if(bitmap.GetPixel(clickPointX, y) != borderColor)
-					continue;
-				if(bitmap.GetPixel(clickPointX - borderDiff, y) != borderColor)
-					continue;
-				if(bitmap.GetPixel(clickPointX + borderDiff, y) != borderColor)
-					continue;
-				gwr.Y = y + 1;
-				break;
-			}
-			// 右
-			for(int x = clickPointX + 1; x < bitmap.Width; ++x) {
-				if(bitmap.GetPixel(x, clickPointY) != borderColor)
-					continue;
-				if(bitmap.GetPixel(x, clickPointY - borderDiff) != borderColor)
-					continue;
-				if(bitmap.GetPixel(x, clickPointY + borderDiff) != borderColor)
-					continue;
-				gwr.Width = x - gwr.X;
-				break;
-			}
-			// 下
-			for(int y = clickPointY + 1; y < bitmap.Height; ++y) {
-				if(bitmap.GetPixel(clickPointX, y) != borderColor)
-					continue;
-				if(bitmap.GetPixel(clickPointX - borderDiff, y) != borderColor)
-					continue;
-				if(bitmap.GetPixel(clickPointX + borderDiff, y) != borderColor)
-					continue;
-				gwr.Height = y - gwr.Y;
-				break;
-			}*/
 			return gwr;
 		}
 		// ゲーム画面の座標をクリックさせるためのインナークラス

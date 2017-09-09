@@ -144,6 +144,7 @@ namespace WsGH {
 		private void ChartScaleComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
 			ChangeChartScale();
 		}
+
 		void ChangeChartScale() {
 			if(SupplyChart == null)
 				return;
@@ -153,6 +154,15 @@ namespace WsGH {
 			// スケールに従い横軸を変更する
 			var axisX = SupplyChart.ChartAreas[0].AxisX;
 			axisX.Minimum = axisX.Maximum - chartScale;
+		}
+
+		// 資材データを再読込みする
+		private void ReloadSupplyDataButton_Click(object sender, RoutedEventArgs e) {
+			try {
+				SupplyStore.ReadMainSupply();
+				DrawChart();
+			}
+			catch (Exception) {}
 		}
 	}
 	// SupplyDiffクラス

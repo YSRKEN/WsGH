@@ -15,16 +15,23 @@
 			<RowDefinition Height="2*"/>
 			<RowDefinition Height="1*"/>
 		</Grid.RowDefinitions>
-		<ComboBox Grid.Row="0" x:Name="ChartScaleComboBox" Margin="10,10,0,10" Width="80" Height="24" SelectedIndex="2" SelectionChanged="ChartScaleComboBox_SelectionChanged" HorizontalAlignment="Left">
-			<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale1Day   }"/>
-			<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale1Week  }"/>
-			<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale2Week  }"/>
-			<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale1Month }"/>
-			<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale2Month }"/>
-			<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale3Month }"/>
-			<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale6Month }"/>
-			<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale1Year  }"/>
-		</ComboBox>
+		<Grid Grid.Row="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<ComboBox Grid.Column="0" x:Name="ChartScaleComboBox" Margin="10,10,0,10" Width="80" Height="24" SelectedIndex="2" SelectionChanged="ChartScaleComboBox_SelectionChanged" HorizontalAlignment="Left">
+				<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale1Day   }"/>
+				<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale1Week  }"/>
+				<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale2Week  }"/>
+				<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale1Month }"/>
+				<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale2Month }"/>
+				<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale3Month }"/>
+				<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale6Month }"/>
+				<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale1Year  }"/>
+			</ComboBox>
+			<Button Grid.Column="1" x:Name="ReloadSupplyDataButton" Content="再読込み" Margin="0,10,10,10" Width="80" Height="24" HorizontalAlignment="Right" Click="ReloadSupplyDataButton_Click" />
+		</Grid>
 		<WindowsFormsHost Grid.Row="1" Margin="0,0,0,0">
 			<wfc:Chart x:Name="SupplyChart">
 				<wfc:Chart.ChartAreas>
