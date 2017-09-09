@@ -470,11 +470,15 @@ namespace WsGH {
 			for(int li = 0; li < BuildListHeight; ++li) {
 				// スタンバイ表示ならば、その行に入渠艦隊はいない
 				var bhash = GetDifferenceHash(bitmap, BuildStatusPosition[li]);
-				if(GetHummingDistance(bhash, 0x4147b56a9d33cb1c) < 20)
+				if(GetHummingDistance(bhash, 0x4147b56a9d33cb1c) < 20) {
+					output[li] = 0;
 					continue;
+				}
 				// 建造中でなければ、その行に入渠艦隊はいない
-				if(GetHummingDistance(bhash, 0x254565276737c138) >= 20)
+				if (GetHummingDistance(bhash, 0x254565276737c138) >= 20) {
+					output[li] = 0;
 					continue;
+				}
 				// 建造時間を取得する
 				var timerDigit = GetDigitOCR(bitmap, BuildTimerDigitPX, BuildTimerDigitPY[li], BuildTimerDigitWX, BuildTimerDigitWY, 100, true);
 				var leastSecond = GetLeastSecond(timerDigit);
@@ -514,11 +518,15 @@ namespace WsGH {
 			for(int li = 0; li < DevListHeight; ++li) {
 				// スタンバイ表示ならば、その行に入渠艦隊はいない
 				var bhash = GetDifferenceHash(bitmap, DevStatusPosition[li]);
-				if(GetHummingDistance(bhash, 0x4147b56a9d33cb1c) < 20)
+				if(GetHummingDistance(bhash, 0x4147b56a9d33cb1c) < 20) {
+					output[li] = 0;
 					continue;
+				}
 				// 開発中でなければ、その行に入渠艦隊はいない
-				if(GetHummingDistance(bhash, 0x545471565654659a) >= 20)
+				if (GetHummingDistance(bhash, 0x545471565654659a) >= 20) {
+					output[li] = 0;
 					continue;
+				}
 				// 建造時間を取得する
 				var timerDigit = GetDigitOCR(bitmap, DevTimerDigitPX, DevTimerDigitPY[li], DevTimerDigitWX, DevTimerDigitWY, 140, true);
 				var leastSecond = GetLeastSecond(timerDigit);
@@ -551,8 +559,10 @@ namespace WsGH {
 			for(int li = 0; li < DockListHeight; ++li) {
 				// 高速修復ボタンがなければ、その行に入渠艦隊はいない
 				var bhash = GetDifferenceHash(bitmap, DockFastRepairPosition[li]);
-				if(GetHummingDistance(bhash, 0x62cd568d66b66d9a) >= 20)
+				if(GetHummingDistance(bhash, 0x62cd568d66b66d9a) >= 20) {
+					output[li] = 0;
 					continue;
+				}
 				// 入渠時間を取得する
 				var timerDigit = GetDigitOCR(bitmap, DockTimerDigitPX, DockTimerDigitPY[li], DockTimerDigitWX, DockTimerDigitWY, 50, true);
 				var leastSecond = GetLeastSecond(timerDigit);
