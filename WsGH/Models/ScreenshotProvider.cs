@@ -181,7 +181,7 @@ namespace WsGH {
 							continue;
 					}
 					// 反対側の辺についても調査
-					for(int x2 = Math.Max(x + MinGameWindowX + 1, clickPointX + 1); x2 < bitmap.Width; ++x2) {
+					for(int x2 = Math.Min(Math.Max(x + MinGameWindowX + 1, clickPointX + 1), bitmap.Width - 1); x2 < bitmap.Width; ++x2) {
 						// 探索の起点となるy座標は逆算する
 						int y2 = y + (x2 - x - 1) * MinGameWindowY / MinGameWindowX + 1;
 						int width = x2 - x - 1;

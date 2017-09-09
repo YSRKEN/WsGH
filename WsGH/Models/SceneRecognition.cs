@@ -12,7 +12,7 @@ namespace WsGH {
 	static class SceneRecognition {
 		// 各種定数定義
 		#region シーン認識用定数
-		public enum SceneType { Unknown, Expedition, Build, Develop, Dock, Home };
+		public enum SceneType { Unknown, Expedition, Build, Develop, Dock, Home, BuildRecipe, DevelopRecipe };
 		#endregion
 		#region 遠征用定数
 		// 遠征艦隊数
@@ -385,6 +385,10 @@ namespace WsGH {
 				return SceneType.Dock;
 			if(IsHomeScene(bitmap))
 				return SceneType.Home;
+			if (IsBuildRecipeScene(bitmap))
+				return SceneType.BuildRecipe;
+			if (IsDevelopRecipeScene(bitmap))
+				return SceneType.DevelopRecipe;
 			return SceneType.Unknown;
 		}
 		#region 遠征関係
@@ -487,6 +491,22 @@ namespace WsGH {
 			}
 			return output;
 		}
+		// 建造レシピのシーンかを判定する
+		static bool IsBuildRecipeScene(Bitmap bitmap) {
+			{
+				// 艦船設計図アイコン
+				ulong hash = GetDifferenceHash(bitmap, 54.00, 7.556, 2.000, 3.556);
+				if (GetHummingDistance(hash, 0xb27e90381c6ad198) >= 20)
+					return false;
+			}
+			{
+				// 燃料アイコン
+				ulong hash = GetDifferenceHash(bitmap, 10.13, 34.89, 2.000, 3.556);
+				if (GetHummingDistance(hash, 0xa3b10c3c3c3b195a) >= 20)
+					return false;
+			}
+			return true;
+		}
 		#endregion
 		#region 開発関係
 		// 開発のシーンかを判定する
@@ -534,6 +554,23 @@ namespace WsGH {
 			}
 			return output;
 		}
+		// 開発レシピのシーンかを判定する
+		static bool IsDevelopRecipeScene(Bitmap bitmap) {
+			{
+				// 装備設計図アイコン
+				ulong hash = GetDifferenceHash(bitmap, 54.00, 7.556, 2.000, 3.556);
+				if (GetHummingDistance(hash, 0xb265980b1311910d) >= 20)
+					return false;
+			}
+			{
+				// 燃料アイコン
+				ulong hash = GetDifferenceHash(bitmap, 10.13, 34.89, 2.000, 3.556);
+				if (GetHummingDistance(hash, 0xa3b10c3c3c3b195a) >= 20)
+					return false;
+			}
+			return true;
+		}
+
 		#endregion
 		#region 入渠関係
 		// 入渠のシーンかを判定する

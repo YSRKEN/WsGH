@@ -36,6 +36,8 @@ namespace WsGH {
 				{ SceneType.Develop, "Develop" },
 				{ SceneType.Dock, "Dock" },
 				{ SceneType.Home, "Home" },
+				{ SceneType.BuildRecipe, "BuildRecipe" },
+				{ SceneType.DevelopRecipe, "DevelopRecipe" },
 			 };
 		static Dictionary<SceneType, string> SceneStringJapanese
 			 = new Dictionary<SceneType, string> {
@@ -45,6 +47,8 @@ namespace WsGH {
 				{ SceneType.Develop, "開発" },
 				{ SceneType.Dock, "入渠" },
 				{ SceneType.Home, "母港" },
+				{ SceneType.BuildRecipe, "建造レシピ" },
+				{ SceneType.DevelopRecipe, "開発レシピ" },
 			 };
 		#endregion
 		// 背景チェック
