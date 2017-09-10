@@ -289,4 +289,16 @@
   <data name="LoggingText2AddSupplyData" xml:space="preserve">
     <value>add SubSupplyData</value>
   </data>
+  <data name="SupplyTypeBucket" xml:space="preserve">
+    <value>Bucket</value>
+  </data>
+  <data name="SupplyTypeBurner" xml:space="preserve">
+    <value>Burner</value>
+  </data>
+  <data name="SupplyTypeShipBlueprint" xml:space="preserve">
+    <value>ShipBlueprint</value>
+  </data>
+  <data name="SupplyTypeWeaponBlueprint" xml:space="preserve">
+    <value>WeaponBlueprint</value>
+  </data>
 </root>

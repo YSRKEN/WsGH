@@ -477,6 +477,24 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
+        ///   Bucket に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyTypeBucket {
+            get {
+                return ResourceManager.GetString("SupplyTypeBucket", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Burner に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyTypeBurner {
+            get {
+                return ResourceManager.GetString("SupplyTypeBurner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Diamond に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SupplyTypeDiamond {
@@ -495,11 +513,29 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
+        ///   ShipBlueprint に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyTypeShipBlueprint {
+            get {
+                return ResourceManager.GetString("SupplyTypeShipBlueprint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Steel に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SupplyTypeSteel {
             get {
                 return ResourceManager.GetString("SupplyTypeSteel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   WeaponBlueprint に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyTypeWeaponBlueprint {
+            get {
+                return ResourceManager.GetString("SupplyTypeWeaponBlueprint", resourceCulture);
             }
         }
         

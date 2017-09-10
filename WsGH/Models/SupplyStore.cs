@@ -213,7 +213,7 @@ namespace WsGH {
 		}
 		// SubSupplyを表示する
 		public static void ShowSubSupply(int ti) {
-			Console.WriteLine($"特殊資材ログ{SubSupplyData[ti].Type}]：");
+			Console.WriteLine($"特殊資材ログ[{SubSupplyData[ti].Type}]：");
 			for (int li = 0; li < SubSupplyListCount[ti]; ++li) {
 				Console.Write($"{SubSupplyData[ti].List[li].Key}");
 				Console.Write($",{SubSupplyData[ti].List[li].Value}");

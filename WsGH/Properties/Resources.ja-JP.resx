@@ -286,4 +286,16 @@
   <data name="LoggingText2AddSupplyData" xml:space="preserve">
     <value>特殊資材ログに追記</value>
   </data>
+  <data name="SupplyTypeBucket" xml:space="preserve">
+    <value>バケツ</value>
+  </data>
+  <data name="SupplyTypeBurner" xml:space="preserve">
+    <value>バーナー</value>
+  </data>
+  <data name="SupplyTypeShipBlueprint" xml:space="preserve">
+    <value>艦船設計図</value>
+  </data>
+  <data name="SupplyTypeWeaponBlueprint" xml:space="preserve">
+    <value>装備設計図</value>
+  </data>
 </root>

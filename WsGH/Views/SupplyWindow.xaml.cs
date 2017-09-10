@@ -73,6 +73,10 @@ namespace WsGH {
 				{"Steel", Properties.Resources.SupplyTypeSteel },
 				{"Bauxite", Properties.Resources.SupplyTypeBauxite },
 				{"Diamond", Properties.Resources.SupplyTypeDiamond },
+				{"Bucket", Properties.Resources.SupplyTypeBucket },
+				{"Burner", Properties.Resources.SupplyTypeBurner },
+				{"ShipBlueprint", Properties.Resources.SupplyTypeShipBlueprint },
+				{"WeaponBlueprint", Properties.Resources.SupplyTypeWeaponBlueprint },
 			};
 			// グラフを追加する
 			int index = 0;
@@ -105,8 +109,42 @@ namespace WsGH {
 				// インクリメント
 				++index;
 			}
+			foreach (var data in SupplyStore.SubSupplyData) {
+				var series = new Series();
+				// 名前を設定する
+				series.Name = SupplyChartLegends[data.Type];
+				// 折れ線グラフに設定する
+				series.ChartType = SeriesChartType.Line;
+				// 横軸を「時間」とする
+				series.XValueType = ChartValueType.DateTime;
+				// 表示用データを追加する
+				foreach (var Column in data.List) {
+					series.Points.AddXY(Column.Key.ToOADate(), Column.Value);
+				}
+				// 表示位置を調整
+				series.YAxisType = AxisType.Secondary;
+				// 表示色を選択
+				series.Color = data.Color;
+				series.BorderWidth = 2;
+				// SupplyChartに追加する
+				SupplyChart.Series.Add(series);
+				// 凡例の設定
+				var legend = new Legend();
+				legend.DockedToChartArea = "ChartArea";
+				legend.Alignment = StringAlignment.Far;
+				SupplyChart.Legends.Add(legend);
+				// インクリメント
+				++index;
+			}
 			// グラフのスケールを設定する
-			LeastChartTime = SupplyStore.MainSupplyData.First().List.Max(d => d.Key);
+			var leastChartTime1 = SupplyStore.MainSupplyData.Max(p => p.List.Max(d => d.Key));
+			try {
+				var leastChartTime2 = SupplyStore.SubSupplyData.Max(p => p.List.Max(d => d.Key));
+				LeastChartTime = (leastChartTime1 < leastChartTime2 ? leastChartTime2 : leastChartTime1);
+			}
+			catch {
+				LeastChartTime = leastChartTime1;
+			}
 			chartArea.AxisX.Maximum = LeastChartTime.ToOADate();
 			ChangeChartScale();
 			// ListViewを再描画する

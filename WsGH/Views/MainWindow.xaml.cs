@@ -520,6 +520,8 @@ namespace WsGH {
 					}
 					// グラフに反映
 					sw.DrawChart();
+
+					SupplyStore.ShowSubSupply(ti);
 				}
 				#endregion
 			}
