@@ -179,7 +179,7 @@ namespace WsGH {
 								int.Parse(match.Groups["Hour"].Value),
 								int.Parse(match.Groups["Minute"].Value),
 								int.Parse(match.Groups["Second"].Value));
-							int supplyData = int.Parse(match.Groups["Fuel"].Value);
+							int supplyData = int.Parse(match.Groups["Supply"].Value);
 							// データベースに入力
 							SubSupplyData[ti].List.Add(new SupplyPair(supplyDateTime, supplyData));
 							if (lastUpdate < supplyDateTime) {
