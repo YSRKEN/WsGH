@@ -106,6 +106,21 @@ namespace WsGH {
 		};
 		// 資源表示の縦位置・大きさ
 		static float MainSupplyDigitPY = 1.389f, MainSupplyDigitWX = 0.9375f, MainSupplyDigitWY = 2.222f;
+		// 特殊資材表示の横位置
+		static float[] SubSupply1DigitPX = { 81.38f, 83.00f, 84.63f, 86.25f, 87.88f, };
+		static float[] SubSupply2DigitPX = { 81.75f, 83.78f, 85.00f, 86.63f, 88.25f, };
+		static float[] SubSupply3DigitPX = { 69.63f, 71.25f, 72.88f, 74.50f, 76.13f, };
+		static float[] SubSupply4DigitPX = { 69.63f, 71.25f, 72.88f, 74.50f, 76.13f, };
+		static float[][] SubSupplyDigitPX = {
+			SubSupply1DigitPX,
+			SubSupply2DigitPX,
+			SubSupply3DigitPX,
+			SubSupply4DigitPX,
+		};
+		// 特殊資材表示の縦位置
+		static float[] SubSupplyDigitPY = { 8.667f, 8.444f, 8.667f, 8.667f, };
+		// 特殊資材表示の大きさ
+		static float SubSupplyDigitWX = 1.625f, SubSupplyDigitWY = 4.222f;
 		#endregion
 		#region OCR用定数
 		// OCRする際にリサイズするサイズ
@@ -364,6 +379,16 @@ namespace WsGH {
 			supplyValue += (supplyDigit[3] > 9 ? 0 : supplyDigit[3]) * 100;
 			supplyValue += (supplyDigit[4] > 9 ? 0 : supplyDigit[4]) * 10;
 			supplyValue += (supplyDigit[5] > 9 ? 0 : supplyDigit[5]) * 1;
+			return supplyValue;
+		}
+		// 特殊資材を正規化する
+		static int GetSubSupply(List<int> supplyDigit) {
+			int supplyValue = 0;
+			supplyValue += (supplyDigit[0] > 9 ? 0 : supplyDigit[0]) * 10000;
+			supplyValue += (supplyDigit[1] > 9 ? 0 : supplyDigit[1]) * 1000;
+			supplyValue += (supplyDigit[2] > 9 ? 0 : supplyDigit[2]) * 100;
+			supplyValue += (supplyDigit[3] > 9 ? 0 : supplyDigit[3]) * 10;
+			supplyValue += (supplyDigit[4] > 9 ? 0 : supplyDigit[4]) * 1;
 			return supplyValue;
 		}
 		// UNIX時間を計算する
@@ -642,16 +667,17 @@ namespace WsGH {
 		public static List<int> GetMainSupply(Bitmap bitmap) {
 			var output = new List<int>();
 			// iの値により、燃料→弾薬→鋼材→ボーキサイト→ダイヤと読み取り対象が変化する
-			for(int i = 0; i < MainSupplyDigitPX.Count(); ++i) {
+			for(int i = 0; i < MainSupplyDigitPX.Length; ++i) {
 				var supplyDigit = GetDigitOCR(bitmap, MainSupplyDigitPX[i], MainSupplyDigitPY, MainSupplyDigitWX, MainSupplyDigitWY, 110, true);
-				var supplyVaue = GetMainSupply(supplyDigit);
+				int supplyVaue = GetMainSupply(supplyDigit);
 				output.Add(supplyVaue);
 			}
 			return output;
 		}
 		// 資材量を読み取る(GetSubSupply)
 		public static int GetSubSupply(int ti, Bitmap bitmap) {
-			return 0;	//スタブ
+			var supplyDigit = GetDigitOCR(bitmap, SubSupplyDigitPX[ti], SubSupplyDigitPY[ti], SubSupplyDigitWX, SubSupplyDigitWY, 110, true);
+			return GetSubSupply(supplyDigit);
 		}
 		#endregion
 	}
