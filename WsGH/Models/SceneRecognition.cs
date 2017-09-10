@@ -120,7 +120,7 @@ namespace WsGH {
 		// 特殊資材表示の縦位置
 		static float[] SubSupplyDigitPY = { 8.667f, 8.444f, 8.667f, 8.667f, };
 		// 特殊資材表示の大きさ
-		static float SubSupplyDigitWX = 1.625f, SubSupplyDigitWY = 4.222f;
+		static float SubSupplyDigitWX = 1.500f, SubSupplyDigitWY = 4.222f;
 		#endregion
 		#region OCR用定数
 		// OCRする際にリサイズするサイズ
