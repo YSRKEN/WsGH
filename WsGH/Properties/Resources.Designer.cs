@@ -459,6 +459,24 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
+        ///   MainSupply に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyShowTypeMain {
+            get {
+                return ResourceManager.GetString("SupplyShowTypeMain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   SubSupply に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyShowTypeSub {
+            get {
+                return ResourceManager.GetString("SupplyShowTypeSub", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ammo に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SupplyTypeAmmo {

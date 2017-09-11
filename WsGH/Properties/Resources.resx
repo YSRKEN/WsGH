@@ -301,4 +301,10 @@
   <data name="SupplyTypeWeaponBlueprint" xml:space="preserve">
     <value>WeaponBlueprint</value>
   </data>
+  <data name="SupplyShowTypeMain" xml:space="preserve">
+    <value>MainSupply</value>
+  </data>
+  <data name="SupplyShowTypeSub" xml:space="preserve">
+    <value>SubSupply</value>
+  </data>
 </root>

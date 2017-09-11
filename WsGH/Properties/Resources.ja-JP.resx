@@ -298,4 +298,10 @@
   <data name="SupplyTypeWeaponBlueprint" xml:space="preserve">
     <value>装備設計図</value>
   </data>
+  <data name="SupplyShowTypeMain" xml:space="preserve">
+    <value>通常資材</value>
+  </data>
+  <data name="SupplyShowTypeSub" xml:space="preserve">
+    <value>特殊資材</value>
+  </data>
 </root>

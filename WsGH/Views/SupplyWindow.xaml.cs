@@ -52,8 +52,17 @@ namespace WsGH {
 		}
 		// 与えられたデータからグラフを描画する
 		public void DrawChart() {
+			if (SupplyChart == null)
+				return;
+			bool IsDrawTypeMain = (ChartShowTypeComboBox.SelectedIndex == 0);
 			// データが空なら描画しない
-			if(SupplyStore.MainSupplyListCount == 0)
+			if (IsDrawTypeMain) {
+				if (SupplyStore.MainSupplyListCount == 0)
+					return;
+			}else if (SupplyStore.SubSupplyListCount[0] == 0
+				|| SupplyStore.SubSupplyListCount[1] == 0
+				|| SupplyStore.SubSupplyListCount[2] == 0
+				|| SupplyStore.SubSupplyListCount[3] == 0)
 				return;
 			// グラフの要素を消去する
 			SupplyChart.Series.Clear();
@@ -67,84 +76,85 @@ namespace WsGH {
 			chartArea.AxisX2.MajorGrid.LineColor = Color.LightGray;
 			chartArea.AxisY2.MajorGrid.LineColor = Color.LightGray;
 			// グラフの凡例を設定する
-			var SupplyChartLegends = new Dictionary<string, string> {
+			var SupplyChartLegends = (IsDrawTypeMain 
+				? new Dictionary<string, string> {
 				{"Fuel", Properties.Resources.SupplyTypeFuel },
 				{"Ammo", Properties.Resources.SupplyTypeAmmo },
 				{"Steel", Properties.Resources.SupplyTypeSteel },
 				{"Bauxite", Properties.Resources.SupplyTypeBauxite },
 				{"Diamond", Properties.Resources.SupplyTypeDiamond },
+			} : new Dictionary<string, string> {
 				{"Bucket", Properties.Resources.SupplyTypeBucket },
 				{"Burner", Properties.Resources.SupplyTypeBurner },
 				{"ShipBlueprint", Properties.Resources.SupplyTypeShipBlueprint },
 				{"WeaponBlueprint", Properties.Resources.SupplyTypeWeaponBlueprint },
-			};
+			});
 			// グラフを追加する
 			int index = 0;
-			foreach(var data in SupplyStore.MainSupplyData) {
-				var series = new Series();
-				// 名前を設定する
-				series.Name = SupplyChartLegends[data.Type];
-				// 折れ線グラフに設定する
-				series.ChartType = SeriesChartType.Line;
-				// 横軸を「時間」とする
-				series.XValueType = ChartValueType.DateTime;
-				// 表示用データを追加する
-				foreach(var Column in data.List) {
-					series.Points.AddXY(Column.Key.ToOADate(), Column.Value);
+			if (IsDrawTypeMain) {
+				foreach (var data in SupplyStore.MainSupplyData) {
+					var series = new Series();
+					// 名前を設定する
+					series.Name = SupplyChartLegends[data.Type];
+					// 折れ線グラフに設定する
+					series.ChartType = SeriesChartType.Line;
+					// 横軸を「時間」とする
+					series.XValueType = ChartValueType.DateTime;
+					// 表示用データを追加する
+					foreach (var Column in data.List) {
+						series.Points.AddXY(Column.Key.ToOADate(), Column.Value);
+					}
+					// 表示位置を調整
+					if (data.Type == "Diamond") {
+						series.YAxisType = AxisType.Secondary;
+					}
+					// 表示色を選択
+					series.Color = data.Color;
+					series.BorderWidth = 2;
+					// SupplyChartに追加する
+					SupplyChart.Series.Add(series);
+					// 凡例の設定
+					var legend = new Legend();
+					legend.DockedToChartArea = "ChartArea";
+					legend.Alignment = StringAlignment.Far;
+					SupplyChart.Legends.Add(legend);
+					// インクリメント
+					++index;
 				}
-				// 表示位置を調整
-				if(data.Type == "Diamond") {
-					series.YAxisType = AxisType.Secondary;
-				}
-				// 表示色を選択
-				series.Color = data.Color;
-				series.BorderWidth = 2;
-				// SupplyChartに追加する
-				SupplyChart.Series.Add(series);
-				// 凡例の設定
-				var legend = new Legend();
-				legend.DockedToChartArea = "ChartArea";
-				legend.Alignment = StringAlignment.Far;
-				SupplyChart.Legends.Add(legend);
-				// インクリメント
-				++index;
 			}
-			foreach (var data in SupplyStore.SubSupplyData) {
-				var series = new Series();
-				// 名前を設定する
-				series.Name = SupplyChartLegends[data.Type];
-				// 折れ線グラフに設定する
-				series.ChartType = SeriesChartType.Line;
-				// 横軸を「時間」とする
-				series.XValueType = ChartValueType.DateTime;
-				// 表示用データを追加する
-				foreach (var Column in data.List) {
-					series.Points.AddXY(Column.Key.ToOADate(), Column.Value);
+			else {
+				foreach (var data in SupplyStore.SubSupplyData) {
+					var series = new Series();
+					// 名前を設定する
+					series.Name = SupplyChartLegends[data.Type];
+					// 折れ線グラフに設定する
+					series.ChartType = SeriesChartType.Line;
+					// 横軸を「時間」とする
+					series.XValueType = ChartValueType.DateTime;
+					// 表示用データを追加する
+					foreach (var Column in data.List) {
+						series.Points.AddXY(Column.Key.ToOADate(), Column.Value);
+					}
+					// 表示位置を調整
+					series.YAxisType = AxisType.Secondary;
+					// 表示色を選択
+					series.Color = data.Color;
+					series.BorderWidth = 2;
+					// SupplyChartに追加する
+					SupplyChart.Series.Add(series);
+					// 凡例の設定
+					var legend = new Legend();
+					legend.DockedToChartArea = "ChartArea";
+					legend.Alignment = StringAlignment.Far;
+					SupplyChart.Legends.Add(legend);
+					// インクリメント
+					++index;
 				}
-				// 表示位置を調整
-				series.YAxisType = AxisType.Secondary;
-				// 表示色を選択
-				series.Color = data.Color;
-				series.BorderWidth = 2;
-				// SupplyChartに追加する
-				SupplyChart.Series.Add(series);
-				// 凡例の設定
-				var legend = new Legend();
-				legend.DockedToChartArea = "ChartArea";
-				legend.Alignment = StringAlignment.Far;
-				SupplyChart.Legends.Add(legend);
-				// インクリメント
-				++index;
 			}
 			// グラフのスケールを設定する
-			var leastChartTime1 = SupplyStore.MainSupplyData.Max(p => p.List.Max(d => d.Key));
-			try {
-				var leastChartTime2 = SupplyStore.SubSupplyData.Max(p => p.List.Max(d => d.Key));
-				LeastChartTime = (leastChartTime1 < leastChartTime2 ? leastChartTime2 : leastChartTime1);
-			}
-			catch {
-				LeastChartTime = leastChartTime1;
-			}
+			LeastChartTime = (IsDrawTypeMain 
+				? SupplyStore.MainSupplyData.Max(p => p.List.Max(d => d.Key)) 
+				: SupplyStore.SubSupplyData.Max(p => p.List.Max(d => d.Key)));
 			chartArea.AxisX.Maximum = LeastChartTime.ToOADate();
 			ChangeChartScale();
 			// ListViewを再描画する
@@ -202,6 +212,10 @@ namespace WsGH {
 				DrawChart();
 			}
 			catch (Exception) {}
+		}
+
+		private void ChartShowTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			DrawChart();
 		}
 	}
 	// SupplyDiffクラス
