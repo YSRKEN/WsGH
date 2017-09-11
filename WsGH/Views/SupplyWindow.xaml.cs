@@ -69,8 +69,13 @@ namespace WsGH {
 			SupplyChart.Legends.Clear();
 			// グラフの軸ラベルおよび罫線の色を設定する
 			var chartArea = SupplyChart.ChartAreas[0];
-			chartArea.AxisY.Title = Properties.Resources.SupplyChartYTitle;
-			chartArea.AxisY2.Title = Properties.Resources.SupplyChartY2Title;
+			if (IsDrawTypeMain) {
+				chartArea.AxisY.Title = Properties.Resources.SupplyChartYTitle;
+				chartArea.AxisY2.Title = Properties.Resources.SupplyChartY2Title;
+			}
+			else {
+				chartArea.AxisY.Title = Properties.Resources.SupplyChartY3Title;
+			}
 			chartArea.AxisX.MajorGrid.LineColor = Color.LightGray;
 			chartArea.AxisY.MajorGrid.LineColor = Color.LightGray;
 			chartArea.AxisX2.MajorGrid.LineColor = Color.LightGray;
@@ -136,7 +141,7 @@ namespace WsGH {
 						series.Points.AddXY(Column.Key.ToOADate(), Column.Value);
 					}
 					// 表示位置を調整
-					series.YAxisType = AxisType.Secondary;
+					series.YAxisType = AxisType.Primary;
 					// 表示色を選択
 					series.Color = data.Color;
 					series.BorderWidth = 2;

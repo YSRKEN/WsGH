@@ -304,4 +304,10 @@
   <data name="SupplyShowTypeSub" xml:space="preserve">
     <value>特殊資材</value>
   </data>
+  <data name="SupplyChartY3Title" xml:space="preserve">
+    <value>バケツ・バーナー・艦船・装備</value>
+  </data>
+  <data name="SupplyReloadButton" xml:space="preserve">
+    <value>再読み込み</value>
+  </data>
 </root>

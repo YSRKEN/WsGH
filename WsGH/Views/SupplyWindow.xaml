@@ -17,11 +17,11 @@
 		</Grid.RowDefinitions>
 		<Grid Grid.Row="0">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition/>
-				<ColumnDefinition/>
+				<ColumnDefinition Width="auto"/>
+				<ColumnDefinition Width="auto"/>
 				<ColumnDefinition/>
 			</Grid.ColumnDefinitions>
-			<ComboBox Grid.Column="0" x:Name="ChartScaleComboBox" Margin="10,10,0,10" Width="80" Height="24" SelectedIndex="2" SelectionChanged="ChartScaleComboBox_SelectionChanged" HorizontalAlignment="Left">
+			<ComboBox Grid.Column="0" x:Name="ChartScaleComboBox" Margin="10,10,5,10" Width="80" Height="24" SelectedIndex="2" SelectionChanged="ChartScaleComboBox_SelectionChanged" HorizontalAlignment="Left">
 				<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale1Day   }"/>
 				<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale1Week  }"/>
 				<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale2Week  }"/>
@@ -31,11 +31,11 @@
 				<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale6Month }"/>
 				<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyScale1Year  }"/>
 			</ComboBox>
-			<ComboBox Grid.Column="1" x:Name="ChartShowTypeComboBox" Width="80" Height="24" SelectedIndex="0" SelectionChanged="ChartShowTypeComboBox_SelectionChanged">
+			<ComboBox Grid.Column="1" x:Name="ChartShowTypeComboBox" Width="100" Height="24" Margin="5,10,10,10" SelectedIndex="0" SelectionChanged="ChartShowTypeComboBox_SelectionChanged">
 				<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyShowTypeMain }"/>
 				<ComboBoxItem Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyShowTypeSub  }"/>
 			</ComboBox>
-			<Button Grid.Column="2" x:Name="ReloadSupplyDataButton" Content="再読込み" Margin="0,10,10,10" Width="80" Height="24" HorizontalAlignment="Right" Click="ReloadSupplyDataButton_Click" />
+			<Button Grid.Column="2" x:Name="ReloadSupplyDataButton" Content="{Binding Source={x:Static app:ResourceService.Current}, Mode=OneWay, Path=Resources.SupplyReloadButton  }" Margin="0,10,10,10" Width="80" Height="24" HorizontalAlignment="Right" Click="ReloadSupplyDataButton_Click" />
 		</Grid>
 		<WindowsFormsHost Grid.Row="1" Margin="0,0,0,0">
 			<wfc:Chart x:Name="SupplyChart">

@@ -378,11 +378,29 @@ namespace WsGH.Properties {
         }
         
         /// <summary>
+        ///   Bucket, Burner, ShipBP, WeaponBP に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyChartY3Title {
+            get {
+                return ResourceManager.GetString("SupplyChartY3Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Fuel, Ammo, Steel, Bauxite に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SupplyChartYTitle {
             get {
                 return ResourceManager.GetString("SupplyChartYTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Reload に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyReloadButton {
+            get {
+                return ResourceManager.GetString("SupplyReloadButton", resourceCulture);
             }
         }
         

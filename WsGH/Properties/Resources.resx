@@ -307,4 +307,10 @@
   <data name="SupplyShowTypeSub" xml:space="preserve">
     <value>SubSupply</value>
   </data>
+  <data name="SupplyChartY3Title" xml:space="preserve">
+    <value>Bucket, Burner, ShipBP, WeaponBP</value>
+  </data>
+  <data name="SupplyReloadButton" xml:space="preserve">
+    <value>Reload</value>
+  </data>
 </root>
