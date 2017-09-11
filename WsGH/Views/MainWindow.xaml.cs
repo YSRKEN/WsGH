@@ -172,6 +172,13 @@ namespace WsGH {
 			} catch(Exception) {
 				AddLog($"{Properties.Resources.LoggingTextReadSupplyData}：Failed");
 			}
+			try {
+				SupplyStore.ReadSubSupply();
+				AddLog($"{Properties.Resources.LoggingText2ReadSupplyData}：Success");
+			}
+			catch (Exception) {
+				AddLog($"{Properties.Resources.LoggingText2ReadSupplyData}：Failed");
+			}
 			#endregion
 			#region DispatcherTimerの初期化
 			// タイマーを作成する
@@ -472,6 +479,49 @@ namespace WsGH {
 					}
 					// グラフに反映
 					sw.DrawChart();
+				}
+				// SubSupplyの読み込み処理は、対象が4種類あるのでややこしい
+				for(int ti = 0; ti < SupplyStore.SubSupplyTypes; ++ti) {
+					// 追記可能なタイミングじゃないと追記しない
+					if (!SupplyStore.CanAddSubSupply(ti))
+						continue;
+					// 追記可能なシーンじゃないと追記しない
+					switch (ti) {
+					case 0:
+						if (scene != SceneType.Dock)
+							continue;
+						break;
+					case 1:
+						if (scene != SceneType.Build && scene != SceneType.Develop)
+							continue;
+						break;
+					case 2:
+						if (scene != SceneType.BuildRecipe)
+							continue;
+						break;
+					case 3:
+						if (scene != SceneType.DevelopRecipe)
+							continue;
+						break;
+					}
+					// 現在時刻と資源量を取得
+					var nowTime = DateTime.Now;
+					int supply = SceneRecognition.GetSubSupply(ti, captureFrame);
+					// データベースに書き込み
+					SupplyStore.AddSubSupply(ti, nowTime, supply);
+					AddLog($"{Properties.Resources.LoggingText2AddSupplyData}");
+					// データベースを保存
+					try {
+						SupplyStore.SaveSubSupply(ti);
+						AddLog($"{Properties.Resources.LoggingText2SaveSupplyData}：Success");
+					}
+					catch (Exception) {
+						AddLog($"{Properties.Resources.LoggingText2SaveSupplyData}：Failed");
+					}
+					// グラフに反映
+					sw.DrawChart();
+
+					SupplyStore.ShowSubSupply(ti);
 				}
 				#endregion
 			}

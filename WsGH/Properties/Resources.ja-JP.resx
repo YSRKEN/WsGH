@@ -277,4 +277,37 @@
   <data name="SupplyScale6Month" xml:space="preserve">
     <value>6ヶ月</value>
   </data>
+  <data name="LoggingText2ReadSupplyData" xml:space="preserve">
+    <value>特殊資材ログを読み込み</value>
+  </data>
+  <data name="LoggingText2SaveSupplyData" xml:space="preserve">
+    <value>特殊資材ログに書き込み</value>
+  </data>
+  <data name="LoggingText2AddSupplyData" xml:space="preserve">
+    <value>特殊資材ログに追記</value>
+  </data>
+  <data name="SupplyTypeBucket" xml:space="preserve">
+    <value>バケツ</value>
+  </data>
+  <data name="SupplyTypeBurner" xml:space="preserve">
+    <value>バーナー</value>
+  </data>
+  <data name="SupplyTypeShipBlueprint" xml:space="preserve">
+    <value>艦船設計図</value>
+  </data>
+  <data name="SupplyTypeWeaponBlueprint" xml:space="preserve">
+    <value>装備設計図</value>
+  </data>
+  <data name="SupplyShowTypeMain" xml:space="preserve">
+    <value>通常資材</value>
+  </data>
+  <data name="SupplyShowTypeSub" xml:space="preserve">
+    <value>特殊資材</value>
+  </data>
+  <data name="SupplyChartY3Title" xml:space="preserve">
+    <value>バケツ・バーナー・艦船・装備</value>
+  </data>
+  <data name="SupplyReloadButton" xml:space="preserve">
+    <value>再読み込み</value>
+  </data>
 </root>
