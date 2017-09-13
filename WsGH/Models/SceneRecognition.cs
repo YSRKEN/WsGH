@@ -12,7 +12,7 @@ namespace WsGH {
 	static class SceneRecognition {
 		// 各種定数定義
 		#region シーン認識用定数
-		public enum SceneType { Unknown, Expedition, Build, Develop, Dock, Home };
+		public enum SceneType { Unknown, Expedition, Build, Develop, Dock, Home, BuildRecipe, DevelopRecipe };
 		#endregion
 		#region 遠征用定数
 		// 遠征艦隊数
@@ -106,6 +106,21 @@ namespace WsGH {
 		};
 		// 資源表示の縦位置・大きさ
 		static float MainSupplyDigitPY = 1.389f, MainSupplyDigitWX = 0.9375f, MainSupplyDigitWY = 2.222f;
+		// 特殊資材表示の横位置
+		static float[] SubSupply1DigitPX = { 81.38f, 83.00f, 84.63f, 86.25f, 87.88f, };
+		static float[] SubSupply2DigitPX = { 81.75f, 83.78f, 85.00f, 86.63f, 88.25f, };
+		static float[] SubSupply3DigitPX = { 69.63f, 71.25f, 72.88f, 74.50f, 76.13f, };
+		static float[] SubSupply4DigitPX = { 69.63f, 71.25f, 72.88f, 74.50f, 76.13f, };
+		static float[][] SubSupplyDigitPX = {
+			SubSupply1DigitPX,
+			SubSupply2DigitPX,
+			SubSupply3DigitPX,
+			SubSupply4DigitPX,
+		};
+		// 特殊資材表示の縦位置
+		static float[] SubSupplyDigitPY = { 8.667f, 8.444f, 8.667f, 8.667f, };
+		// 特殊資材表示の大きさ
+		static float SubSupplyDigitWX = 1.500f, SubSupplyDigitWY = 4.222f;
 		#endregion
 		#region OCR用定数
 		// OCRする際にリサイズするサイズ
@@ -357,7 +372,6 @@ namespace WsGH {
 		}
 		// 資材を正規化する
 		static int GetMainSupply(List<int> supplyDigit) {
-			// スタブ
 			int supplyValue = 0;
 			supplyValue += (supplyDigit[0] > 9 ? 0 : supplyDigit[0]) * 100000;
 			supplyValue += (supplyDigit[1] > 9 ? 0 : supplyDigit[1]) * 10000;
@@ -365,6 +379,16 @@ namespace WsGH {
 			supplyValue += (supplyDigit[3] > 9 ? 0 : supplyDigit[3]) * 100;
 			supplyValue += (supplyDigit[4] > 9 ? 0 : supplyDigit[4]) * 10;
 			supplyValue += (supplyDigit[5] > 9 ? 0 : supplyDigit[5]) * 1;
+			return supplyValue;
+		}
+		// 特殊資材を正規化する
+		static int GetSubSupply(List<int> supplyDigit) {
+			int supplyValue = 0;
+			supplyValue += (supplyDigit[0] > 9 ? 0 : supplyDigit[0]) * 10000;
+			supplyValue += (supplyDigit[1] > 9 ? 0 : supplyDigit[1]) * 1000;
+			supplyValue += (supplyDigit[2] > 9 ? 0 : supplyDigit[2]) * 100;
+			supplyValue += (supplyDigit[3] > 9 ? 0 : supplyDigit[3]) * 10;
+			supplyValue += (supplyDigit[4] > 9 ? 0 : supplyDigit[4]) * 1;
 			return supplyValue;
 		}
 		// UNIX時間を計算する
@@ -385,6 +409,10 @@ namespace WsGH {
 				return SceneType.Dock;
 			if(IsHomeScene(bitmap))
 				return SceneType.Home;
+			if (IsBuildRecipeScene(bitmap))
+				return SceneType.BuildRecipe;
+			if (IsDevelopRecipeScene(bitmap))
+				return SceneType.DevelopRecipe;
 			return SceneType.Unknown;
 		}
 		#region 遠征関係
@@ -470,11 +498,15 @@ namespace WsGH {
 			for(int li = 0; li < BuildListHeight; ++li) {
 				// スタンバイ表示ならば、その行に入渠艦隊はいない
 				var bhash = GetDifferenceHash(bitmap, BuildStatusPosition[li]);
-				if(GetHummingDistance(bhash, 0x4147b56a9d33cb1c) < 20)
+				if(GetHummingDistance(bhash, 0x4147b56a9d33cb1c) < 20) {
+					output[li] = 0;
 					continue;
+				}
 				// 建造中でなければ、その行に入渠艦隊はいない
-				if(GetHummingDistance(bhash, 0x254565276737c138) >= 20)
+				if (GetHummingDistance(bhash, 0x254565276737c138) >= 20) {
+					output[li] = 0;
 					continue;
+				}
 				// 建造時間を取得する
 				var timerDigit = GetDigitOCR(bitmap, BuildTimerDigitPX, BuildTimerDigitPY[li], BuildTimerDigitWX, BuildTimerDigitWY, 100, true);
 				var leastSecond = GetLeastSecond(timerDigit);
@@ -482,6 +514,22 @@ namespace WsGH {
 				output[li] = now_time + leastSecond;
 			}
 			return output;
+		}
+		// 建造レシピのシーンかを判定する
+		static bool IsBuildRecipeScene(Bitmap bitmap) {
+			{
+				// 艦船設計図アイコン
+				ulong hash = GetDifferenceHash(bitmap, 54.00, 7.556, 2.000, 3.556);
+				if (GetHummingDistance(hash, 0xb27e90381c6ad198) >= 20)
+					return false;
+			}
+			{
+				// 燃料アイコン
+				ulong hash = GetDifferenceHash(bitmap, 10.13, 34.89, 2.000, 3.556);
+				if (GetHummingDistance(hash, 0xa3b10c3c3c3b195a) >= 20)
+					return false;
+			}
+			return true;
 		}
 		#endregion
 		#region 開発関係
@@ -514,11 +562,15 @@ namespace WsGH {
 			for(int li = 0; li < DevListHeight; ++li) {
 				// スタンバイ表示ならば、その行に入渠艦隊はいない
 				var bhash = GetDifferenceHash(bitmap, DevStatusPosition[li]);
-				if(GetHummingDistance(bhash, 0x4147b56a9d33cb1c) < 20)
+				if(GetHummingDistance(bhash, 0x4147b56a9d33cb1c) < 20) {
+					output[li] = 0;
 					continue;
+				}
 				// 開発中でなければ、その行に入渠艦隊はいない
-				if(GetHummingDistance(bhash, 0x545471565654659a) >= 20)
+				if (GetHummingDistance(bhash, 0x545471565654659a) >= 20) {
+					output[li] = 0;
 					continue;
+				}
 				// 建造時間を取得する
 				var timerDigit = GetDigitOCR(bitmap, DevTimerDigitPX, DevTimerDigitPY[li], DevTimerDigitWX, DevTimerDigitWY, 140, true);
 				var leastSecond = GetLeastSecond(timerDigit);
@@ -526,6 +578,23 @@ namespace WsGH {
 			}
 			return output;
 		}
+		// 開発レシピのシーンかを判定する
+		static bool IsDevelopRecipeScene(Bitmap bitmap) {
+			{
+				// 装備設計図アイコン
+				ulong hash = GetDifferenceHash(bitmap, 54.00, 7.556, 2.000, 3.556);
+				if (GetHummingDistance(hash, 0xb265980b1311910d) >= 20)
+					return false;
+			}
+			{
+				// 燃料アイコン
+				ulong hash = GetDifferenceHash(bitmap, 10.13, 34.89, 2.000, 3.556);
+				if (GetHummingDistance(hash, 0xa3b10c3c3c3b195a) >= 20)
+					return false;
+			}
+			return true;
+		}
+
 		#endregion
 		#region 入渠関係
 		// 入渠のシーンかを判定する
@@ -551,8 +620,10 @@ namespace WsGH {
 			for(int li = 0; li < DockListHeight; ++li) {
 				// 高速修復ボタンがなければ、その行に入渠艦隊はいない
 				var bhash = GetDifferenceHash(bitmap, DockFastRepairPosition[li]);
-				if(GetHummingDistance(bhash, 0x62cd568d66b66d9a) >= 20)
+				if(GetHummingDistance(bhash, 0x62cd568d66b66d9a) >= 20) {
+					output[li] = 0;
 					continue;
+				}
 				// 入渠時間を取得する
 				var timerDigit = GetDigitOCR(bitmap, DockTimerDigitPX, DockTimerDigitPY[li], DockTimerDigitWX, DockTimerDigitWY, 50, true);
 				var leastSecond = GetLeastSecond(timerDigit);
@@ -596,12 +667,17 @@ namespace WsGH {
 		public static List<int> GetMainSupply(Bitmap bitmap) {
 			var output = new List<int>();
 			// iの値により、燃料→弾薬→鋼材→ボーキサイト→ダイヤと読み取り対象が変化する
-			for(int i = 0; i < MainSupplyDigitPX.Count(); ++i) {
+			for(int i = 0; i < MainSupplyDigitPX.Length; ++i) {
 				var supplyDigit = GetDigitOCR(bitmap, MainSupplyDigitPX[i], MainSupplyDigitPY, MainSupplyDigitWX, MainSupplyDigitWY, 110, true);
-				var supplyVaue = GetMainSupply(supplyDigit);
+				int supplyVaue = GetMainSupply(supplyDigit);
 				output.Add(supplyVaue);
 			}
 			return output;
+		}
+		// 資材量を読み取る(GetSubSupply)
+		public static int GetSubSupply(int ti, Bitmap bitmap) {
+			var supplyDigit = GetDigitOCR(bitmap, SubSupplyDigitPX[ti], SubSupplyDigitPY[ti], SubSupplyDigitWX, SubSupplyDigitWY, 110, true);
+			return GetSubSupply(supplyDigit);
 		}
 		#endregion
 	}

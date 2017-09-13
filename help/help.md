@@ -13,7 +13,7 @@
  - yyyy-mm-dd hh-mm-ss-mmm(_twi).png……保存したスクショ画像(twiと入っているのはツイート用)
 
 ## メイン画面
-![mainwindow](https://cloud.githubusercontent.com/assets/3734392/22851276/28ef3a1a-f060-11e6-8fb4-80cb3e1fcbd0.png)
+![MainWindow](https://cloud.githubusercontent.com/assets/3734392/22851276/28ef3a1a-f060-11e6-8fb4-80cb3e1fcbd0.png)
 
 - まずメニューから、「《オプション|Option》→《背景色|Background》→」と進んでください
  - これを正しく設定しないと、戦艦少女を表示しているウィンドウの位置が取得できません
@@ -37,7 +37,7 @@
 - 画面下の方には実行ログが表示されています
 
 ## タイマー画面
-![timerwindow](https://user-images.githubusercontent.com/3734392/28028893-08b1902e-65d9-11e7-8743-4bfbeb406d9d.png)
+![TimerWindow](https://user-images.githubusercontent.com/3734392/28028893-08b1902e-65d9-11e7-8743-4bfbeb406d9d.png)
 
 - ウィンドウタイトル：《タイマー画面|TimerWindow》
 - 遠征・建造・開発・入渠における残時間が表示されます
@@ -46,11 +46,16 @@
 - ソフトを一旦終了させて、再起動してもタイマーはカウントを続けています
 
 ## 資材記録画面
-![supplywindow](https://user-images.githubusercontent.com/3734392/28028872-ef0d0464-65d8-11e7-8869-f7ca2c99774e.png)
+![SupplyWindow](https://user-images.githubusercontent.com/3734392/30383162-01c0fca6-98dc-11e7-972f-8caa9ef5043b.png)
+![SupplyWindow2](https://user-images.githubusercontent.com/3734392/30383172-08789130-98dc-11e7-93f5-fb3ce183df70.png)
 
 - ウィンドウタイトル：《資材記録画面|SupplyWindow》
-- 燃料・弾薬・鋼材・ボーキサイト・ダイヤモンドの推移が表示されます
+- 戦艦少女Rで扱う様々な資材の推移が表示されます
+- 1枚目は通常資材(燃料・弾薬・鋼材・ボーキサイト・ダイヤモンド)を表示しています
+- 2枚目は特殊資材(高速修復材・高速建造材・艦船設計図・装備設計図)を表示しています
 - 画面下には、各日付毎の資材の変化量がListViewで表示されます
 - 資材記録は60分毎に更新されます
 - グラフ(折れ線)において、X軸は時刻ですが、Y軸は右がダイヤ・左がそれ以外となっています
-- 資材量は随時MainSupply.csvに書き出されます。起動時はそこから読み込みます
+- 資材量は随時CSVデータに書き出されます。起動時はそこから読み込みます
+- 「再読み込み」ボタンを押すとCSVデータが即時に読み出されます(データ修正を即時反映できる)
+- 通常資材はMainSupply.csv、特殊資材はSubSupply1.csv～SubSupply4.csvに保存されます
