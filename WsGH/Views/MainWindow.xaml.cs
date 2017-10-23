@@ -33,22 +33,16 @@ namespace AzLH {
 				{ SceneType.Unknown, "Unknown" },
 				{ SceneType.Expedition, "Expedition" },
 				{ SceneType.Build, "Build" },
-				{ SceneType.Develop, "Develop" },
-				{ SceneType.Dock, "Dock" },
 				{ SceneType.Home, "Home" },
 				{ SceneType.BuildRecipe, "BuildRecipe" },
-				{ SceneType.DevelopRecipe, "DevelopRecipe" },
 			 };
 		static Dictionary<SceneType, string> SceneStringJapanese
 			 = new Dictionary<SceneType, string> {
 				{ SceneType.Unknown, "不明" },
 				{ SceneType.Expedition, "遠征" },
 				{ SceneType.Build, "建造" },
-				{ SceneType.Develop, "開発" },
-				{ SceneType.Dock, "入渠" },
 				{ SceneType.Home, "母港" },
 				{ SceneType.BuildRecipe, "建造レシピ" },
-				{ SceneType.DevelopRecipe, "開発レシピ" },
 			 };
 		#endregion
 		// 背景チェック
@@ -409,52 +403,6 @@ namespace AzLH {
 					}
 					break;
 				#endregion
-				case SceneType.Develop:
-					#region 開発中なら、開発時間を読み取る
-					var devEndTime = SceneRecognition.GetDevTimer(captureFrame);
-					foreach(var pair in devEndTime) {
-						switch(pair.Key) {
-						case 0:
-							bindData.DevTimer1 = pair.Value;
-							break;
-						case 1:
-							bindData.DevTimer2 = pair.Value;
-							break;
-						case 2:
-							bindData.DevTimer3 = pair.Value;
-							break;
-						case 3:
-							bindData.DevTimer4 = pair.Value;
-							break;
-						default:
-							break;
-						}
-					}
-					break;
-				#endregion
-				case SceneType.Dock:
-					#region 入渠中なら、入渠時間を読み取る
-					var dockEndTime = SceneRecognition.GetDockTimer(captureFrame);
-					foreach(var pair in dockEndTime) {
-						switch(pair.Key) {
-						case 0:
-							bindData.DockTimer1 = pair.Value;
-							break;
-						case 1:
-							bindData.DockTimer2 = pair.Value;
-							break;
-						case 2:
-							bindData.DockTimer3 = pair.Value;
-							break;
-						case 3:
-							bindData.DockTimer4 = pair.Value;
-							break;
-						default:
-							break;
-						}
-					}
-					break;
-				#endregion
 				case SceneType.Home:
 
 				default:
@@ -486,7 +434,7 @@ namespace AzLH {
 					if (!SupplyStore.CanAddSubSupply(ti))
 						continue;
 					// 追記可能なシーンじゃないと追記しない
-					switch (ti) {
+					/*switch (ti) {
 					case 0:
 						if (scene != SceneType.Dock)
 							continue;
@@ -503,7 +451,8 @@ namespace AzLH {
 						if (scene != SceneType.DevelopRecipe)
 							continue;
 						break;
-					}
+					}*/
+					continue;
 					// 現在時刻と資源量を取得
 					var nowTime = DateTime.Now;
 					int supply = SceneRecognition.GetSubSupply(ti, captureFrame);

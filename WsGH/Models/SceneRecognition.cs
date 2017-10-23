@@ -12,7 +12,7 @@ namespace AzLH {
 	static class SceneRecognition {
 		// 各種定数定義
 		#region シーン認識用定数
-		public enum SceneType { Unknown, Expedition, Build, Develop, Dock, Home, BuildRecipe, DevelopRecipe };
+		public enum SceneType { Unknown, Expedition, Build, Home, BuildRecipe };
 		#endregion
 		#region 遠征用定数
 		// 遠征艦隊数
@@ -403,16 +403,10 @@ namespace AzLH {
 				return SceneType.Expedition;
 			if(IsBuildScene(bitmap))
 				return SceneType.Build;
-			if(IsDevelopScene(bitmap))
-				return SceneType.Develop;
-			if(IsDockScene(bitmap))
-				return SceneType.Dock;
 			if(IsHomeScene(bitmap))
 				return SceneType.Home;
 			if (IsBuildRecipeScene(bitmap))
 				return SceneType.BuildRecipe;
-			if (IsDevelopRecipeScene(bitmap))
-				return SceneType.DevelopRecipe;
 			return SceneType.Unknown;
 		}
 		#region 遠征関係
@@ -530,106 +524,6 @@ namespace AzLH {
 					return false;
 			}
 			return true;
-		}
-		#endregion
-		#region 開発関係
-		// 開発のシーンかを判定する
-		static bool IsDevelopScene(Bitmap bitmap) {
-			{
-				// 開発ボタン
-				var hash = GetDifferenceHash(bitmap, 1.880, 33.26, 7.051, 6.276);
-				if(GetHummingDistance(hash, 0x02595a5aa939c8ab) >= 20)
-					return false;
-			}
-			{
-				// 開発枠
-				var hash = GetDifferenceHash(bitmap, 36.78, 21.34, 2.233, 3.975);
-				if(GetHummingDistance(hash, 0x56b94e5a5a52a55e) >= 20)
-					return false;
-			}
-			{
-				// 開発アイコン
-				var hash = GetDifferenceHash(bitmap, 27.50, 8.996, 1.880, 4.184);
-				if(GetHummingDistance(hash, 0xffdd5a8ddadcd896) >= 20)
-					return false;
-			}
-			return true;
-		}
-		// 開発タイマーを取得する
-		public static Dictionary<int, ulong> GetDevTimer(Bitmap bitmap) {
-			var output = new Dictionary<int, ulong>();
-			var now_time = GetUnixTime(DateTime.Now);
-			for(int li = 0; li < DevListHeight; ++li) {
-				// スタンバイ表示ならば、その行に入渠艦隊はいない
-				var bhash = GetDifferenceHash(bitmap, DevStatusPosition[li]);
-				if(GetHummingDistance(bhash, 0x4147b56a9d33cb1c) < 20) {
-					output[li] = 0;
-					continue;
-				}
-				// 開発中でなければ、その行に入渠艦隊はいない
-				if (GetHummingDistance(bhash, 0x545471565654659a) >= 20) {
-					output[li] = 0;
-					continue;
-				}
-				// 建造時間を取得する
-				var timerDigit = GetDigitOCR(bitmap, DevTimerDigitPX, DevTimerDigitPY[li], DevTimerDigitWX, DevTimerDigitWY, 140, true);
-				var leastSecond = GetLeastSecond(timerDigit);
-				output[li] = now_time + leastSecond;
-			}
-			return output;
-		}
-		// 開発レシピのシーンかを判定する
-		static bool IsDevelopRecipeScene(Bitmap bitmap) {
-			{
-				// 装備設計図アイコン
-				ulong hash = GetDifferenceHash(bitmap, 54.00, 7.556, 2.000, 3.556);
-				if (GetHummingDistance(hash, 0xb265980b1311910d) >= 20)
-					return false;
-			}
-			{
-				// 燃料アイコン
-				ulong hash = GetDifferenceHash(bitmap, 10.13, 34.89, 2.000, 3.556);
-				if (GetHummingDistance(hash, 0xa3b10c3c3c3b195a) >= 20)
-					return false;
-			}
-			return true;
-		}
-
-		#endregion
-		#region 入渠関係
-		// 入渠のシーンかを判定する
-		static bool IsDockScene(Bitmap bitmap) {
-			{
-				// 修復ボタン
-				var hash = GetDifferenceHash(bitmap, 1.880, 20.29, 6.933, 5.858);
-				if(GetHummingDistance(hash, 0x846db65c641d5526) >= 20)
-					return false;
-			}
-			{
-				// 修復アイコン
-				var hash = GetDifferenceHash(bitmap, 24.09, 9.205, 4.465, 4.393);
-				if(GetHummingDistance(hash, 0x8776335455555522) >= 20)
-					return false;
-			}
-			return true;
-		}
-		// 入渠タイマーを取得する
-		public static Dictionary<int, ulong> GetDockTimer(Bitmap bitmap) {
-			var output = new Dictionary<int, ulong>();
-			var now_time = GetUnixTime(DateTime.Now);
-			for(int li = 0; li < DockListHeight; ++li) {
-				// 高速修復ボタンがなければ、その行に入渠艦隊はいない
-				var bhash = GetDifferenceHash(bitmap, DockFastRepairPosition[li]);
-				if(GetHummingDistance(bhash, 0x62cd568d66b66d9a) >= 20) {
-					output[li] = 0;
-					continue;
-				}
-				// 入渠時間を取得する
-				var timerDigit = GetDigitOCR(bitmap, DockTimerDigitPX, DockTimerDigitPY[li], DockTimerDigitWX, DockTimerDigitWY, 50, true);
-				var leastSecond = GetLeastSecond(timerDigit);
-				output[li] = now_time + leastSecond;
-			}
-			return output;
 		}
 		#endregion
 		#region 母港関係
