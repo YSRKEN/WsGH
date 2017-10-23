@@ -138,6 +138,12 @@ namespace AzLH {
 			int diffB = A.B - B.B;
 			return (diffR * diffR + diffG * diffG + diffB * diffB) < 500;
 		}
+		static bool IsNearColor(Color A, Color B, int limit) {
+			int diffR = A.R - B.R;
+			int diffG = A.G - B.G;
+			int diffB = A.B - B.B;
+			return (diffR * diffR + diffG * diffG + diffB * diffB) < limit;
+		}
 		// ゲーム画面の座標を逆算する
 		static Rectangle GetGameWindowRectangle(Bitmap bitmap, Color backgroundColor, int clickPointX, int clickPointY) {
 			var gwr = new Rectangle(clickPointX, clickPointY, 0, 0);
@@ -146,22 +152,22 @@ namespace AzLH {
 			for (int y = 0; y < Math.Min(bitmap.Height - MinGameWindowY, clickPointY); ++y) {
 				for (int x = 0; x < Math.Min(bitmap.Width - MinGameWindowX, clickPointX); ++x) {
 					// 枠の左上座標
-					if (!IsNearColor(bitmap.GetPixel(x, y), borderColor))
+					if (!IsNearColor(bitmap.GetPixel(x, y), borderColor, 1))
 						continue;
 					// その右
-					if (!IsNearColor(bitmap.GetPixel(x + 1, y), borderColor))
+					if (!IsNearColor(bitmap.GetPixel(x + 1, y), borderColor, 1))
 						continue;
 					// その下
-					if (!IsNearColor(bitmap.GetPixel(x, y + 1), borderColor))
+					if (!IsNearColor(bitmap.GetPixel(x, y + 1), borderColor, 1))
 						continue;
 					// その右下
-					if (IsNearColor(bitmap.GetPixel(x + 1, y + 1), borderColor))
+					if (IsNearColor(bitmap.GetPixel(x + 1, y + 1), borderColor, 1))
 						continue;
 					// MinGameWindowX×MinGameWindowYまで走査
 					{
 						bool flg = true;
 						for (int i = 2; i <= MinGameWindowX; ++i) {
-							if (!IsNearColor(bitmap.GetPixel(x + i, y), borderColor)) {
+							if (!IsNearColor(bitmap.GetPixel(x + i, y), borderColor, 1)) {
 								flg = false;
 								break;
 							}
@@ -172,7 +178,7 @@ namespace AzLH {
 					{
 						bool flg = true;
 						for (int i = 2; i <= MinGameWindowY; ++i) {
-							if (!IsNearColor(bitmap.GetPixel(x, y + i), borderColor)) {
+							if (!IsNearColor(bitmap.GetPixel(x, y + i), borderColor, 1)) {
 								flg = false;
 								break;
 							}
@@ -189,18 +195,18 @@ namespace AzLH {
 						if (y2 <= clickPointY)
 							continue;
 						// 探索開始
-						if (!IsNearColor(bitmap.GetPixel(x2, y2), borderColor))
+						if (!IsNearColor(bitmap.GetPixel(x2, y2), borderColor, 1))
 							continue;
-						if (!IsNearColor(bitmap.GetPixel(x2 - 1, y2), borderColor))
+						if (!IsNearColor(bitmap.GetPixel(x2 - 1, y2), borderColor, 1))
 							continue;
-						if (!IsNearColor(bitmap.GetPixel(x2, y2 - 1), borderColor))
+						if (!IsNearColor(bitmap.GetPixel(x2, y2 - 1), borderColor, 1))
 							continue;
-						if (IsNearColor(bitmap.GetPixel(x2 - 1, y2 - 1), borderColor))
+						if (IsNearColor(bitmap.GetPixel(x2 - 1, y2 - 1), borderColor, 1))
 							continue;
 						{
 							bool flg = true;
 							for (int x3 = x + MinGameWindowX + 1; x3 < x2; ++x3) {
-								if (!IsNearColor(bitmap.GetPixel(x3, y2), borderColor)) {
+								if (!IsNearColor(bitmap.GetPixel(x3, y2), borderColor, 1)) {
 									flg = false;
 									break;
 								}
@@ -211,7 +217,7 @@ namespace AzLH {
 						{
 							bool flg = true;
 							for (int y3 = y + MinGameWindowY + 1; y3 < y2; ++y3) {
-								if (!IsNearColor(bitmap.GetPixel(x2, y3), borderColor)) {
+								if (!IsNearColor(bitmap.GetPixel(x2, y3), borderColor, 1)) {
 									flg = false;
 									break;
 								}
@@ -225,6 +231,7 @@ namespace AzLH {
 					}
 				}
 			}
+			//bitmap.Save("hoge.png");
 			return gwr;
 		}
 		// ゲーム画面の座標をクリックさせるためのインナークラス
