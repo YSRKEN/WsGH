@@ -7,11 +7,11 @@ The AzurLane Helper by C#
 - 動作環境：.NET Framework 4.6.2がインストール可能なWindows OS
 - 開発環境：Microsoft　Visual Studio Community 2017
 - 動作確認OS：Windows 10(64bit)
-- 動作確認エミュレータ：BlueStacks 2／Nox App Player
+- 動作確認エミュレータ：Nox App Player
 
 ## 警告
 - 前述の動作確認環境以外での動作は確認していません
-- デフォルトの背景色設定では、BlueStacksで動作させることを前提としています
+- デフォルトの背景色設定では、Nox App Playerで動作させることを前提としています
  - ただし、背景色設定は任意に切り替え可能です
 
 ## 使い方
