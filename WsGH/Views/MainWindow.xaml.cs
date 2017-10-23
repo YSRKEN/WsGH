@@ -160,7 +160,7 @@ namespace AzLH {
 			#endregion
 			#region 周辺クラスの初期化
 			SceneRecognition.InitialSceneRecognition();
-			try {
+			/*try {
 				SupplyStore.ReadMainSupply();
 				AddLog($"{Properties.Resources.LoggingTextReadSupplyData}：Success");
 			} catch(Exception) {
@@ -172,7 +172,7 @@ namespace AzLH {
 			}
 			catch (Exception) {
 				AddLog($"{Properties.Resources.LoggingText2ReadSupplyData}：Failed");
-			}
+			}*/
 			#endregion
 			#region DispatcherTimerの初期化
 			// タイマーを作成する
@@ -358,51 +358,51 @@ namespace AzLH {
 				var bindData = tw.DataContext as TimerValue;
 				switch(scene) {
 				case SceneType.Expedition:
-					#region 遠征中なら、遠征時間を読み取る
-					var expEndTime = SceneRecognition.GetExpeditionTimer(captureFrame);
-					foreach(var pair in expEndTime) {
-						switch(pair.Key) {
-						case 0:
-							bindData.ExpTimer1 = pair.Value;
-							break;
-						case 1:
-							bindData.ExpTimer2 = pair.Value;
-							break;
-						case 2:
-							bindData.ExpTimer3 = pair.Value;
-							break;
-						case 3:
-							bindData.ExpTimer4 = pair.Value;
-							break;
-						default:
-							break;
-						}
+				/*#region 遠征中なら、遠征時間を読み取る
+				var expEndTime = SceneRecognition.GetExpeditionTimer(captureFrame);
+				foreach(var pair in expEndTime) {
+					switch(pair.Key) {
+					case 0:
+						bindData.ExpTimer1 = pair.Value;
+						break;
+					case 1:
+						bindData.ExpTimer2 = pair.Value;
+						break;
+					case 2:
+						bindData.ExpTimer3 = pair.Value;
+						break;
+					case 3:
+						bindData.ExpTimer4 = pair.Value;
+						break;
+					default:
+						break;
 					}
-					break;
-				#endregion
+				}
+				break;
+				#endregion*/
 				case SceneType.Build:
-					#region 建造中なら、建造時間を読み取る
-					var buildEndTime = SceneRecognition.GetBuildTimer(captureFrame);
-					foreach(var pair in buildEndTime) {
-						switch(pair.Key) {
-						case 0:
-							bindData.BuildTimer1 = pair.Value;
-							break;
-						case 1:
-							bindData.BuildTimer2 = pair.Value;
-							break;
-						case 2:
-							bindData.BuildTimer3 = pair.Value;
-							break;
-						case 3:
-							bindData.BuildTimer4 = pair.Value;
-							break;
-						default:
-							break;
-						}
+				/*#region 建造中なら、建造時間を読み取る
+				var buildEndTime = SceneRecognition.GetBuildTimer(captureFrame);
+				foreach(var pair in buildEndTime) {
+					switch(pair.Key) {
+					case 0:
+						bindData.BuildTimer1 = pair.Value;
+						break;
+					case 1:
+						bindData.BuildTimer2 = pair.Value;
+						break;
+					case 2:
+						bindData.BuildTimer3 = pair.Value;
+						break;
+					case 3:
+						bindData.BuildTimer4 = pair.Value;
+						break;
+					default:
+						break;
 					}
-					break;
-				#endregion
+				}
+				break;
+				#endregion*/
 				case SceneType.Home:
 
 				default:
@@ -411,7 +411,7 @@ namespace AzLH {
 				#endregion
 				#region 資材ロギング
 				// MainSupplyは、前回のロギングから一定時間以上経っていて、かつ読み込み可能なシーンなら追記する
-				if(SupplyStore.CanAddMainSupply() && SceneRecognition.CanReadMainSupply(captureFrame)) {
+				/*if(SupplyStore.CanAddMainSupply() && SceneRecognition.CanReadMainSupply(captureFrame)) {
 					// 現在時刻と資源量を取得
 					var nowTime = DateTime.Now;
 					var supply = SceneRecognition.GetMainSupply(captureFrame);
@@ -427,14 +427,14 @@ namespace AzLH {
 					}
 					// グラフに反映
 					sw.DrawChart();
-				}
+				}*/
 				// SubSupplyの読み込み処理は、対象が4種類あるのでややこしい
-				for(int ti = 0; ti < SupplyStore.SubSupplyTypes; ++ti) {
+				/*for(int ti = 0; ti < SupplyStore.SubSupplyTypes; ++ti) {
 					// 追記可能なタイミングじゃないと追記しない
 					if (!SupplyStore.CanAddSubSupply(ti))
 						continue;
 					// 追記可能なシーンじゃないと追記しない
-					/*switch (ti) {
+					switch (ti) {
 					case 0:
 						if (scene != SceneType.Dock)
 							continue;
@@ -451,7 +451,7 @@ namespace AzLH {
 						if (scene != SceneType.DevelopRecipe)
 							continue;
 						break;
-					}*/
+					}
 					continue;
 					// 現在時刻と資源量を取得
 					var nowTime = DateTime.Now;
@@ -471,7 +471,7 @@ namespace AzLH {
 					sw.DrawChart();
 
 					SupplyStore.ShowSubSupply(ti);
-				}
+				}*/
 				#endregion
 			}
 			#endregion
