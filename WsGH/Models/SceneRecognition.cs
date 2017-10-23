@@ -636,21 +636,15 @@ namespace AzLH {
 		// 母港のシーン(ボタンあり)かを判定する
 		static bool IsHomeScene(Bitmap bitmap) {
 			{
-				// 左上の表示
-				var hash = GetDifferenceHash(bitmap, 6.933, 1.674, 2.350, 4.184);
-				if (GetHummingDistance(hash, 0x0712092214489850) >= 20)
-					return false;
-			}
-			{
-				// 右上の表示
-				var hash = GetDifferenceHash(bitmap, 96.72, 2.64, 1.250, 2.222);
-				if (GetHummingDistance(hash, 0x713333b333030101) >= 20)
+				// 目玉表示
+				var hash = GetDifferenceHash(bitmap, 2.750, 18.89, 2.250, 4.444);
+				if (GetHummingDistance(hash, 0x07718e133b13cc07) >= 20)
 					return false;
 			}
 			{
 				// 出撃ボタン
-				var hash = GetDifferenceHash(bitmap, 70.31, 24.72, 1.250, 2.222);
-				if (GetHummingDistance(hash, 0xb6d6f63633f1e1e0) >= 20)
+				var hash = GetDifferenceHash(bitmap, 78.75, 51.33, 5.375, 5.111);
+				if (GetHummingDistance(hash, 0x45a851a9c84b5566) >= 20)
 					return false;
 			}
 			return true;
