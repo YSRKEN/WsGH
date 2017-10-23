@@ -26,10 +26,8 @@ namespace AzLH {
 		static void InitialMainSupply() {
 			MainSupplyData = new List<SupplyData> {
 				new SupplyData("Fuel", Color.Green),
-				new SupplyData("Ammo", Color.Chocolate),
-				new SupplyData("Steel", Color.DarkGray),
-				new SupplyData("Bauxite", Color.OrangeRed),
-				new SupplyData("Diamond", Color.SkyBlue),
+				new SupplyData("Money", Color.Gold),
+				new SupplyData("Diamond", Color.Red),
 			};
 			MainSupplyTypeCount = MainSupplyData.Count;
 			MainSupplyListCount = 0;

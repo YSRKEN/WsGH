@@ -495,24 +495,6 @@ namespace AzLH.Properties {
         }
         
         /// <summary>
-        ///   Ammo に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string SupplyTypeAmmo {
-            get {
-                return ResourceManager.GetString("SupplyTypeAmmo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Bauxite に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string SupplyTypeBauxite {
-            get {
-                return ResourceManager.GetString("SupplyTypeBauxite", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Bucket に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SupplyTypeBucket {
@@ -549,20 +531,20 @@ namespace AzLH.Properties {
         }
         
         /// <summary>
+        ///   Money に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyTypeMoney {
+            get {
+                return ResourceManager.GetString("SupplyTypeMoney", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   ShipBlueprint に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SupplyTypeShipBlueprint {
             get {
                 return ResourceManager.GetString("SupplyTypeShipBlueprint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Steel に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string SupplyTypeSteel {
-            get {
-                return ResourceManager.GetString("SupplyTypeSteel", resourceCulture);
             }
         }
         

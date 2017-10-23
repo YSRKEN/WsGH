@@ -92,20 +92,16 @@ namespace AzLH {
 		#endregion
 		#region 資材用定数
 		// 資源表示の横位置
-		static float[] MainSupplyFuelDigitPX    = {39.30f, 40.39f, 41.48f, 42.58f, 43.67f, 44.69f};
-		static float[] MainSupplyAmmoDigitPX    = {51.02f, 52.11f, 53.20f, 54.30f, 55.39f, 56.41f};
-		static float[] MainSupplySteelDigitPX   = {62.73f, 63.83f, 64.92f, 66.02f, 67.11f, 68.13f};
-		static float[] MainSupplyBauxiteDigitPX = {74.45f, 75.55f, 76.64f, 77.73f, 78.83f, 79.84f};
-		static float[] MainSupplyDiamondDigitPX = {87.97f, 89.06f, 90.16f, 91.09f, 92.27f, 93.28f};
+		static float[] MainSupplyFuelDigitPX    = {56.25f, 57.25f, 58.25f, 59.25f, 60.25f, 61.25f, 62.25f};
+		static float[] MainSupplyMoneyDigitPX   = {72.50f, 73.50f, 74.50f, 75.50f, 76.38f, 77.25f, 78.25f};
+		static float[] MainSupplyDiamondDigitPX = {88.38f, 89.38f, 90.38f, 91.38f, 92.38f, 93.38f, 94.38f};
 		static float[][] MainSupplyDigitPX = {
 			MainSupplyFuelDigitPX,
-			MainSupplyAmmoDigitPX,
-			MainSupplySteelDigitPX,
-			MainSupplyBauxiteDigitPX,
+			MainSupplyMoneyDigitPX,
 			MainSupplyDiamondDigitPX,
 		};
 		// 資源表示の縦位置・大きさ
-		static float MainSupplyDigitPY = 1.389f, MainSupplyDigitWX = 0.9375f, MainSupplyDigitWY = 2.222f;
+		static float MainSupplyDigitPY = 3.556f, MainSupplyDigitWX = 0.750f, MainSupplyDigitWY = 2.000f;
 		// 特殊資材表示の横位置
 		static float[] SubSupply1DigitPX = { 81.38f, 83.00f, 84.63f, 86.25f, 87.88f, };
 		static float[] SubSupply2DigitPX = { 81.75f, 83.78f, 85.00f, 86.63f, 88.25f, };
@@ -373,12 +369,13 @@ namespace AzLH {
 		// 資材を正規化する
 		static int GetMainSupply(List<int> supplyDigit) {
 			int supplyValue = 0;
-			supplyValue += (supplyDigit[0] > 9 ? 0 : supplyDigit[0]) * 100000;
-			supplyValue += (supplyDigit[1] > 9 ? 0 : supplyDigit[1]) * 10000;
-			supplyValue += (supplyDigit[2] > 9 ? 0 : supplyDigit[2]) * 1000;
-			supplyValue += (supplyDigit[3] > 9 ? 0 : supplyDigit[3]) * 100;
-			supplyValue += (supplyDigit[4] > 9 ? 0 : supplyDigit[4]) * 10;
-			supplyValue += (supplyDigit[5] > 9 ? 0 : supplyDigit[5]) * 1;
+			supplyValue += (supplyDigit[0] > 9 ? 0 : supplyDigit[0]) * 1000000;
+			supplyValue += (supplyDigit[1] > 9 ? 0 : supplyDigit[0]) * 100000;
+			supplyValue += (supplyDigit[2] > 9 ? 0 : supplyDigit[1]) * 10000;
+			supplyValue += (supplyDigit[3] > 9 ? 0 : supplyDigit[2]) * 1000;
+			supplyValue += (supplyDigit[4] > 9 ? 0 : supplyDigit[3]) * 100;
+			supplyValue += (supplyDigit[5] > 9 ? 0 : supplyDigit[4]) * 10;
+			supplyValue += (supplyDigit[6] > 9 ? 0 : supplyDigit[5]) * 1;
 			return supplyValue;
 		}
 		// 特殊資材を正規化する
@@ -545,9 +542,9 @@ namespace AzLH {
 		}
 		// 資材量が表示されているかを判定する
 		public static bool CanReadMainSupply(Bitmap bitmap) {
-			// 弾薬の表示
-			var hash = GetDifferenceHash(bitmap, 47.12, 0.8368, 2.115, 3.766);
-			if(GetHummingDistance(hash, 0xd52a264d9cbd6bd3) >= 20)
+			// 資金の表示
+			var hash = GetDifferenceHash(bitmap, 68.75, 2.889, 1.875, 3.333);
+			if(GetHummingDistance(hash, 0x12131bdf63e10192) >= 20)
 				return false;
 			return true;
 		}
@@ -556,8 +553,9 @@ namespace AzLH {
 			var output = new List<int>();
 			// iの値により、燃料→弾薬→鋼材→ボーキサイト→ダイヤと読み取り対象が変化する
 			for(int i = 0; i < MainSupplyDigitPX.Length; ++i) {
-				var supplyDigit = GetDigitOCR(bitmap, MainSupplyDigitPX[i], MainSupplyDigitPY, MainSupplyDigitWX, MainSupplyDigitWY, 110, true);
-				int supplyVaue = GetMainSupply(supplyDigit);
+				var supplyDigit1 = GetDigitOCR(bitmap, MainSupplyDigitPX[i], MainSupplyDigitPY, MainSupplyDigitWX, MainSupplyDigitWY, 20, true);
+				var supplyDigit2 = GetDigitOCR(bitmap, MainSupplyDigitPX[i], MainSupplyDigitPY, MainSupplyDigitWX, MainSupplyDigitWY, 30, true);
+				int supplyVaue = GetMainSupply(supplyDigit2);
 				output.Add(supplyVaue);
 			}
 			return output;

@@ -84,9 +84,7 @@ namespace AzLH {
 			var SupplyChartLegends = (IsDrawTypeMain 
 				? new Dictionary<string, string> {
 				{"Fuel", Properties.Resources.SupplyTypeFuel },
-				{"Ammo", Properties.Resources.SupplyTypeAmmo },
-				{"Steel", Properties.Resources.SupplyTypeSteel },
-				{"Bauxite", Properties.Resources.SupplyTypeBauxite },
+				{"Money", Properties.Resources.SupplyTypeMoney },
 				{"Diamond", Properties.Resources.SupplyTypeDiamond },
 			} : new Dictionary<string, string> {
 				{"Bucket", Properties.Resources.SupplyTypeBucket },

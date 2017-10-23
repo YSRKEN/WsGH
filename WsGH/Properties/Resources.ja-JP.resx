@@ -232,20 +232,14 @@
   <data name="MenuHeaderSupplyWindow" xml:space="preserve">
     <value>資材記録画面(_S)</value>
   </data>
-  <data name="SupplyTypeAmmo" xml:space="preserve">
+  <data name="SupplyTypeMoney" xml:space="preserve">
     <value>弾薬</value>
-  </data>
-  <data name="SupplyTypeBauxite" xml:space="preserve">
-    <value>ボーキサイト</value>
   </data>
   <data name="SupplyTypeDiamond" xml:space="preserve">
     <value>ダイヤ</value>
   </data>
   <data name="SupplyTypeFuel" xml:space="preserve">
     <value>燃料</value>
-  </data>
-  <data name="SupplyTypeSteel" xml:space="preserve">
-    <value>鋼材</value>
   </data>
   <data name="SupplyChartY2Title" xml:space="preserve">
     <value>ダイヤ</value>
