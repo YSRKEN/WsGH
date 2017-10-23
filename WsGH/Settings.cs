@@ -1,4 +1,4 @@
-﻿namespace WsGH.Properties {
+﻿namespace AzLH.Properties {
     
     
     // このクラスでは設定クラスでの特定のイベントを処理することができます:

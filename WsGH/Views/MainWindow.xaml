@@ -1,12 +1,12 @@
-﻿<Window x:Class="WsGH.MainWindow"
+﻿<Window x:Class="AzLH.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WsGH"
-        xmlns:app="clr-namespace:WsGH"
+        xmlns:local="clr-namespace:AzLH"
+        xmlns:app="clr-namespace:AzLH"
         mc:Ignorable="d"
-        Title="WarshipGirls Helper" Height="200" Width="300" MinHeight="200" MinWidth="300" ResizeMode="CanResize" Topmost="True">
+        Title="AzurLane Helper" Height="200" Width="300" MinHeight="200" MinWidth="300" ResizeMode="CanResize" Topmost="True">
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition />

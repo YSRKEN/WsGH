@@ -8,7 +8,7 @@ using System.Drawing.Imaging;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 
-namespace WsGH {
+namespace AzLH {
 	static class SceneRecognition {
 		// 各種定数定義
 		#region シーン認識用定数

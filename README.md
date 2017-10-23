@@ -1,9 +1,9 @@
-# WarshipGirls Helper
-The WarshipGirls Helper by C#
+# AzurLane Helper
+The AzurLane Helper by C#
 
 # 概要
-- 当ツールは、幻萌网络(MOE FANTASY INC.)によって開発・運営されるオンラインゲーム『[戦艦少女R](http://jianniang.com)』のプレイを支援するものです
-- パソコン上に、『戦艦少女R』の画面が表示されている必要があります。別途Androidエミュレータ等をご用意ください
+- 当ツールは、スマートフォン用オンラインゲーム『[アズールレーン](http://www.azurlane.jp)』のプレイを支援するものです
+- パソコン上に、『アズールレーン』の画面が表示されている必要があります。別途Androidエミュレータ等をご用意ください
 - 動作環境：.NET Framework 4.6.2がインストール可能なWindows OS
 - 開発環境：Microsoft　Visual Studio Community 2017
 - 動作確認OS：Windows 10(64bit)

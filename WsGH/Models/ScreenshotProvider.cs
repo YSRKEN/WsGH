@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Windows;
 
-namespace WsGH {
+namespace AzLH {
 	using dPoint = System.Drawing.Point;
 	delegate void AfterAction();
 	delegate void AfterAction2(dPoint point);

@@ -10,9 +10,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using WsGH.Properties;
+using AzLH.Properties;
 
-namespace WsGH {
+namespace AzLH {
 	public class ResourceService : INotifyPropertyChanged {
 		#region singleton members
 

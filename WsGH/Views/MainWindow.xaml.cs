@@ -17,7 +17,7 @@ using System.Windows.Forms;
 using System.Windows.Threading;
 using System.Drawing;
 
-namespace WsGH {
+namespace AzLH {
 	using SceneType = SceneRecognition.SceneType;
 	/// <summary>
 	/// MainWindow.xaml の相互作用ロジック

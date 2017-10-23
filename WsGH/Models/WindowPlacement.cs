@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace WsGH {
+namespace AzLH {
 	// WINDOWPLACEMENT構造体で使用するためのRECT構造体
 	[Serializable]
 	[StructLayout(LayoutKind.Sequential)]
@@ -78,7 +78,7 @@ namespace WsGH {
 	}
 }
 
-namespace WsGH.Properties {
+namespace AzLH.Properties {
 	partial class Settings {
 		[global::System.Configuration.UserScopedSettingAttribute()]
 		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

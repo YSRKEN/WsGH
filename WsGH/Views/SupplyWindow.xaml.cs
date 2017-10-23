@@ -15,7 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace WsGH {
+namespace AzLH {
 	/// <summary>
 	/// SupplyWindow.xaml の相互作用ロジック
 	/// </summary>
