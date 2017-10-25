@@ -92,7 +92,7 @@ namespace AzLH {
 		#endregion
 		#region 資材用定数
 		// 資源表示の横位置
-		static float[] MainSupplyFuelDigitPX    = {56.25f, 57.25f, 58.25f, 59.25f, 60.25f, 61.25f, 62.25f};
+		static float[] MainSupplyFuelDigitPX    = {53.25f, 57.25f, 58.25f, 59.25f, 60.25f, 61.25f, 62.25f};
 		static float[] MainSupplyMoneyDigitPX   = {72.50f, 73.50f, 74.50f, 75.50f, 76.38f, 77.25f, 78.25f};
 		static float[] MainSupplyDiamondDigitPX = {88.38f, 89.38f, 90.38f, 91.38f, 92.38f, 93.38f, 94.38f};
 		static float[][] MainSupplyDigitPX = {
@@ -102,6 +102,16 @@ namespace AzLH {
 		};
 		// 資源表示の縦位置・大きさ
 		static float MainSupplyDigitPY = 3.556f, MainSupplyDigitWX = 0.750f, MainSupplyDigitWY = 2.000f;
+
+		static RectangleF MainSupplyDigitPositionF = new RectangleF(55.55f, 3.111f, 7.625f, 2.667f);
+		static RectangleF MainSupplyDigitPositionM = new RectangleF(71.75f, 3.111f, 7.625f, 2.667f);
+		static RectangleF MainSupplyDigitPositionD = new RectangleF(87.88f, 3.111f, 7.500f, 2.667f);
+		static RectangleF[] MainSupplyDigitPosition = {
+			MainSupplyDigitPositionF,
+			MainSupplyDigitPositionM,
+			MainSupplyDigitPositionD,
+		};
+
 		// 特殊資材表示の横位置
 		static float[] SubSupply1DigitPX = { 81.38f, 83.00f, 84.63f, 86.25f, 87.88f, };
 		static float[] SubSupply2DigitPX = { 81.75f, 83.78f, 85.00f, 86.63f, 88.25f, };
@@ -352,6 +362,121 @@ namespace AzLH {
 			}
 			return output;
 		}
+		static int GetValueOCR(Bitmap bitmap, RectangleF rect, int thresold, bool negaFlg, bool diamondFlg, bool debugFlg = false) {
+			// ％指定をピクセル指定に直す
+			int bitmapWidth = bitmap.Width;
+			int bitmapHeight = bitmap.Height;
+			int px = (int)(bitmapWidth * rect.X / 100 + 0.5);
+			int py = (int)(bitmapHeight * rect.Y / 100 + 0.5);
+			int wx = (int)(bitmapWidth * rect.Width / 100 + 0.5);
+			int wy = (int)(bitmapHeight * rect.Height / 100 + 0.5);
+			// 画像を切り取る
+			var canvas = new Bitmap(wx, wy);
+			using (var g = Graphics.FromImage(canvas)) {
+				// 切り取られる位置・大きさ
+				var srcRect = new Rectangle(px, py, wx, wy);
+				// 貼り付ける位置・大きさ
+				var desRect = new Rectangle(0, 0, canvas.Width, canvas.Height);
+				g.DrawImage(bitmap, desRect, srcRect, GraphicsUnit.Pixel);
+			}
+			if(debugFlg) canvas.Save("digit1.bmp");
+			// ダイヤを勘定する時だけ、黄色部分を黒く塗りつぶす処理を行う
+			if (diamondFlg) {
+				for(int y = 0; y < canvas.Height; ++y) {
+					for (int x = 0; x < canvas.Width; ++x) {
+						var color = canvas.GetPixel(x, y);
+						if (color.R > 200 && color.G > 200 && color.B < 100)
+							canvas.SetPixel(x, y, Color.FromArgb(255, 255, 255));
+					}
+				}
+			}
+			// 二値化する
+			using (var image = BitmapConverter.ToIplImage(canvas))
+			using (var image2 = new IplImage(image.Size, BitDepth.U8, 1)) {
+				Cv.CvtColor(image, image2, ColorConversion.BgrToGray);
+				if (negaFlg)
+					Cv.Not(image2, image2);
+				if (debugFlg) image2.ToBitmap().Save("digit2.bmp");
+				Cv.Threshold(image2, image2, thresold, 255, ThresholdType.Binary);
+				canvas = image2.ToBitmap();
+			}
+			if (debugFlg) canvas.Save("digit3.bmp");
+			// カット部分を検出する
+			var whiteCount = Enumerable.Repeat(0, canvas.Width).ToArray();
+			for(int x = 0; x < canvas.Width; ++x) {
+				for (int y = 0; y < canvas.Height; ++y) {
+					if(canvas.GetPixel(x, y).R > 128) {
+						++whiteCount[x];
+					}
+				}
+			}
+			var whiteCountDiff = Enumerable.Repeat(canvas.Height, canvas.Width).ToArray();
+			for (int x = 0; x < canvas.Width - 1; ++x) {
+				whiteCountDiff[x] = whiteCount[x] - whiteCount[x + 1];
+			}
+			// カット時に使う左座標の一覧を抽出する
+			int lastPos = -1;
+			var cutLeftPos = new List<int>();
+			for (int x = 1; x < canvas.Width; ++x) {
+				// カット部分じゃない場合は無視する
+				if (whiteCountDiff[x] < (int)(0.1 * canvas.Height)) continue;
+				if (whiteCount[x - 1] < (int)(canvas.Height)) continue;
+				// 前回のカット部分より一定以上離れてないと検知しない
+				if (lastPos != -1 && x - lastPos < (int)(0.2 * canvas.Height)) continue;
+				// カット実行
+				cutLeftPos.Add(x);
+				lastPos = x;
+			}
+			// 各カット毎に数値認識を行う
+			var digit = new List<int>();
+			for(int k = 0; k < cutLeftPos.Count - 1; ++k) {
+				// 1つの数字分だけ取り出す
+				var canvas2 = new Bitmap(cutLeftPos[k + 1] - cutLeftPos[k] - 1, canvas.Height);
+				using (var g = Graphics.FromImage(canvas2)) {
+					// 切り取られる位置・大きさ
+					var srcRect = new Rectangle(cutLeftPos[k] + 1, 0, cutLeftPos[k + 1] - cutLeftPos[k] - 1, canvas.Height);
+					// 貼り付ける位置・大きさ
+					var desRect = new Rectangle(0, 0, canvas2.Width, canvas2.Height);
+					g.DrawImage(canvas, desRect, srcRect, GraphicsUnit.Pixel);
+				}
+				if (debugFlg) canvas2.Save($"digit4-{k + 1}-1.bmp");
+				// 認識用の大きさにリサイズする
+				var canvas3 = new Bitmap(TemplateSize2.Width, TemplateSize2.Height);
+				using (var g = Graphics.FromImage(canvas3)) {
+					// 事前にcanvas3を赤色に塗りつぶす
+					g.FillRectangle(Brushes.Red, 0, 0, canvas3.Width, canvas3.Height);
+					// 切り取られる位置・大きさ
+					var srcRect = GetTrimmingRectangle(canvas2);
+					// 貼り付ける位置・大きさ
+					var desRect = new Rectangle(1, 1, TemplateSize1.Width, TemplateSize1.Height);
+					g.DrawImage(canvas2, desRect, srcRect, GraphicsUnit.Pixel);
+				}
+				if (debugFlg) canvas3.Save($"digit4-{k+1}-2.bmp");
+				// マッチングを行う
+				Point matchPosition;
+				using (var image = BitmapConverter.ToIplImage(canvas3)) {
+					var templateSource = TemplateSource;
+					var resultSize = new CvSize(templateSource.Width - image.Width + 1, templateSource.Height - image.Height + 1);
+					using (var resultImage = Cv.CreateImage(resultSize, BitDepth.F32, 1)) {
+						Cv.MatchTemplate(templateSource, image, resultImage, MatchTemplateMethod.SqDiff);
+						CvPoint minPosition, maxPosition;
+						Cv.MinMaxLoc(resultImage, out minPosition, out maxPosition);
+						matchPosition = new Point(minPosition.X, minPosition.Y);
+					}
+				}
+				// マッチング結果を数値に翻訳する
+				int matchNumber = (int)Math.Round(1.0 * matchPosition.X / TemplateSize2.Width / 2, 0);
+				matchNumber = (matchNumber < 0 ? 0 : matchNumber > 10 ? 10 : matchNumber);
+				digit.Add(matchNumber);
+			}
+			// 結果を数値化する
+			int retVal = 0;
+			foreach(var x in digit) {
+				retVal *= 10;
+				retVal += x;
+			}
+			return retVal;
+		}
 		#endregion
 		// 時刻を正規化する
 		static uint GetLeastSecond(List<int> timerDigit) {
@@ -551,12 +676,9 @@ namespace AzLH {
 		// 資材量を読み取る(MainSupply)
 		public static List<int> GetMainSupply(Bitmap bitmap) {
 			var output = new List<int>();
-			// iの値により、燃料→弾薬→鋼材→ボーキサイト→ダイヤと読み取り対象が変化する
-			for(int i = 0; i < MainSupplyDigitPX.Length; ++i) {
-				var supplyDigit1 = GetDigitOCR(bitmap, MainSupplyDigitPX[i], MainSupplyDigitPY, MainSupplyDigitWX, MainSupplyDigitWY, 20, true);
-				var supplyDigit2 = GetDigitOCR(bitmap, MainSupplyDigitPX[i], MainSupplyDigitPY, MainSupplyDigitWX, MainSupplyDigitWY, 30, true);
-				int supplyVaue = GetMainSupply(supplyDigit2);
-				output.Add(supplyVaue);
+			// iの値により、燃料→資金→ダイヤと読み取り対象が変化する
+			for (int i = 0; i < MainSupplyDigitPosition.Length; ++i) {
+				output.Add(GetValueOCR(bitmap, MainSupplyDigitPosition[i], 15, true, (i == 2), true));
 			}
 			return output;
 		}

@@ -411,12 +411,12 @@ namespace AzLH {
 				#endregion
 				#region 資材ロギング
 				// MainSupplyは、前回のロギングから一定時間以上経っていて、かつ読み込み可能なシーンなら追記する
-				/*if(SupplyStore.CanAddMainSupply() && SceneRecognition.CanReadMainSupply(captureFrame)) {
+				if(SupplyStore.CanAddMainSupply() && SceneRecognition.CanReadMainSupply(captureFrame)) {
 					// 現在時刻と資源量を取得
 					var nowTime = DateTime.Now;
 					var supply = SceneRecognition.GetMainSupply(captureFrame);
 					// データベースに書き込み
-					SupplyStore.AddMainSupply(nowTime, supply);
+					/*SupplyStore.AddMainSupply(nowTime, supply);
 					AddLog($"{Properties.Resources.LoggingTextAddSupplyData}");
 					// データベースを保存
 					try {
@@ -426,8 +426,8 @@ namespace AzLH {
 						AddLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Failed");
 					}
 					// グラフに反映
-					sw.DrawChart();
-				}*/
+					sw.DrawChart();*/
+				}
 				// SubSupplyの読み込み処理は、対象が4種類あるのでややこしい
 				/*for(int ti = 0; ti < SupplyStore.SubSupplyTypes; ++ti) {
 					// 追記可能なタイミングじゃないと追記しない
