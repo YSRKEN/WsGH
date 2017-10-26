@@ -50,9 +50,7 @@
 					<GridView.Columns>
 						<GridViewColumn Header="日付" DisplayMemberBinding="{Binding Date}" Width="80" />
 						<GridViewColumn Header="燃料" DisplayMemberBinding="{Binding Fuel}" Width="80" />
-						<GridViewColumn Header="弾薬" DisplayMemberBinding="{Binding Ammo}" Width="80" />
-						<GridViewColumn Header="鋼材" DisplayMemberBinding="{Binding Steel}" Width="80" />
-						<GridViewColumn Header="ボーキ" DisplayMemberBinding="{Binding Bauxite}" Width="80" />
+						<GridViewColumn Header="資金" DisplayMemberBinding="{Binding Money}" Width="80" />
 						<GridViewColumn Header="ダイヤ" DisplayMemberBinding="{Binding Diamond}" Width="80" />
 					</GridView.Columns>
 				</GridView>

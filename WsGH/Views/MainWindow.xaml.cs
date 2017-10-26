@@ -166,13 +166,13 @@ namespace AzLH {
 			} catch(Exception) {
 				AddLog($"{Properties.Resources.LoggingTextReadSupplyData}：Failed");
 			}
-			/*try {
+			try {
 				SupplyStore.ReadSubSupply();
 				AddLog($"{Properties.Resources.LoggingText2ReadSupplyData}：Success");
 			}
 			catch (Exception) {
 				AddLog($"{Properties.Resources.LoggingText2ReadSupplyData}：Failed");
-			}*/
+			}
 			#endregion
 			#region DispatcherTimerの初期化
 			// タイマーを作成する
@@ -427,7 +427,7 @@ namespace AzLH {
 					}
 					SaveScreenshot();
 					// グラフに反映
-					/*sw.DrawChart();*/
+					sw.DrawChart();
 				}
 				// SubSupplyの読み込み処理は、対象が4種類あるのでややこしい
 				/*for(int ti = 0; ti < SupplyStore.SubSupplyTypes; ++ti) {

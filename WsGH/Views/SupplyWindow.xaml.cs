@@ -180,10 +180,8 @@ namespace AzLH {
 					var sd = new SupplyDiff() {
 						Date = diffIndexDate.ToString("MM/dd"),
 						Fuel = (SupplyStore.MainSupplyData[0].List[diffIndex].Value - SupplyStore.MainSupplyData[0].List[i].Value).ToString(),
-						Ammo = (SupplyStore.MainSupplyData[1].List[diffIndex].Value - SupplyStore.MainSupplyData[1].List[i].Value).ToString(),
-						Steel = (SupplyStore.MainSupplyData[2].List[diffIndex].Value - SupplyStore.MainSupplyData[2].List[i].Value).ToString(),
-						Bauxite = (SupplyStore.MainSupplyData[3].List[diffIndex].Value - SupplyStore.MainSupplyData[3].List[i].Value).ToString(),
-						Diamond = (SupplyStore.MainSupplyData[4].List[diffIndex].Value - SupplyStore.MainSupplyData[4].List[i].Value).ToString(),
+						Money = (SupplyStore.MainSupplyData[1].List[diffIndex].Value - SupplyStore.MainSupplyData[1].List[i].Value).ToString(),
+						Diamond = (SupplyStore.MainSupplyData[2].List[diffIndex].Value - SupplyStore.MainSupplyData[2].List[i].Value).ToString(),
 					};
 					SupplyDiffList.Add(sd);
 					diffIndex = i;
@@ -226,9 +224,7 @@ namespace AzLH {
 	{
 		public string Date { get; set; }
 		public string Fuel { get; set; }
-		public string Ammo { get; set; }
-		public string Steel { get; set; }
-		public string Bauxite { get; set; }
+		public string Money { get; set; }
 		public string Diamond { get; set; }
 	}
 }

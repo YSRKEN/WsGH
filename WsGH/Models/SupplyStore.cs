@@ -20,7 +20,7 @@ namespace AzLH {
 		public static int MainSupplyTypeCount;
 		public static int MainSupplyListCount = 0;
 		// MainSupplyの更新間隔
-		static double MainSupplyIntervalMinute = 1.0;
+		static double MainSupplyIntervalMinute = 10.0;
 		#endregion
 		// MainSupplyの初期化
 		static void InitialMainSupply() {
