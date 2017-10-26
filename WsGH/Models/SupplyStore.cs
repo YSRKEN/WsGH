@@ -20,7 +20,7 @@ namespace AzLH {
 		public static int MainSupplyTypeCount;
 		public static int MainSupplyListCount = 0;
 		// MainSupplyの更新間隔
-		static double MainSupplyIntervalMinute = 60.0;
+		static double MainSupplyIntervalMinute = 1.0;
 		#endregion
 		// MainSupplyの初期化
 		static void InitialMainSupply() {
@@ -42,7 +42,7 @@ namespace AzLH {
 					// 1行を読み込む
 					var line = sr.ReadLine();
 					// マッチさせてから各数値を取り出す
-					var pattern = @"(?<Year>\d+)/(?<Month>\d+)/(?<Day>\d+) (?<Hour>\d+):(?<Minute>\d+):(?<Second>\d+),(?<Fuel>\d+),(?<Ammo>\d+),(?<Steel>\d+),(?<Bauxite>\d+),(?<Diamond>\d+)";
+					var pattern = @"(?<Year>\d+)/(?<Month>\d+)/(?<Day>\d+) (?<Hour>\d+):(?<Minute>\d+):(?<Second>\d+),(?<Fuel>\d+),(?<Money>\d+),(?<Diamond>\d+)";
 					var match = Regex.Match(line, pattern);
 					if(!match.Success) {
 						continue;
@@ -59,9 +59,7 @@ namespace AzLH {
 							int.Parse(match.Groups["Second"].Value));
 						int[] supplyData = {
 							int.Parse(match.Groups["Fuel"].Value),
-							int.Parse(match.Groups["Ammo"].Value),
-							int.Parse(match.Groups["Steel"].Value),
-							int.Parse(match.Groups["Bauxite"].Value),
+							int.Parse(match.Groups["Money"].Value),
 							int.Parse(match.Groups["Diamond"].Value)};
 						// データベースに入力
 						for(int ti = 0; ti < MainSupplyTypeCount; ++ti) {
@@ -113,7 +111,7 @@ namespace AzLH {
 		// MainSupplyをCSVに保存する
 		public static void SaveMainSupply() {
 			using(var sw = new System.IO.StreamWriter(@"MainSupply.csv")) {
-				sw.WriteLine("時刻,燃料,弾薬,鋼材,ボーキサイト,ダイヤ");
+				sw.WriteLine("時刻,燃料,資金,ダイヤ");
 				for(int li = 0; li < MainSupplyListCount; ++li) {
 					sw.Write($"{MainSupplyData.First().List[li].Key}");
 					for(int ti = 0; ti < MainSupplyTypeCount; ++ti) {

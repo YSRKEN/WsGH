@@ -160,13 +160,13 @@ namespace AzLH {
 			#endregion
 			#region 周辺クラスの初期化
 			SceneRecognition.InitialSceneRecognition();
-			/*try {
+			try {
 				SupplyStore.ReadMainSupply();
 				AddLog($"{Properties.Resources.LoggingTextReadSupplyData}：Success");
 			} catch(Exception) {
 				AddLog($"{Properties.Resources.LoggingTextReadSupplyData}：Failed");
 			}
-			try {
+			/*try {
 				SupplyStore.ReadSubSupply();
 				AddLog($"{Properties.Resources.LoggingText2ReadSupplyData}：Success");
 			}
@@ -416,7 +416,7 @@ namespace AzLH {
 					var nowTime = DateTime.Now;
 					var supply = SceneRecognition.GetMainSupply(captureFrame);
 					// データベースに書き込み
-					/*SupplyStore.AddMainSupply(nowTime, supply);
+					SupplyStore.AddMainSupply(nowTime, supply);
 					AddLog($"{Properties.Resources.LoggingTextAddSupplyData}");
 					// データベースを保存
 					try {
@@ -425,8 +425,9 @@ namespace AzLH {
 					} catch(Exception) {
 						AddLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Failed");
 					}
+					SaveScreenshot();
 					// グラフに反映
-					sw.DrawChart();*/
+					/*sw.DrawChart();*/
 				}
 				// SubSupplyの読み込み処理は、対象が4種類あるのでややこしい
 				/*for(int ti = 0; ti < SupplyStore.SubSupplyTypes; ++ti) {

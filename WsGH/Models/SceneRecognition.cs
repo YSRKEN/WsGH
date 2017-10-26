@@ -678,7 +678,7 @@ namespace AzLH {
 			var output = new List<int>();
 			// iの値により、燃料→資金→ダイヤと読み取り対象が変化する
 			for (int i = 0; i < MainSupplyDigitPosition.Length; ++i) {
-				output.Add(GetValueOCR(bitmap, MainSupplyDigitPosition[i], 15, true, (i == 2), true));
+				output.Add(GetValueOCR(bitmap, MainSupplyDigitPosition[i], 15, true, (i == 2)));
 			}
 			return output;
 		}
