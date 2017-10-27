@@ -34,7 +34,9 @@ namespace AzLH {
 				{ SceneType.Expedition, "Expedition" },
 				{ SceneType.Build, "Build" },
 				{ SceneType.Home, "Home" },
-				{ SceneType.BuildRecipe, "BuildRecipe" },
+				{ SceneType.Building, "Building" },
+				{ SceneType.Support, "Support" },
+				{ SceneType.FShop, "FShop" },
 			 };
 		static Dictionary<SceneType, string> SceneStringJapanese
 			 = new Dictionary<SceneType, string> {
@@ -42,7 +44,9 @@ namespace AzLH {
 				{ SceneType.Expedition, "遠征" },
 				{ SceneType.Build, "建造" },
 				{ SceneType.Home, "母港" },
-				{ SceneType.BuildRecipe, "建造レシピ" },
+				{ SceneType.Building, "建造中" },
+				{ SceneType.Support, "支援" },
+				{ SceneType.FShop, "家具屋" },
 			 };
 		#endregion
 		// 背景チェック

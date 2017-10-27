@@ -12,7 +12,7 @@ namespace AzLH {
 	static class SceneRecognition {
 		// 各種定数定義
 		#region シーン認識用定数
-		public enum SceneType { Unknown, Expedition, Build, Home, BuildRecipe };
+		public enum SceneType { Unknown, Expedition, Build, Home, Building, Support, FShop };
 		#endregion
 		#region 遠征用定数
 		// 遠征艦隊数
@@ -516,29 +516,27 @@ namespace AzLH {
 				return SceneType.Build;
 			if(IsHomeScene(bitmap))
 				return SceneType.Home;
-			if (IsBuildRecipeScene(bitmap))
-				return SceneType.BuildRecipe;
+			if (IsBuildingScene(bitmap))
+				return SceneType.Building;
+			if (IsSupportScene(bitmap))
+				return SceneType.Support;
+			if (IsFShopScene(bitmap))
+				return SceneType.FShop;
 			return SceneType.Unknown;
 		}
 		#region 遠征関係
 		// 遠征のシーンかを判定する
 		static bool IsExpeditionScene(Bitmap bitmap) {
 			{
-				// 左下の「母港」ボタンの近くにある装飾
-				var hash = GetDifferenceHash(bitmap, 10.11, 76.36, 3.525, 6.276);
-				if(GetHummingDistance(hash, 0x2d2f2ba7aaa22b2a) >= 20)
+				// 海軍食堂
+				var hash = GetDifferenceHash(bitmap, 3.047, 21.94, 3.438, 6.111);
+				if(GetHummingDistance(hash, 0xb58b09d51a4ecc4d) >= 20)
 					return false;
 			}
 			{
-				// 3・4段目の間の隙間にある模様の一部(左の方)
-				var hash = GetDifferenceHash(bitmap, 21.86, 62.76, 3.878, 1.883);
-				if(GetHummingDistance(hash, 0xd0b8a8a454565652) >= 20)
-					return false;
-			}
-			{
-				// 2段目の枠の左下の一部
-				var hash = GetDifferenceHash(bitmap, 14.69, 38.91, 2.350, 4.184);
-				if(GetHummingDistance(hash, 0xa0a8a091e8743834) >= 20)
+				// 海軍売店
+				var hash = GetDifferenceHash(bitmap, 25.94, 20.28, 3.438, 6.111);
+				if(GetHummingDistance(hash, 0x3ca8527a19944b27) >= 20)
 					return false;
 			}
 			return true;
@@ -577,21 +575,15 @@ namespace AzLH {
 		// 建造のシーンかを判定する
 		static bool IsBuildScene(Bitmap bitmap) {
 			{
-				// 建造ボタン
-				var hash = GetDifferenceHash(bitmap, 1.763, 7.322, 6.933, 5.649);
-				if(GetHummingDistance(hash, 0x225a551d98566290) >= 20)
-					return false;
-			}
-			{
-				// 建造枠
-				var hash = GetDifferenceHash(bitmap, 36.78, 21.34, 2.233, 3.975);
-				if(GetHummingDistance(hash, 0x56b94e5a5a52a55e) >= 20)
+				// 資金アイコン
+				var hash = GetDifferenceHash(bitmap, 81.48, 65.56, 2.813, 5.000);
+				if(GetHummingDistance(hash, 0x83190a8e55a02162) >= 20)
 					return false;
 			}
 			{
 				// 建造アイコン
-				var hash = GetDifferenceHash(bitmap, 27.50, 8.996, 1.880, 4.184);
-				if(GetHummingDistance(hash, 0xff555e5e807666c6) >= 20)
+				var hash = GetDifferenceHash(bitmap, 2.734, 16.81, 3.281, 5.833);
+				if(GetHummingDistance(hash, 0x850504cc4051f449) >= 20)
 					return false;
 			}
 			return true;
@@ -620,18 +612,50 @@ namespace AzLH {
 			}
 			return output;
 		}
-		// 建造レシピのシーンかを判定する
-		static bool IsBuildRecipeScene(Bitmap bitmap) {
+		// 建造中のシーンかを判定する
+		static bool IsBuildingScene(Bitmap bitmap) {
 			{
-				// 艦船設計図アイコン
-				ulong hash = GetDifferenceHash(bitmap, 54.00, 7.556, 2.000, 3.556);
-				if (GetHummingDistance(hash, 0xb27e90381c6ad198) >= 20)
+				// 建造中アイコン
+				ulong hash = GetDifferenceHash(bitmap, 2.656, 31.25, 3.438, 6.111);
+				if (GetHummingDistance(hash, 0xc693524a496d50a5) >= 20)
 					return false;
 			}
 			{
-				// 燃料アイコン
-				ulong hash = GetDifferenceHash(bitmap, 10.13, 34.89, 2.000, 3.556);
-				if (GetHummingDistance(hash, 0xa3b10c3c3c3b195a) >= 20)
+				// ドリルアイコン
+				ulong hash = GetDifferenceHash(bitmap, 46.88, 13.89, 2.031, 3.611);
+				if (GetHummingDistance(hash, 0xd18c566de4551595) >= 20)
+					return false;
+			}
+			return true;
+		}
+		// 支援のシーンかを判定する
+		static bool IsSupportScene(Bitmap bitmap) {
+			{
+				// 支援アイコン
+				ulong hash = GetDifferenceHash(bitmap, 2.578, 46.39, 3.125, 5.556);
+				if (GetHummingDistance(hash, 0xc3a1c2591a054280) >= 20)
+					return false;
+			}
+			{
+				// 勲章アイコン
+				ulong hash = GetDifferenceHash(bitmap, 47.89, 15.56, 1.250, 2.222);
+				if (GetHummingDistance(hash, 0x324ab361521a0840) >= 20)
+					return false;
+			}
+			return true;
+		}
+		// 家具屋のシーンかを判定する
+		static bool IsFShopScene(Bitmap bitmap) {
+			{
+				// 屋根
+				ulong hash = GetDifferenceHash(bitmap, 7.813, 8.194, 1.953, 3.472);
+				if (GetHummingDistance(hash, 0x0000056c4151396d) >= 20)
+					return false;
+			}
+			{
+				// 家具アイコン
+				ulong hash = GetDifferenceHash(bitmap, 62.50, 9.861, 1.563, 2.778);
+				if (GetHummingDistance(hash, 0x264bad0e33e12161) >= 20)
 					return false;
 			}
 			return true;
