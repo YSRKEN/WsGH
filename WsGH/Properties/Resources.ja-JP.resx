@@ -233,7 +233,7 @@
     <value>資材記録画面(_S)</value>
   </data>
   <data name="SupplyTypeMoney" xml:space="preserve">
-    <value>弾薬</value>
+    <value>資金</value>
   </data>
   <data name="SupplyTypeDiamond" xml:space="preserve">
     <value>ダイヤ</value>
@@ -245,7 +245,7 @@
     <value>ダイヤ</value>
   </data>
   <data name="SupplyChartYTitle" xml:space="preserve">
-    <value>燃料・弾薬・鋼材・ボーキ</value>
+    <value>燃料・資金</value>
   </data>
   <data name="SupplyScale1Day" xml:space="preserve">
     <value>1日</value>
@@ -280,17 +280,17 @@
   <data name="LoggingText2AddSupplyData" xml:space="preserve">
     <value>特殊資材ログに追記</value>
   </data>
-  <data name="SupplyTypeBucket" xml:space="preserve">
-    <value>バケツ</value>
+  <data name="SupplyTypeCube" xml:space="preserve">
+    <value>キューブ</value>
   </data>
-  <data name="SupplyTypeBurner" xml:space="preserve">
-    <value>バーナー</value>
+  <data name="SupplyTypeDrill" xml:space="preserve">
+    <value>ドリル</value>
   </data>
-  <data name="SupplyTypeShipBlueprint" xml:space="preserve">
-    <value>艦船設計図</value>
+  <data name="SupplyTypeMedal" xml:space="preserve">
+    <value>勲章</value>
   </data>
-  <data name="SupplyTypeWeaponBlueprint" xml:space="preserve">
-    <value>装備設計図</value>
+  <data name="SupplyTypeFurnitureCoin" xml:space="preserve">
+    <value>家具コイン</value>
   </data>
   <data name="SupplyShowTypeMain" xml:space="preserve">
     <value>通常資材</value>
@@ -299,7 +299,7 @@
     <value>特殊資材</value>
   </data>
   <data name="SupplyChartY3Title" xml:space="preserve">
-    <value>バケツ・バーナー・艦船・装備</value>
+    <value>キューブ・ドリル・勲章・家具コイン</value>
   </data>
   <data name="SupplyReloadButton" xml:space="preserve">
     <value>再読み込み</value>

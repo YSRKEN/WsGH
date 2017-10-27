@@ -378,7 +378,7 @@ namespace AzLH.Properties {
         }
         
         /// <summary>
-        ///   Bucket, Burner, ShipBP, WeaponBP に類似しているローカライズされた文字列を検索します。
+        ///   Cube, Drill, Medal, FurnitureCoin に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SupplyChartY3Title {
             get {
@@ -387,7 +387,7 @@ namespace AzLH.Properties {
         }
         
         /// <summary>
-        ///   Fuel, Ammo, Steel, Bauxite に類似しているローカライズされた文字列を検索します。
+        ///   Fuel, Money に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SupplyChartYTitle {
             get {
@@ -495,20 +495,11 @@ namespace AzLH.Properties {
         }
         
         /// <summary>
-        ///   Bucket に類似しているローカライズされた文字列を検索します。
+        ///   Cube に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string SupplyTypeBucket {
+        public static string SupplyTypeCube {
             get {
-                return ResourceManager.GetString("SupplyTypeBucket", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Burner に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string SupplyTypeBurner {
-            get {
-                return ResourceManager.GetString("SupplyTypeBurner", resourceCulture);
+                return ResourceManager.GetString("SupplyTypeCube", resourceCulture);
             }
         }
         
@@ -522,6 +513,15 @@ namespace AzLH.Properties {
         }
         
         /// <summary>
+        ///   Drill に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyTypeDrill {
+            get {
+                return ResourceManager.GetString("SupplyTypeDrill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Fuel に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SupplyTypeFuel {
@@ -531,29 +531,29 @@ namespace AzLH.Properties {
         }
         
         /// <summary>
+        ///   FurnitureCoin に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyTypeFurnitureCoin {
+            get {
+                return ResourceManager.GetString("SupplyTypeFurnitureCoin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Medal に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyTypeMedal {
+            get {
+                return ResourceManager.GetString("SupplyTypeMedal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Money に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SupplyTypeMoney {
             get {
                 return ResourceManager.GetString("SupplyTypeMoney", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   ShipBlueprint に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string SupplyTypeShipBlueprint {
-            get {
-                return ResourceManager.GetString("SupplyTypeShipBlueprint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   WeaponBlueprint に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string SupplyTypeWeaponBlueprint {
-            get {
-                return ResourceManager.GetString("SupplyTypeWeaponBlueprint", resourceCulture);
             }
         }
         

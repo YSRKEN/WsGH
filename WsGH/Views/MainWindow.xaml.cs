@@ -430,11 +430,11 @@ namespace AzLH {
 					sw.DrawChart();
 				}
 				// SubSupplyの読み込み処理は、対象が4種類あるのでややこしい
-				/*for(int ti = 0; ti < SupplyStore.SubSupplyTypes; ++ti) {
+				for(int ti = 0; ti < SupplyStore.SubSupplyTypes; ++ti) {
 					// 追記可能なタイミングじゃないと追記しない
 					if (!SupplyStore.CanAddSubSupply(ti))
 						continue;
-					// 追記可能なシーンじゃないと追記しない
+					/*// 追記可能なシーンじゃないと追記しない
 					switch (ti) {
 					case 0:
 						if (scene != SceneType.Dock)
@@ -471,8 +471,8 @@ namespace AzLH {
 					// グラフに反映
 					sw.DrawChart();
 
-					SupplyStore.ShowSubSupply(ti);
-				}*/
+					SupplyStore.ShowSubSupply(ti);*/
+				}
 				#endregion
 			}
 			#endregion

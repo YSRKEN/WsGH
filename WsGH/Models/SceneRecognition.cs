@@ -91,18 +91,7 @@ namespace AzLH {
 		};
 		#endregion
 		#region 資材用定数
-		// 資源表示の横位置
-		static float[] MainSupplyFuelDigitPX    = {53.25f, 57.25f, 58.25f, 59.25f, 60.25f, 61.25f, 62.25f};
-		static float[] MainSupplyMoneyDigitPX   = {72.50f, 73.50f, 74.50f, 75.50f, 76.38f, 77.25f, 78.25f};
-		static float[] MainSupplyDiamondDigitPX = {88.38f, 89.38f, 90.38f, 91.38f, 92.38f, 93.38f, 94.38f};
-		static float[][] MainSupplyDigitPX = {
-			MainSupplyFuelDigitPX,
-			MainSupplyMoneyDigitPX,
-			MainSupplyDiamondDigitPX,
-		};
-		// 資源表示の縦位置・大きさ
-		static float MainSupplyDigitPY = 3.556f, MainSupplyDigitWX = 0.750f, MainSupplyDigitWY = 2.000f;
-
+		// メイン資材表示の位置・大きさ
 		static RectangleF MainSupplyDigitPositionF = new RectangleF(55.55f, 3.111f, 7.625f, 2.667f);
 		static RectangleF MainSupplyDigitPositionM = new RectangleF(71.75f, 3.111f, 7.625f, 2.667f);
 		static RectangleF MainSupplyDigitPositionD = new RectangleF(87.88f, 3.111f, 7.500f, 2.667f);

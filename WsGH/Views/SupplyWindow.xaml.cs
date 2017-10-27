@@ -87,10 +87,10 @@ namespace AzLH {
 				{"Money", Properties.Resources.SupplyTypeMoney },
 				{"Diamond", Properties.Resources.SupplyTypeDiamond },
 			} : new Dictionary<string, string> {
-				{"Bucket", Properties.Resources.SupplyTypeBucket },
-				{"Burner", Properties.Resources.SupplyTypeBurner },
-				{"ShipBlueprint", Properties.Resources.SupplyTypeShipBlueprint },
-				{"WeaponBlueprint", Properties.Resources.SupplyTypeWeaponBlueprint },
+				{"Cube", Properties.Resources.SupplyTypeCube },
+				{"Drill", Properties.Resources.SupplyTypeDrill },
+				{"Medal", Properties.Resources.SupplyTypeMedal },
+				{"FurnitureCoin", Properties.Resources.SupplyTypeFurnitureCoin },
 			});
 			// グラフを追加する
 			int index = 0;

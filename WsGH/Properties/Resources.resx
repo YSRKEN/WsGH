@@ -245,7 +245,7 @@
     <value>Diamond</value>
   </data>
   <data name="SupplyChartYTitle" xml:space="preserve">
-    <value>Fuel, Ammo, Steel, Bauxite</value>
+    <value>Fuel, Money</value>
   </data>
   <data name="SupplyScale1Day" xml:space="preserve">
     <value>1 Day</value>
@@ -283,17 +283,17 @@
   <data name="LoggingText2AddSupplyData" xml:space="preserve">
     <value>add SubSupplyData</value>
   </data>
-  <data name="SupplyTypeBucket" xml:space="preserve">
-    <value>Bucket</value>
+  <data name="SupplyTypeCube" xml:space="preserve">
+    <value>Cube</value>
   </data>
-  <data name="SupplyTypeBurner" xml:space="preserve">
-    <value>Burner</value>
+  <data name="SupplyTypeDrill" xml:space="preserve">
+    <value>Drill</value>
   </data>
-  <data name="SupplyTypeShipBlueprint" xml:space="preserve">
-    <value>ShipBlueprint</value>
+  <data name="SupplyTypeMedal" xml:space="preserve">
+    <value>Medal</value>
   </data>
-  <data name="SupplyTypeWeaponBlueprint" xml:space="preserve">
-    <value>WeaponBlueprint</value>
+  <data name="SupplyTypeFurnitureCoin" xml:space="preserve">
+    <value>FurnitureCoin</value>
   </data>
   <data name="SupplyShowTypeMain" xml:space="preserve">
     <value>MainSupply</value>
@@ -302,7 +302,7 @@
     <value>SubSupply</value>
   </data>
   <data name="SupplyChartY3Title" xml:space="preserve">
-    <value>Bucket, Burner, ShipBP, WeaponBP</value>
+    <value>Cube, Drill, Medal, FurnitureCoin</value>
   </data>
   <data name="SupplyReloadButton" xml:space="preserve">
     <value>Reload</value>

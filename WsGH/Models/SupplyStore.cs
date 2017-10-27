@@ -25,7 +25,7 @@ namespace AzLH {
 		// MainSupplyの初期化
 		static void InitialMainSupply() {
 			MainSupplyData = new List<SupplyData> {
-				new SupplyData("Fuel", Color.Green),
+				new SupplyData("Fuel", Color.DarkGray),
 				new SupplyData("Money", Color.Gold),
 				new SupplyData("Diamond", Color.Red),
 			};
@@ -140,10 +140,10 @@ namespace AzLH {
 		static void InitialSubSupply() {
 			lastUpdateSub = new DateTime[] { new DateTime(), new DateTime(), new DateTime(), new DateTime(), };
 			SubSupplyData = new List<SupplyData> {
-				new SupplyData("Bucket", Color.LightGreen),
-				new SupplyData("Burner", Color.Red),
-				new SupplyData("ShipBlueprint", Color.Blue),
-				new SupplyData("WeaponBlueprint", Color.BlueViolet),
+				new SupplyData("Cube", Color.SkyBlue),
+				new SupplyData("Drill", Color.Gold),
+				new SupplyData("Medal", Color.BlueViolet),
+				new SupplyData("FurnitureCoin", Color.OrangeRed),
 			};
 			SubSupplyTypeCount = SubSupplyData.Count;
 			SubSupplyListCount = new int[] { 0,0,0,0 };
