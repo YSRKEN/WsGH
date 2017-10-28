@@ -438,26 +438,25 @@ namespace AzLH {
 					// 追記可能なタイミングじゃないと追記しない
 					if (!SupplyStore.CanAddSubSupply(ti))
 						continue;
-					/*// 追記可能なシーンじゃないと追記しない
+					// 追記可能なシーンじゃないと追記しない
 					switch (ti) {
 					case 0:
-						if (scene != SceneType.Dock)
+						if (scene != SceneType.Build)
 							continue;
 						break;
 					case 1:
-						if (scene != SceneType.Build && scene != SceneType.Develop)
+						if (scene != SceneType.Building)
 							continue;
 						break;
 					case 2:
-						if (scene != SceneType.BuildRecipe)
+						if (scene != SceneType.Support)
 							continue;
 						break;
 					case 3:
-						if (scene != SceneType.DevelopRecipe)
+						if (scene != SceneType.FShop)
 							continue;
 						break;
 					}
-					continue;
 					// 現在時刻と資源量を取得
 					var nowTime = DateTime.Now;
 					int supply = SceneRecognition.GetSubSupply(ti, captureFrame);
@@ -475,7 +474,7 @@ namespace AzLH {
 					// グラフに反映
 					sw.DrawChart();
 
-					SupplyStore.ShowSubSupply(ti);*/
+					SupplyStore.ShowSubSupply(ti);
 				}
 				#endregion
 			}

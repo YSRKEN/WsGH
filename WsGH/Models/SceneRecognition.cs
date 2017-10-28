@@ -100,22 +100,17 @@ namespace AzLH {
 			MainSupplyDigitPositionM,
 			MainSupplyDigitPositionD,
 		};
-
-		// 特殊資材表示の横位置
-		static float[] SubSupply1DigitPX = { 81.38f, 83.00f, 84.63f, 86.25f, 87.88f, };
-		static float[] SubSupply2DigitPX = { 81.75f, 83.78f, 85.00f, 86.63f, 88.25f, };
-		static float[] SubSupply3DigitPX = { 69.63f, 71.25f, 72.88f, 74.50f, 76.13f, };
-		static float[] SubSupply4DigitPX = { 69.63f, 71.25f, 72.88f, 74.50f, 76.13f, };
-		static float[][] SubSupplyDigitPX = {
-			SubSupply1DigitPX,
-			SubSupply2DigitPX,
-			SubSupply3DigitPX,
-			SubSupply4DigitPX,
+		// サブ資材表示の位置・大きさ
+		static RectangleF SubSupplyDigitPositionC = new RectangleF(59.06f, 14.03f, 4.844f, 3.333f);
+		static RectangleF SubSupplyDigitPositionD = new RectangleF(57.50f, 13.75f, 5.234f, 3.472f);
+		static RectangleF SubSupplyDigitPositionM = new RectangleF(58.98f, 14.17f, 6.484f, 3.472f);
+		static RectangleF SubSupplyDigitPositionF = new RectangleF(65.47f, 10.00f, 8.594f, 4.167f);
+		static RectangleF[] SubSupplyDigitPosition = {
+			SubSupplyDigitPositionC,
+			SubSupplyDigitPositionD,
+			SubSupplyDigitPositionM,
+			SubSupplyDigitPositionF,
 		};
-		// 特殊資材表示の縦位置
-		static float[] SubSupplyDigitPY = { 8.667f, 8.444f, 8.667f, 8.667f, };
-		// 特殊資材表示の大きさ
-		static float SubSupplyDigitWX = 1.500f, SubSupplyDigitWY = 4.222f;
 		#endregion
 		#region OCR用定数
 		// OCRする際にリサイズするサイズ
@@ -697,8 +692,7 @@ namespace AzLH {
 		}
 		// 資材量を読み取る(GetSubSupply)
 		public static int GetSubSupply(int ti, Bitmap bitmap) {
-			var supplyDigit = GetDigitOCR(bitmap, SubSupplyDigitPX[ti], SubSupplyDigitPY[ti], SubSupplyDigitWX, SubSupplyDigitWY, 110, true);
-			return GetSubSupply(supplyDigit);
+			return GetValueOCR(bitmap, SubSupplyDigitPosition[ti], 128, (ti != 3), false);
 		}
 		#endregion
 	}
