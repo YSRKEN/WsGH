@@ -362,7 +362,7 @@ namespace AzLH {
 				var bindData = tw.DataContext as TimerValue;
 				switch(scene) {
 				case SceneType.Expedition:
-				/*#region 遠征中なら、遠征時間を読み取る
+				#region 遠征中なら、遠征時間を読み取る
 				var expEndTime = SceneRecognition.GetExpeditionTimer(captureFrame);
 				foreach(var pair in expEndTime) {
 					switch(pair.Key) {
@@ -383,34 +383,7 @@ namespace AzLH {
 					}
 				}
 				break;
-				#endregion*/
-				case SceneType.Build:
-				/*#region 建造中なら、建造時間を読み取る
-				var buildEndTime = SceneRecognition.GetBuildTimer(captureFrame);
-				foreach(var pair in buildEndTime) {
-					switch(pair.Key) {
-					case 0:
-						bindData.BuildTimer1 = pair.Value;
-						break;
-					case 1:
-						bindData.BuildTimer2 = pair.Value;
-						break;
-					case 2:
-						bindData.BuildTimer3 = pair.Value;
-						break;
-					case 3:
-						bindData.BuildTimer4 = pair.Value;
-						break;
-					default:
-						break;
-					}
-				}
-				break;
-				#endregion*/
-				case SceneType.Home:
-
-				default:
-					break;
+				#endregion
 				}
 				#endregion
 				#region 資材ロギング

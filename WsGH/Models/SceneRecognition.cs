@@ -17,33 +17,20 @@ namespace AzLH {
 		#region 遠征用定数
 		// 遠征艦隊数
 		static int ExpFleetCount = 4;
-		// 遠征リストの縦幅
-		static int ExpListHeight = 4;
-		// 艦隊帰投ボタンのRect
-		static RectangleF[] ExpButtonPosition = {
-			new RectangleF(91.38f, 10.22f, 4.375f, 7.778f),
-			new RectangleF(91.38f, 31.11f, 4.375f, 7.778f),
-			new RectangleF(91.38f, 52.00f, 4.375f, 7.778f),
-			new RectangleF(91.38f, 72.89f, 4.375f, 7.778f),
+		// グローウォームのアイコンのRect
+		static RectangleF[] ExpGlowwormPosition = {
+			new RectangleF(23.05f, 36.11f, 2.344f, 4.167f),
+			new RectangleF(23.05f, 49.17f, 2.344f, 4.167f),
+			new RectangleF(23.05f, 62.36f, 2.344f, 4.167f),
+			new RectangleF(23.05f, 75.42f, 2.344f, 4.167f),
 		};
-		// 艦隊番号アイコンのRect
-		static RectangleF[] ExpFleetIconPosition = {
-			new RectangleF(86.38f, 6.667f, 0.8750f, 2.444f),
-			new RectangleF(86.38f, 27.56f, 0.8750f, 2.444f),
-			new RectangleF(86.38f, 48.44f, 0.8750f, 2.444f),
-			new RectangleF(86.38f, 69.33f, 0.8750f, 2.444f),
+		static RectangleF[] ExpTimerPosition = {
+			// スタブ
+			new RectangleF(23.05f, 36.11f, 2.344f, 4.167f),
+			new RectangleF(23.05f, 49.17f, 2.344f, 4.167f),
+			new RectangleF(23.05f, 62.36f, 2.344f, 4.167f),
+			new RectangleF(23.05f, 75.42f, 2.344f, 4.167f),
 		};
-		// 艦隊番号アイコンのハッシュ値
-		static ulong[] ExtFleetIconHash = {
-			0x840e0e8e0e0f0f03,
-			0x0f2363070f3f0302,
-			0xc80763070703270f,
-			0x6787173777270707,
-		};
-		// 遠征時間表示のRect
-		static float[] ExpTimerDigitPX = {60.89f, 62.63f, 65.45f, 67.10f, 69.80f, 71.56f};
-		static float[] ExpTimerDigitPY = {5.858f, 26.57f, 47.49f, 68.41f};
-		static float ExpTimerDigitWX = 1.645f, ExpTimerDigitWY = 4.184f;
 		#endregion
 		#region 建造用定数
 		// 建造リストの縦幅
@@ -461,6 +448,11 @@ namespace AzLH {
 			}
 			return retVal;
 		}
+		static List<int> GetTimeOCR(Bitmap bitmap, RectangleF rect, int thresold, bool negaFlg) {
+			// スタブ
+			var output = new List<int>();
+			return output;
+		}
 		#endregion
 		// 時刻を正規化する
 		static uint GetLeastSecond(List<int> timerDigit) {
@@ -540,28 +532,17 @@ namespace AzLH {
 		public static Dictionary<int, ulong> GetExpeditionTimer(Bitmap bitmap) {
 			var output = new Dictionary<int, ulong>();
 			ulong now_time = GetUnixTime(DateTime.Now);
-			for(int li = 0; li < ExpListHeight; ++li) {
+			for(int fi = 0; fi < ExpFleetCount; ++fi) {
+				// グローウォームのアイコンが出ていなければ、その行に遠征艦隊はいない
 				// 艦隊帰投ボタンが出ていなければ、その行に遠征艦隊はいない
-				ulong bhash = GetDifferenceHash(bitmap, ExpButtonPosition[li]);
-				if(GetHummingDistance(bhash, 0x1b60c68aca2e5635) >= 20)
+				ulong bhash = GetDifferenceHash(bitmap, ExpGlowwormPosition[fi]);
+				if(GetHummingDistance(bhash, 0x4e199ca52aa29732) >= 20)
 					continue;
-				// 遠征している艦隊の番号を取得する
-				// テンプレートマッチング作戦
-				var fleetDigit = GetDigitOCR(
-					bitmap,
-					new float[] { ExpFleetIconPosition[li].X },
-					ExpFleetIconPosition[li].Y,
-					ExpFleetIconPosition[li].Width,
-					ExpFleetIconPosition[li].Height,
-					120, true, 1);
-				int fleetIndex = fleetDigit[0];
 				// 遠征時間を取得する
-				//Console.WriteLine((li + 1) + "番目：第" + (fleetIndex + 1) + "艦隊");
+				var timerDigit = GetTimeOCR(bitmap, ExpTimerPosition[fi], 128, true);
 				// 遠征完了時間を計算して書き込む
-				//bitmap.Save("ss.png");
-				var timerDigit = GetDigitOCR(bitmap, ExpTimerDigitPX, ExpTimerDigitPY[li], ExpTimerDigitWX, ExpTimerDigitWY, 120, true);
 				uint leastSecond = GetLeastSecond(timerDigit);
-				output[fleetIndex] = now_time + leastSecond;
+				output[fi] = now_time + leastSecond;
 			}
 			return output;
 		}
