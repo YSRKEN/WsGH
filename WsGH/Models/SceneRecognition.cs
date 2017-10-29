@@ -25,11 +25,10 @@ namespace AzLH {
 			new RectangleF(23.05f, 75.42f, 2.344f, 4.167f),
 		};
 		static RectangleF[] ExpTimerPosition = {
-			// スタブ
-			new RectangleF(23.05f, 36.11f, 2.344f, 4.167f),
-			new RectangleF(23.05f, 49.17f, 2.344f, 4.167f),
-			new RectangleF(23.05f, 62.36f, 2.344f, 4.167f),
-			new RectangleF(23.05f, 75.42f, 2.344f, 4.167f),
+			new RectangleF(30.94f, 41.25f, 7.200f, 2.778f),
+			new RectangleF(30.94f, 54.31f, 7.200f, 2.778f),
+			new RectangleF(30.94f, 67.50f, 7.200f, 2.778f),
+			new RectangleF(30.94f, 80.56f, 7.200f, 2.778f),
 		};
 		#endregion
 		#region 建造用定数
@@ -105,7 +104,7 @@ namespace AzLH {
 		// OCRする際にマッチングさせる元のサイズ
 		static Size TemplateSize2 = new Size(TemplateSize1.Width + 2, TemplateSize1.Height + 2);
 		// OCRする際にマッチングさせる先の画像
-		static IplImage TemplateSource, TemplateSource2;
+		static IplImage TemplateSource, TemplateSource2, TemplateSource3;
 		#endregion
 		#region その他定数
 		static DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0);
@@ -114,6 +113,7 @@ namespace AzLH {
 		public static void InitialSceneRecognition() {
 			TemplateSource = BitmapConverter.ToIplImage(Properties.Resources.ocr_template);
 			TemplateSource2 = BitmapConverter.ToIplImage(Properties.Resources.ocr_template_2);
+			TemplateSource3 = BitmapConverter.ToIplImage(Properties.Resources.ocr_template_alh);
 		}
 		#region DifferenceHash関係
 		/// <summary>
@@ -448,9 +448,116 @@ namespace AzLH {
 			}
 			return retVal;
 		}
-		static List<int> GetTimeOCR(Bitmap bitmap, RectangleF rect, int thresold, bool negaFlg) {
-			// スタブ
+		static List<int> GetTimeOCR(Bitmap bitmap, RectangleF rect, int thresold, bool negaFlg, bool debugFlg = false) {
+			// ％指定をピクセル指定に直す
+			int bitmapWidth = bitmap.Width;
+			int bitmapHeight = bitmap.Height;
+			int px = (int)(bitmapWidth * rect.X / 100 + 0.5);
+			int py = (int)(bitmapHeight * rect.Y / 100 + 0.5);
+			int wx = (int)(bitmapWidth * rect.Width / 100 + 0.5);
+			int wy = (int)(bitmapHeight * rect.Height / 100 + 0.5);
+			// 画像を切り取る
+			var canvas = new Bitmap(wx, wy);
+			using (var g = Graphics.FromImage(canvas)) {
+				// 切り取られる位置・大きさ
+				var srcRect = new Rectangle(px, py, wx, wy);
+				// 貼り付ける位置・大きさ
+				var desRect = new Rectangle(0, 0, canvas.Width, canvas.Height);
+				g.DrawImage(bitmap, desRect, srcRect, GraphicsUnit.Pixel);
+			}
+			if (debugFlg) canvas.Save("digit1.bmp");
+			// 二値化する
+			using (var image = BitmapConverter.ToIplImage(canvas))
+			using (var image2 = new IplImage(image.Size, BitDepth.U8, 1)) {
+				Cv.CvtColor(image, image2, ColorConversion.BgrToGray);
+				if (negaFlg)
+					Cv.Not(image2, image2);
+				if (debugFlg) image2.ToBitmap().Save("digit2.bmp");
+				Cv.Threshold(image2, image2, thresold, 255, ThresholdType.Binary);
+				canvas = image2.ToBitmap();
+			}
+			if (debugFlg) canvas.Save("digit3.bmp");
+			// カット部分を検出する
+			var whiteCount = Enumerable.Repeat(0, canvas.Width).ToArray();
+			for (int x = 0; x < canvas.Width; ++x) {
+				for (int y = 0; y < canvas.Height; ++y) {
+					if (canvas.GetPixel(x, y).R > 128) {
+						++whiteCount[x];
+					}
+				}
+			}
+			var whiteCountDiff = Enumerable.Repeat(canvas.Height, canvas.Width).ToArray();
+			for (int x = 0; x < canvas.Width - 1; ++x) {
+				whiteCountDiff[x] = whiteCount[x] - whiteCount[x + 1];
+			}
+			// カット時に使う左座標の一覧を抽出する
+			int lastPos = -1;
+			var cutLeftPos = new List<int>();
+			for (int x = 1; x < canvas.Width; ++x) {
+				// カット部分じゃない場合は無視する
+				if (whiteCountDiff[x] < (int)(0.1 * canvas.Height)) continue;
+				if (whiteCount[x - 1] < (int)(0.9 * canvas.Height)) continue;
+				// 前回のカット部分より一定以上離れてないと検知しない
+				if (lastPos != -1 && x - lastPos < (int)(0.2 * canvas.Height)) continue;
+				// カット実行
+				cutLeftPos.Add(x);
+				lastPos = x;
+			}
+			// 各カット毎に数値認識を行う
+			var digit = new List<int>();
+			for (int k = 0; k < cutLeftPos.Count - 1; ++k) {
+				// 1つの数字分だけ取り出す
+				var canvas2 = new Bitmap(cutLeftPos[k + 1] - cutLeftPos[k] - 1, canvas.Height);
+				using (var g = Graphics.FromImage(canvas2)) {
+					// 切り取られる位置・大きさ
+					var srcRect = new Rectangle(cutLeftPos[k] + 1, 0, cutLeftPos[k + 1] - cutLeftPos[k] - 1, canvas.Height);
+					// 貼り付ける位置・大きさ
+					var desRect = new Rectangle(0, 0, canvas2.Width, canvas2.Height);
+					g.DrawImage(canvas, desRect, srcRect, GraphicsUnit.Pixel);
+				}
+				if (debugFlg) canvas2.Save($"digit4-{k + 1}-1.bmp");
+				// 認識用の大きさにリサイズする
+				var canvas3 = new Bitmap(TemplateSize2.Width, TemplateSize2.Height);
+				using (var g = Graphics.FromImage(canvas3)) {
+					// 事前にcanvas3を赤色に塗りつぶす
+					g.FillRectangle(Brushes.Red, 0, 0, canvas3.Width, canvas3.Height);
+					// 切り取られる位置・大きさ
+					var srcRect = GetTrimmingRectangle(canvas2);
+					// 貼り付ける位置・大きさ
+					var desRect = new Rectangle(1, 1, TemplateSize1.Width, TemplateSize1.Height);
+					g.DrawImage(canvas2, desRect, srcRect, GraphicsUnit.Pixel);
+				}
+				if (debugFlg) canvas3.Save($"digit4-{k + 1}-2.bmp");
+				// マッチングを行う
+				Point matchPosition;
+				using (var image = BitmapConverter.ToIplImage(canvas3)) {
+					var templateSource = TemplateSource3;
+					var resultSize = new CvSize(templateSource.Width - image.Width + 1, templateSource.Height - image.Height + 1);
+					using (var resultImage = Cv.CreateImage(resultSize, BitDepth.F32, 1)) {
+						Cv.MatchTemplate(templateSource, image, resultImage, MatchTemplateMethod.SqDiff);
+						CvPoint minPosition, maxPosition;
+						Cv.MinMaxLoc(resultImage, out minPosition, out maxPosition);
+						matchPosition = new Point(minPosition.X, minPosition.Y);
+					}
+				}
+				// マッチング結果を数値に翻訳する
+				int matchNumber = (int)Math.Round(1.0 * matchPosition.X / TemplateSize2.Width / 2, 0);
+				matchNumber = (matchNumber < 0 ? 0 : matchNumber > 11 ? 11 : matchNumber);
+				digit.Add(matchNumber);
+			}
 			var output = new List<int>();
+			if(digit.Count == 8) {
+				output.Add(digit[0]);
+				output.Add(digit[1]);
+				output.Add(digit[3]);
+				output.Add(digit[4]);
+				output.Add(digit[6]);
+				output.Add(digit[7]);
+			}
+			/*Console.Write("・");
+			for (int i = 0; i < digit.Count; ++i)
+				Console.Write($"{digit[i]} ");
+			Console.WriteLine("");*/
 			return output;
 		}
 		#endregion
@@ -539,7 +646,7 @@ namespace AzLH {
 				if(GetHummingDistance(bhash, 0x4e199ca52aa29732) >= 20)
 					continue;
 				// 遠征時間を取得する
-				var timerDigit = GetTimeOCR(bitmap, ExpTimerPosition[fi], 128, true);
+				var timerDigit = GetTimeOCR(bitmap, ExpTimerPosition[fi], 10, true, true);
 				// 遠征完了時間を計算して書き込む
 				uint leastSecond = GetLeastSecond(timerDigit);
 				output[fi] = now_time + leastSecond;
@@ -583,7 +690,6 @@ namespace AzLH {
 				// 建造時間を取得する
 				var timerDigit = GetDigitOCR(bitmap, BuildTimerDigitPX, BuildTimerDigitPY[li], BuildTimerDigitWX, BuildTimerDigitWY, 100, true);
 				var leastSecond = GetLeastSecond(timerDigit);
-				//Console.WriteLine($"{li + 1}番目：{leastSecond}");
 				output[li] = now_time + leastSecond;
 			}
 			return output;

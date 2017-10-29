@@ -24,7 +24,7 @@
 				<MenuItem Header="{Binding Source={x:Static app:ResourceService.Current}, Path=Resources.MenuHeaderGetPosition, Mode=OneWay}" Click="GetPositionMenu_Click" />
 				<MenuItem Header="{Binding Source={x:Static app:ResourceService.Current}, Path=Resources.MenuHeaderGetScreenshot, Mode=OneWay}" x:Name="GetScreenshotMenu" IsEnabled="False" Click="GetScreenshotMenu_Click" />
 				<MenuItem Header="{Binding Source={x:Static app:ResourceService.Current}, Path=Resources.MenuHeaderShowWindow, Mode=OneWay}">
-					<MenuItem IsEnabled="False" Header="{Binding Source={x:Static app:ResourceService.Current}, Path=Resources.MenuHeaderTimerWindow, Mode=OneWay}" Click="ShowTimerWindow_Click" />
+					<MenuItem Header="{Binding Source={x:Static app:ResourceService.Current}, Path=Resources.MenuHeaderTimerWindow, Mode=OneWay}" Click="ShowTimerWindow_Click" />
 					<MenuItem Header="{Binding Source={x:Static app:ResourceService.Current}, Path=Resources.MenuHeaderSupplyWindow, Mode=OneWay}" Click="ShowSupplyWindow_Click" />
 				</MenuItem>
 				<MenuItem Header="{Binding Source={x:Static app:ResourceService.Current}, Path=Resources.MenuHeaderShowPicFolder, Mode=OneWay}" Click="ShowPicFolderMenu_Click"/>

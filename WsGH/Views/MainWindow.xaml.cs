@@ -402,7 +402,6 @@ namespace AzLH {
 					} catch(Exception) {
 						AddLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Failed");
 					}
-					SaveScreenshot();
 					// グラフに反映
 					sw.DrawChart();
 				}
