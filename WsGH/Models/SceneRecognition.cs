@@ -647,6 +647,8 @@ namespace AzLH {
 					continue;
 				// 遠征時間を取得する
 				var timerDigit = GetTimeOCR(bitmap, ExpTimerPosition[fi], 10, true);
+				if (timerDigit.Count != 6)
+					continue;
 				// 遠征完了時間を計算して書き込む
 				uint leastSecond = GetLeastSecond(timerDigit);
 				output[fi] = now_time + leastSecond;
