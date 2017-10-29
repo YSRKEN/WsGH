@@ -392,18 +392,21 @@ namespace AzLH {
 					// 現在時刻と資源量を取得
 					var nowTime = DateTime.Now;
 					var supply = SceneRecognition.GetMainSupply(captureFrame);
-					// データベースに書き込み
-					SupplyStore.AddMainSupply(nowTime, supply);
-					AddLog($"{Properties.Resources.LoggingTextAddSupplyData}");
-					// データベースを保存
-					try {
-						SupplyStore.SaveMainSupply();
-						AddLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Success");
-					} catch(Exception) {
-						AddLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Failed");
+					if(supply[0] != 0 || supply[1] != 0 || supply[2] != 0) {
+						// データベースに書き込み
+						SupplyStore.AddMainSupply(nowTime, supply);
+						AddLog($"{Properties.Resources.LoggingTextAddSupplyData}");
+						// データベースを保存
+						try {
+							SupplyStore.SaveMainSupply();
+							AddLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Success");
+						}
+						catch (Exception) {
+							AddLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Failed");
+						}
+						// グラフに反映
+						sw.DrawChart();
 					}
-					// グラフに反映
-					sw.DrawChart();
 				}
 				// SubSupplyの読み込み処理は、対象が4種類あるのでややこしい
 				for(int ti = 0; ti < SupplyStore.SubSupplyTypes; ++ti) {

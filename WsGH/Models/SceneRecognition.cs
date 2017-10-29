@@ -646,7 +646,7 @@ namespace AzLH {
 				if(GetHummingDistance(bhash, 0x4e199ca52aa29732) >= 20)
 					continue;
 				// 遠征時間を取得する
-				var timerDigit = GetTimeOCR(bitmap, ExpTimerPosition[fi], 10, true, true);
+				var timerDigit = GetTimeOCR(bitmap, ExpTimerPosition[fi], 10, true);
 				// 遠征完了時間を計算して書き込む
 				uint leastSecond = GetLeastSecond(timerDigit);
 				output[fi] = now_time + leastSecond;

@@ -1,0 +1,121 @@
+/* OCR用のテンプレートを作成する */
+
+/* インクルード */
+#include "hspcv.as"
+
+/* 定数設定 */
+// テンプレートのファイル名
+#define FILE_NAME "ocr_template_alh.png"
+// OCRで使用する文字一覧
+CHAR_LIST = "0123456789:"
+// OCRで使用するフォント名
+FONT_NAME = "Impact"
+// OCRする際にリサイズするサイズ
+#const MATCH_SIZE1_X 32
+#const MATCH_SIZE1_Y 32
+// OCRする際にマッチングさせる元のサイズ
+#const MATCH_SIZE2_X MATCH_SIZE1_X + 2
+#const MATCH_SIZE2_Y MATCH_SIZE1_Y + 2
+// フォントサイズ(MATCH_SIZE1_Yより十分に大きい)
+#const FONT_SIZE 64
+// 作業用バッファの大きさ(FONT_SIZEより大きい)
+#const TEMPORARY_BUFFER_SIZE 100
+// テンプレートファイルにおける横方向の文字数
+// 最後に空白文字を加えるので、strlen(OCR_CHAR_LIST)より1文字多くなる
+TEMPLATE_CHARS = strlen(CHAR_LIST) + 1
+// 真偽値
+#const TRUE  1
+#const FALSE 0
+// テンプレートファイルを保存する画像バッファID
+#const TEMPLATE_BUFFER_ID 1
+// 作業用に使用する画像バッファID
+#const TEMPORARY_BUFFER_ID 2
+
+/* 作成処理 */
+// 保存用のバッファを用意する
+buffer TEMPLATE_BUFFER_ID, MATCH_SIZE2_X * (TEMPLATE_CHARS * 2 - 1), MATCH_SIZE2_Y
+// 各文字毎にテンプレート用画像を生成する
+repeat TEMPLATE_CHARS
+	// 出力用バッファを用意する
+	buffer TEMPORARY_BUFFER_ID, TEMPORARY_BUFFER_SIZE, TEMPORARY_BUFFER_SIZE
+	// rectを初期化する
+	rect.0 = 0, 0, TEMPORARY_BUFFER_SIZE, TEMPORARY_BUFFER_SIZE
+	// 最後の文字(空白文字)以外は、CHAR_LISTから1文字切り取ってテンプレート用に使う
+	if(cnt != strlen(CHAR_LIST)){
+		// フォントを指定する
+		font FONT_NAME, FONT_SIZE
+		// 文字を出力する
+		mes strmid(CHAR_LIST, cnt, 1)
+		// CVバッファにいったんコピーして二値化して戻す
+		cvbuffer 0, TEMPORARY_BUFFER_SIZE, TEMPORARY_BUFFER_SIZE
+		cvputimg 0
+		cvconvert 0
+		cvthreshold CV_THRESH_BINARY, 127.5, 255, 0
+		cvgetimg 0
+		// 周囲のピクセルを読み取って、矩形領域を抽出する
+		//左
+		flg = FALSE
+		for x, 0, TEMPORARY_BUFFER_SIZE
+			for y, 0, TEMPORARY_BUFFER_SIZE
+				pget x, y
+				if(ginfo_r == 0 || ginfo_g == 0 || ginfo_b == 0){
+					rect(0) = x
+					flg = TRUE
+					_break
+				}
+			next
+			if(flg) :_break
+		next
+		//上
+		flg = FALSE
+		for y, 0, TEMPORARY_BUFFER_SIZE
+			for x, 0, TEMPORARY_BUFFER_SIZE
+				pget x, y
+				if(ginfo_r == 0 || ginfo_g == 0 || ginfo_b == 0){
+					rect(1) = y
+					flg = TRUE
+					_break
+				}
+			next
+			if(flg) :_break
+		next
+		//右
+		flg = FALSE
+		for x, TEMPORARY_BUFFER_SIZE - 1, -1, -1
+			for y, 0, TEMPORARY_BUFFER_SIZE
+				pget x, y
+				if(ginfo_r == 0 || ginfo_g == 0 || ginfo_b == 0){
+					rect(2) = x - rect(0) + 1
+					flg = TRUE
+					_break
+				}
+			next
+			if(flg) :_break
+		next
+		//下
+		flg = FALSE
+		for y, TEMPORARY_BUFFER_SIZE - 1, -1, -1
+			for x, 0, TEMPORARY_BUFFER_SIZE
+				pget x, y
+				if(ginfo_r == 0 || ginfo_g == 0 || ginfo_b == 0){
+					rect(3) = y - rect(1) + 1
+					flg = TRUE
+					_break
+				}
+			next
+			if(flg) :_break
+		next
+	}
+	// 赤く塗りつぶす
+	gsel TEMPLATE_BUFFER_ID
+	color 255, 0, 0
+	boxf MATCH_SIZE2_X * cnt * 2, 0, MATCH_SIZE2_X * (cnt * 2 + 1) - 1, MATCH_SIZE2_Y + 1
+	// gzoomで貼り付ける
+	pos MATCH_SIZE2_X * cnt * 2 + 1, 1
+	gzoom MATCH_SIZE1_X, MATCH_SIZE1_Y, TEMPORARY_BUFFER_ID, rect(0), rect(1), rect(2), rect(3), 1
+loop
+// テンプレートファイルを保存する
+cvbuffer 0, MATCH_SIZE2_X * (TEMPLATE_CHARS * 2 - 1), MATCH_SIZE2_Y
+cvputimg 0
+cvsave FILE_NAME, 0
+end
