@@ -203,6 +203,47 @@ namespace AzLH {
 			// スケールに従い横軸を変更する
 			var axisX = SupplyChart.ChartAreas[0].AxisX;
 			axisX.Minimum = axisX.Maximum - chartScale;
+			// スケールに従い縦軸を変更する
+			bool IsDrawTypeMain = (ChartShowTypeComboBox.SelectedIndex == 0);
+			if (IsDrawTypeMain) {
+				int maximumY1 = 0;
+				int maximumY2 = 0;
+				foreach (var data in SupplyStore.MainSupplyData) {
+					if (data.Type == "Diamond") {
+						maximumY2 = Math.Max(maximumY2, data.List.Where(p => (LeastChartTime - p.Key).Days < chartScale).Max(p => p.Value));
+					}
+					else {
+						maximumY1 = Math.Max(maximumY1, data.List.Where(p => (LeastChartTime - p.Key).Days < chartScale).Max(p => p.Value));
+					}
+				}
+				if(maximumY1 != 0)
+					SupplyChart.ChartAreas[0].AxisY.Maximum = SpecialCeiling(maximumY1);
+				if(maximumY2 != 0)
+					SupplyChart.ChartAreas[0].AxisY2.Maximum = SpecialCeiling(maximumY2);
+			}
+			else {
+				int maximumY1 = 0;
+				foreach (var data in SupplyStore.SubSupplyData) {
+					if (data.List.Count(p => (LeastChartTime - p.Key).Days < chartScale) == 0)
+						continue;
+					maximumY1 = Math.Max(maximumY1, data.List.Where(p => (LeastChartTime - p.Key).Days < chartScale).Max(p => p.Value));
+				}
+				if (maximumY1 != 0)
+					SupplyChart.ChartAreas[0].AxisY.Maximum = SpecialCeiling(maximumY1);
+			}
+		}
+		// グラフ表示に適した適当な数値に切り上げる
+		private double SpecialCeiling(int x) {
+			// とりあえず10で割っていく
+			double x_ = x;
+			double temp = 1.0;
+			while(x_ >= 10.0) {
+				x_ /= 10.0;
+				temp *= 10.0;
+			}
+			// 切り上げ処理
+			x_ = Math.Ceiling(x_);
+			return x_ * temp;
 		}
 
 		// 資材データを再読込みする
