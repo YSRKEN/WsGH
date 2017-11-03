@@ -393,19 +393,34 @@ namespace AzLH {
 					var nowTime = DateTime.Now;
 					var supply = SceneRecognition.GetMainSupply(captureFrame);
 					if(supply[0] != 0 || supply[1] != 0 || supply[2] != 0) {
-						// データベースに書き込み
-						SupplyStore.AddMainSupply(nowTime, supply);
-						AddLog($"{Properties.Resources.LoggingTextAddSupplyData}");
-						// データベースを保存
-						try {
-							SupplyStore.SaveMainSupply();
-							AddLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Success");
+						// 慎重を期すため、後2回スクショする
+						System.Threading.Thread.Sleep(50);
+						Bitmap captureFrame2 = sp?.GetScreenShot();
+						System.Threading.Thread.Sleep(50);
+						Bitmap captureFrame3 = sp?.GetScreenShot();
+						if(captureFrame2 != null && captureFrame3 != null
+							&& SceneRecognition.CanReadMainSupply(captureFrame2)
+							&& SceneRecognition.CanReadMainSupply(captureFrame3)) {
+							var supply2 = SceneRecognition.GetMainSupply(captureFrame2);
+							var supply3 = SceneRecognition.GetMainSupply(captureFrame3);
+							for (int i = 0; i < supply.Count; ++i) {
+								supply[i] = new List<int> { supply[i], supply2[i], supply3[i] }.OrderBy(p => p).ElementAt(1);
+								;
+							}
+							// データベースに書き込み
+							SupplyStore.AddMainSupply(nowTime, supply);
+							AddLog($"{Properties.Resources.LoggingTextAddSupplyData}");
+							// データベースを保存
+							try {
+								SupplyStore.SaveMainSupply();
+								AddLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Success");
+							}
+							catch (Exception) {
+								AddLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Failed");
+							}
+							// グラフに反映
+							sw.DrawChart();
 						}
-						catch (Exception) {
-							AddLog($"{Properties.Resources.LoggingTextSaveSupplyData}：Failed");
-						}
-						// グラフに反映
-						sw.DrawChart();
 					}
 				}
 				// SubSupplyの読み込み処理は、対象が4種類あるのでややこしい
@@ -435,21 +450,31 @@ namespace AzLH {
 					// 現在時刻と資源量を取得
 					var nowTime = DateTime.Now;
 					int supply = SceneRecognition.GetSubSupply(ti, captureFrame);
-					// データベースに書き込み
-					SupplyStore.AddSubSupply(ti, nowTime, supply);
-					AddLog($"{Properties.Resources.LoggingText2AddSupplyData}");
-					// データベースを保存
-					try {
-						SupplyStore.SaveSubSupply(ti);
-						AddLog($"{Properties.Resources.LoggingText2SaveSupplyData}：Success");
+					// 慎重を期すため、後2回スクショする
+					System.Threading.Thread.Sleep(50);
+					Bitmap captureFrame2 = sp?.GetScreenShot();
+					System.Threading.Thread.Sleep(50);
+					Bitmap captureFrame3 = sp?.GetScreenShot();
+					if (captureFrame2 != null && captureFrame3 != null
+							&& SceneRecognition.CanReadMainSupply(captureFrame2)
+							&& SceneRecognition.CanReadMainSupply(captureFrame3)) {
+						var supply2 = SceneRecognition.GetSubSupply(ti, captureFrame2);
+						var supply3 = SceneRecognition.GetSubSupply(ti, captureFrame3);
+						supply = new List<int> { supply, supply2, supply3 }.OrderBy(p => p).ElementAt(1);
+						// データベースに書き込み
+						SupplyStore.AddSubSupply(ti, nowTime, supply);
+						AddLog($"{Properties.Resources.LoggingText2AddSupplyData}");
+						// データベースを保存
+						try {
+							SupplyStore.SaveSubSupply(ti);
+							AddLog($"{Properties.Resources.LoggingText2SaveSupplyData}：Success");
+						}
+						catch (Exception) {
+							AddLog($"{Properties.Resources.LoggingText2SaveSupplyData}：Failed");
+						}
+						// グラフに反映
+						sw.DrawChart();
 					}
-					catch (Exception) {
-						AddLog($"{Properties.Resources.LoggingText2SaveSupplyData}：Failed");
-					}
-					// グラフに反映
-					sw.DrawChart();
-
-					SupplyStore.ShowSubSupply(ti);
 				}
 				#endregion
 			}
