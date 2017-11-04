@@ -500,8 +500,8 @@ namespace AzLH {
 				// 前回のカット部分より一定以上離れてないと検知しない
 				if (lastPos != -1 && x - lastPos < (int)(0.2 * canvas.Height)) continue;
 				// カット実行
-				cutLeftPos.Add(x);
-				lastPos = x;
+				cutLeftPos.Add(x - 1);
+				lastPos = x - 1;
 			}
 			// 各カット毎に数値認識を行う
 			var digit = new List<int>();
