@@ -455,9 +455,7 @@ namespace AzLH {
 					Bitmap captureFrame2 = sp?.GetScreenShot();
 					System.Threading.Thread.Sleep(50);
 					Bitmap captureFrame3 = sp?.GetScreenShot();
-					if (captureFrame2 != null && captureFrame3 != null
-							&& SceneRecognition.CanReadMainSupply(captureFrame2)
-							&& SceneRecognition.CanReadMainSupply(captureFrame3)) {
+					if (captureFrame2 != null && captureFrame3 != null) {
 						var supply2 = SceneRecognition.GetSubSupply(ti, captureFrame2);
 						var supply3 = SceneRecognition.GetSubSupply(ti, captureFrame3);
 						supply = new List<int> { supply, supply2, supply3 }.OrderBy(p => p).ElementAt(1);
