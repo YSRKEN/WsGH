@@ -75,6 +75,7 @@ namespace AzLH {
 			}
 			else {
 				chartArea.AxisY.Title = Properties.Resources.SupplyChartY3Title;
+				chartArea.AxisY2.Title = Properties.Resources.SupplyChartY4Title;
 			}
 			chartArea.AxisX.MajorGrid.LineColor = Color.LightGray;
 			chartArea.AxisY.MajorGrid.LineColor = Color.LightGray;
@@ -139,7 +140,12 @@ namespace AzLH {
 						series.Points.AddXY(Column.Key.ToOADate(), Column.Value);
 					}
 					// 表示位置を調整
-					series.YAxisType = AxisType.Primary;
+					if (data.Type == "FurnitureCoin") {
+						series.YAxisType = AxisType.Secondary;
+					}
+					else {
+						series.YAxisType = AxisType.Primary;
+					}
 					// 表示色を選択
 					series.Color = data.Color;
 					series.BorderWidth = 2;
@@ -223,13 +229,21 @@ namespace AzLH {
 			}
 			else {
 				int maximumY1 = 0;
+				int maximumY2 = 0;
 				foreach (var data in SupplyStore.SubSupplyData) {
 					if (data.List.Count(p => (LeastChartTime - p.Key).Days < chartScale) == 0)
 						continue;
-					maximumY1 = Math.Max(maximumY1, data.List.Where(p => (LeastChartTime - p.Key).Days < chartScale).Max(p => p.Value));
+					if (data.Type == "FurnitureCoin") {
+						maximumY2 = Math.Max(maximumY2, data.List.Where(p => (LeastChartTime - p.Key).Days < chartScale).Max(p => p.Value));
+					}
+					else {
+						maximumY1 = Math.Max(maximumY1, data.List.Where(p => (LeastChartTime - p.Key).Days < chartScale).Max(p => p.Value));
+					}
 				}
 				if (maximumY1 != 0)
 					SupplyChart.ChartAreas[0].AxisY.Maximum = SpecialCeiling(maximumY1);
+				if (maximumY2 != 0)
+					SupplyChart.ChartAreas[0].AxisY2.Maximum = SpecialCeiling(maximumY2);
 			}
 		}
 		// グラフ表示に適した適当な数値に切り上げる

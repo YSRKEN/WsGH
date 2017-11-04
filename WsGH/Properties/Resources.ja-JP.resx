@@ -299,9 +299,12 @@
     <value>特殊資材</value>
   </data>
   <data name="SupplyChartY3Title" xml:space="preserve">
-    <value>キューブ・ドリル・勲章・家具コイン</value>
+    <value>キューブ・ドリル・勲章</value>
   </data>
   <data name="SupplyReloadButton" xml:space="preserve">
     <value>再読み込み</value>
+  </data>
+  <data name="SupplyChartY4Title" xml:space="preserve">
+    <value>家具コイン</value>
   </data>
 </root>

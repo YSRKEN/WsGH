@@ -388,11 +388,20 @@ namespace AzLH.Properties {
         }
         
         /// <summary>
-        ///   Cube, Drill, Medal, FurnitureCoin に類似しているローカライズされた文字列を検索します。
+        ///   Cube, Drill, Medal に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SupplyChartY3Title {
             get {
                 return ResourceManager.GetString("SupplyChartY3Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   FurnitureCoin に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SupplyChartY4Title {
+            get {
+                return ResourceManager.GetString("SupplyChartY4Title", resourceCulture);
             }
         }
         

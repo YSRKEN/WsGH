@@ -302,12 +302,15 @@
     <value>SubSupply</value>
   </data>
   <data name="SupplyChartY3Title" xml:space="preserve">
-    <value>Cube, Drill, Medal, FurnitureCoin</value>
+    <value>Cube, Drill, Medal</value>
   </data>
   <data name="SupplyReloadButton" xml:space="preserve">
     <value>Reload</value>
   </data>
   <data name="ocr_template_alh" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ocr_template_alh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SupplyChartY4Title" xml:space="preserve">
+    <value>FurnitureCoin</value>
   </data>
 </root>
