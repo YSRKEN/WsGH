@@ -47,8 +47,8 @@
 - ソフトを一旦終了させて、再起動してもタイマーはカウントを続けています
 
 ## 資材記録画面
-![SupplyWindow](https://user-images.githubusercontent.com/3734392/32143395-e914228a-bceb-11e7-8a6d-2ade31450b32.png)
-![SupplyWindow2](https://user-images.githubusercontent.com/3734392/32143397-eec28d7a-bceb-11e7-983d-d2343817cc4a.png)
+![SupplyWindow](https://user-images.githubusercontent.com/3734392/32403631-781beb8a-c182-11e7-8a88-80d6190fb621.png)
+![SupplyWindow2](https://user-images.githubusercontent.com/3734392/32403632-79df7c16-c182-11e7-8534-f1abf495991d.png)
 
 - ウィンドウタイトル：《資材記録画面|SupplyWindow》
 - アズールレーンで扱う様々な資材の推移が表示されます
