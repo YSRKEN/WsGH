@@ -194,6 +194,9 @@ namespace AzLH {
 						// クリック点を覆う範囲になりうるかをチェック
 						if (y2 <= clickPointY)
 							continue;
+						// ディスプレイ外を探索しないようにする
+						if (x2 >= bitmap.Width || y2 >= bitmap.Height)
+							break;
 						// 探索開始
 						if (!IsNearColor(bitmap.GetPixel(x2, y2), borderColor, 1))
 							continue;
