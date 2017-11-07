@@ -61,11 +61,21 @@ namespace AzLH {
 			clickPointY = mousePoint.Y - virtualDisplayRectangle.Top;
 			// クリックした座標から、ゲーム画面の座標を逆算する
 			var vdb = GetVirtualDisplayBitmap(virtualDisplayRectangle);
-			var gameWindowRectangle = GetGameWindowRectangle(vdb, backgroundColor, clickPointX, clickPointY);
-			// ゲーム画面の座標をスクリーン座標に変換する
-			screenshotRectangle.X = gameWindowRectangle.X + virtualDisplayRectangle.X;
-			screenshotRectangle.Y = gameWindowRectangle.Y + virtualDisplayRectangle.Y;
-			screenshotRectangle.Size = gameWindowRectangle.Size;
+			vdb.Save("debug.png");
+			try {
+				var gameWindowRectangle = GetGameWindowRectangle(vdb, backgroundColor, clickPointX, clickPointY);
+				// ゲーム画面の座標をスクリーン座標に変換する
+				screenshotRectangle.X = gameWindowRectangle.X + virtualDisplayRectangle.X;
+				screenshotRectangle.Y = gameWindowRectangle.Y + virtualDisplayRectangle.Y;
+				screenshotRectangle.Size = gameWindowRectangle.Size;
+			}
+			catch (Exception e){
+				using(var sw = new System.IO.StreamWriter("debug.log")) {
+					sw.WriteLine($"{clickPointX},{clickPointY}  {backgroundColor}");
+					sw.WriteLine(e.ToString());
+				}
+				throw;
+			}
 		}
 		// 座標取得に成功したかを判定する
 		public bool IsGetPosition() {
