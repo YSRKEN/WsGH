@@ -32,8 +32,6 @@ namespace AzLH {
 		};
 		#endregion
 		#region 建造用定数
-		// 建造リストの縦幅
-		static int BuildListHeight = 4;
 		// 画面左のステータス表示
 		static RectangleF[] BuildStatusPosition = {
 			new RectangleF(15.51f, 23.22f, 2.350f, 4.184f),
@@ -44,11 +42,8 @@ namespace AzLH {
 		// 建造時間表示のRect
 		static float[] BuildTimerDigitPX = {26.91f, 27.97f, 29.38f, 30.32f, 31.85f, 32.79f};
 		static float[] BuildTimerDigitPY = {29.71f, 49.58f, 69.46f, 89.33f};
-		static float BuildTimerDigitWX = 0.823f, BuildTimerDigitWY = 2.510f;
 		#endregion
 		#region 開発用定数
-		// 開発リストの縦幅
-		static int DevListHeight = 4;
 		// 画面左のステータス表示
 		static RectangleF[] DevStatusPosition = {
 			new RectangleF(15.51f, 23.22f, 2.350f, 4.184f),
@@ -59,15 +54,11 @@ namespace AzLH {
 		// 建造時間表示のRect
 		static float[] DevTimerDigitPX = {26.91f, 27.97f, 29.38f, 30.32f, 31.85f, 32.79f};
 		static float[] DevTimerDigitPY = {29.71f, 49.58f, 69.46f, 89.33f};
-		static float DevTimerDigitWX = 0.823f, DevTimerDigitWY = 2.510f;
 		#endregion
 		#region 入渠用定数
-		// 入渠リストの縦幅
-		static int DockListHeight = 4;
 		// 入渠時間表示のRect
 		static float[] DockTimerDigitPX = {66.86f, 68.86f, 72.03f, 74.15f, 77.32f, 79.32f};
 		static float[] DockTimerDigitPY = {24.69f, 45.61f, 66.32f, 87.24f};
-		static float DockTimerDigitWX = 1.880f, DockTimerDigitWY = 5.021f;
 		// 高速修復ボタンのRect
 		static RectangleF[] DockFastRepairPosition = {
 			new RectangleF(87.19f, 22.36f, 3.125f, 5.556f),
@@ -554,10 +545,6 @@ namespace AzLH {
 				output.Add(digit[6]);
 				output.Add(digit[7]);
 			}
-			/*Console.Write("・");
-			for (int i = 0; i < digit.Count; ++i)
-				Console.Write($"{digit[i]} ");
-			Console.WriteLine("");*/
 			return output;
 		}
 		#endregion
@@ -573,28 +560,6 @@ namespace AzLH {
 			var minute = timerDigit[2] * 10 + timerDigit[3];
 			var second = timerDigit[4] * 10 + timerDigit[5];
 			return (uint)((hour * 60 + minute) * 60 + second);
-		}
-		// 資材を正規化する
-		static int GetMainSupply(List<int> supplyDigit) {
-			int supplyValue = 0;
-			supplyValue += (supplyDigit[0] > 9 ? 0 : supplyDigit[0]) * 1000000;
-			supplyValue += (supplyDigit[1] > 9 ? 0 : supplyDigit[0]) * 100000;
-			supplyValue += (supplyDigit[2] > 9 ? 0 : supplyDigit[1]) * 10000;
-			supplyValue += (supplyDigit[3] > 9 ? 0 : supplyDigit[2]) * 1000;
-			supplyValue += (supplyDigit[4] > 9 ? 0 : supplyDigit[3]) * 100;
-			supplyValue += (supplyDigit[5] > 9 ? 0 : supplyDigit[4]) * 10;
-			supplyValue += (supplyDigit[6] > 9 ? 0 : supplyDigit[5]) * 1;
-			return supplyValue;
-		}
-		// 特殊資材を正規化する
-		static int GetSubSupply(List<int> supplyDigit) {
-			int supplyValue = 0;
-			supplyValue += (supplyDigit[0] > 9 ? 0 : supplyDigit[0]) * 10000;
-			supplyValue += (supplyDigit[1] > 9 ? 0 : supplyDigit[1]) * 1000;
-			supplyValue += (supplyDigit[2] > 9 ? 0 : supplyDigit[2]) * 100;
-			supplyValue += (supplyDigit[3] > 9 ? 0 : supplyDigit[3]) * 10;
-			supplyValue += (supplyDigit[4] > 9 ? 0 : supplyDigit[4]) * 1;
-			return supplyValue;
 		}
 		// UNIX時間を計算する
 		public static ulong GetUnixTime(DateTime dt) {
@@ -672,29 +637,6 @@ namespace AzLH {
 					return false;
 			}
 			return true;
-		}
-		// 建造タイマーを取得する
-		public static Dictionary<int, ulong> GetBuildTimer(Bitmap bitmap) {
-			var output = new Dictionary<int, ulong>();
-			var now_time = GetUnixTime(DateTime.Now);
-			for(int li = 0; li < BuildListHeight; ++li) {
-				// スタンバイ表示ならば、その行に入渠艦隊はいない
-				var bhash = GetDifferenceHash(bitmap, BuildStatusPosition[li]);
-				if(GetHummingDistance(bhash, 0x4147b56a9d33cb1c) < 20) {
-					output[li] = 0;
-					continue;
-				}
-				// 建造中でなければ、その行に入渠艦隊はいない
-				if (GetHummingDistance(bhash, 0x254565276737c138) >= 20) {
-					output[li] = 0;
-					continue;
-				}
-				// 建造時間を取得する
-				var timerDigit = GetDigitOCR(bitmap, BuildTimerDigitPX, BuildTimerDigitPY[li], BuildTimerDigitWX, BuildTimerDigitWY, 100, true);
-				var leastSecond = GetLeastSecond(timerDigit);
-				output[li] = now_time + leastSecond;
-			}
-			return output;
 		}
 		// 建造中のシーンかを判定する
 		static bool IsBuildingScene(Bitmap bitmap) {
