@@ -188,49 +188,52 @@ namespace AzLH {
 					}
 					// 反対側の辺についても調査
 					for(int x2 = Math.Min(Math.Max(x + MinGameWindowX + 1, clickPointX + 1), bitmap.Width - 1); x2 < bitmap.Width; ++x2) {
-						// 探索の起点となるy座標は逆算する
-						int y2 = y + (x2 - x - 1) * MinGameWindowY / MinGameWindowX + 1;
-						int width = x2 - x - 1;
-						// クリック点を覆う範囲になりうるかをチェック
-						if (y2 <= clickPointY)
-							continue;
-						// ディスプレイ外を探索しないようにする
-						if (x2 >= bitmap.Width || y2 >= bitmap.Height)
+						if (x2 >= bitmap.Width)
 							break;
-						// 探索開始
-						if (!IsNearColor(bitmap.GetPixel(x2, y2), borderColor, 1))
-							continue;
-						if (!IsNearColor(bitmap.GetPixel(x2 - 1, y2), borderColor, 1))
-							continue;
-						if (!IsNearColor(bitmap.GetPixel(x2, y2 - 1), borderColor, 1))
-							continue;
-						if (IsNearColor(bitmap.GetPixel(x2 - 1, y2 - 1), borderColor, 1))
-							continue;
-						{
-							bool flg = true;
-							for (int x3 = x + MinGameWindowX + 1; x3 < x2; ++x3) {
-								if (!IsNearColor(bitmap.GetPixel(x3, y2), borderColor, 1)) {
-									flg = false;
-									break;
-								}
-							}
-							if (!flg)
+						// 探索の起点となるy座標は逆算する
+						int width = x2 - x - 1;
+						for (int y2 = y + width * MinGameWindowY / MinGameWindowX - 2, p = 0; p <= 4; ++y2, ++p) {
+							// クリック点を覆う範囲になりうるかをチェック
+							if (y2 <= clickPointY)
 								continue;
-						}
-						{
-							bool flg = true;
-							for (int y3 = y + MinGameWindowY + 1; y3 < y2; ++y3) {
-								if (!IsNearColor(bitmap.GetPixel(x2, y3), borderColor, 1)) {
-									flg = false;
-									break;
-								}
-							}
-							if (!flg)
+							// ディスプレイ外を探索しないようにする
+							if (y2 >= bitmap.Height)
+								break;
+							// 探索開始
+							if (!IsNearColor(bitmap.GetPixel(x2, y2), borderColor, 1))
 								continue;
+							if (!IsNearColor(bitmap.GetPixel(x2 - 1, y2), borderColor, 1))
+								continue;
+							if (!IsNearColor(bitmap.GetPixel(x2, y2 - 1), borderColor, 1))
+								continue;
+							if (IsNearColor(bitmap.GetPixel(x2 - 1, y2 - 1), borderColor, 1))
+								continue;
+							{
+								bool flg = true;
+								for (int x3 = x + MinGameWindowX + 1; x3 < x2; ++x3) {
+									if (!IsNearColor(bitmap.GetPixel(x3, y2), borderColor, 1)) {
+										flg = false;
+										break;
+									}
+								}
+								if (!flg)
+									continue;
+							}
+							{
+								bool flg = true;
+								for (int y3 = y + MinGameWindowY + 1; y3 < y2; ++y3) {
+									if (!IsNearColor(bitmap.GetPixel(x2, y3), borderColor, 1)) {
+										flg = false;
+										break;
+									}
+								}
+								if (!flg)
+									continue;
+							}
+							// 全てのチェックを通過したので座標登録
+							gwr = new Rectangle(x + 1, y + 1, x2 - x - 1, y2 - y - 1);
+							return gwr;
 						}
-						// 全てのチェックを通過したので座標登録
-						gwr = new Rectangle(x + 1, y + 1, x2 - x - 1, y2 - y - 1);
-						return gwr;
 					}
 				}
 			}
