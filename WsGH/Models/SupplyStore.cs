@@ -27,7 +27,7 @@ namespace AzLH {
 			MainSupplyData = new List<SupplyData> {
 				new SupplyData("Fuel", Color.DarkGray),
 				new SupplyData("Money", Color.Gold),
-				new SupplyData("Diamond", Color.Red),
+				new SupplyData("Diamond", Color.Black),
 			};
 			MainSupplyTypeCount = MainSupplyData.Count;
 			MainSupplyListCount = 0;

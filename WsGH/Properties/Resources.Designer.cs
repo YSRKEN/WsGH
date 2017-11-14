@@ -379,7 +379,7 @@ namespace AzLH.Properties {
         }
         
         /// <summary>
-        ///   Diamond に類似しているローカライズされた文字列を検索します。
+        ///   Money に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SupplyChartY2Title {
             get {
@@ -397,7 +397,7 @@ namespace AzLH.Properties {
         }
         
         /// <summary>
-        ///   FurnitureCoin に類似しているローカライズされた文字列を検索します。
+        ///   Diamond, FurnitureCoin に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SupplyChartY4Title {
             get {
@@ -406,7 +406,7 @@ namespace AzLH.Properties {
         }
         
         /// <summary>
-        ///   Fuel, Money に類似しているローカライズされた文字列を検索します。
+        ///   Fuel に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string SupplyChartYTitle {
             get {

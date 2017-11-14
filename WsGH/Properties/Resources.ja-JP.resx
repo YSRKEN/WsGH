@@ -242,10 +242,10 @@
     <value>燃料</value>
   </data>
   <data name="SupplyChartY2Title" xml:space="preserve">
-    <value>ダイヤ</value>
+    <value>資金</value>
   </data>
   <data name="SupplyChartYTitle" xml:space="preserve">
-    <value>燃料・資金</value>
+    <value>燃料</value>
   </data>
   <data name="SupplyScale1Day" xml:space="preserve">
     <value>1日</value>
@@ -305,6 +305,6 @@
     <value>再読み込み</value>
   </data>
   <data name="SupplyChartY4Title" xml:space="preserve">
-    <value>家具コイン</value>
+    <value>ダイヤ・家具コイン</value>
   </data>
 </root>

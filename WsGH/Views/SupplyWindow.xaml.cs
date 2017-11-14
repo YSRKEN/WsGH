@@ -59,7 +59,8 @@ namespace AzLH {
 			if (IsDrawTypeMain) {
 				if (SupplyStore.MainSupplyListCount == 0)
 					return;
-			}else if (SupplyStore.SubSupplyListCount[0] == 0
+			}else if (SupplyStore.MainSupplyListCount == 0
+				|| SupplyStore.SubSupplyListCount[0] == 0
 				|| SupplyStore.SubSupplyListCount[1] == 0
 				|| SupplyStore.SubSupplyListCount[2] == 0
 				|| SupplyStore.SubSupplyListCount[3] == 0)
@@ -82,12 +83,12 @@ namespace AzLH {
 			chartArea.AxisX2.MajorGrid.LineColor = Color.LightGray;
 			chartArea.AxisY2.MajorGrid.LineColor = Color.LightGray;
 			// グラフの凡例を設定する
-			var SupplyChartLegends = (IsDrawTypeMain 
+			var SupplyChartLegends = (IsDrawTypeMain
 				? new Dictionary<string, string> {
 				{"Fuel", Properties.Resources.SupplyTypeFuel },
 				{"Money", Properties.Resources.SupplyTypeMoney },
-				{"Diamond", Properties.Resources.SupplyTypeDiamond },
 			} : new Dictionary<string, string> {
+				{"Diamond", Properties.Resources.SupplyTypeDiamond },
 				{"Cube", Properties.Resources.SupplyTypeCube },
 				{"Drill", Properties.Resources.SupplyTypeDrill },
 				{"Medal", Properties.Resources.SupplyTypeMedal },
@@ -97,6 +98,8 @@ namespace AzLH {
 			int index = 0;
 			if (IsDrawTypeMain) {
 				foreach (var data in SupplyStore.MainSupplyData) {
+					if (data.Type == "Diamond")
+						continue;
 					var series = new Series();
 					// 名前を設定する
 					series.Name = SupplyChartLegends[data.Type];
@@ -109,7 +112,7 @@ namespace AzLH {
 						series.Points.AddXY(Column.Key.ToOADate(), Column.Value);
 					}
 					// 表示位置を調整
-					if (data.Type == "Diamond") {
+					if (data.Type == "Money") {
 						series.YAxisType = AxisType.Secondary;
 					}
 					// 表示色を選択
@@ -127,6 +130,35 @@ namespace AzLH {
 				}
 			}
 			else {
+				foreach (var data in SupplyStore.MainSupplyData) {
+					if (data.Type != "Diamond")
+						continue;
+					var series = new Series();
+					// 名前を設定する
+					series.Name = SupplyChartLegends[data.Type];
+					// 折れ線グラフに設定する
+					series.ChartType = SeriesChartType.Line;
+					// 横軸を「時間」とする
+					series.XValueType = ChartValueType.DateTime;
+					// 表示用データを追加する
+					foreach (var Column in data.List) {
+						series.Points.AddXY(Column.Key.ToOADate(), Column.Value);
+					}
+					// 表示位置を調整
+					series.YAxisType = AxisType.Secondary;
+					// 表示色を選択
+					series.Color = data.Color;
+					series.BorderWidth = 2;
+					// SupplyChartに追加する
+					SupplyChart.Series.Add(series);
+					// 凡例の設定
+					var legend = new Legend();
+					legend.DockedToChartArea = "ChartArea";
+					legend.Alignment = StringAlignment.Far;
+					SupplyChart.Legends.Add(legend);
+					// インクリメント
+					++index;
+				}
 				foreach (var data in SupplyStore.SubSupplyData) {
 					var series = new Series();
 					// 名前を設定する
@@ -161,9 +193,14 @@ namespace AzLH {
 				}
 			}
 			// グラフのスケールを設定する
-			LeastChartTime = (IsDrawTypeMain 
-				? SupplyStore.MainSupplyData.Max(p => p.List.Max(d => d.Key)) 
-				: SupplyStore.SubSupplyData.Max(p => p.List.Max(d => d.Key)));
+			if (IsDrawTypeMain) {
+				LeastChartTime = SupplyStore.MainSupplyData.Where(p => p.Type != "Diamond").Max(p => p.List.Max(d => d.Key));
+			}
+			else {
+				var time1 = SupplyStore.MainSupplyData.Where(p => p.Type == "Diamond").Max(p => p.List.Max(d => d.Key));
+				var time2 = SupplyStore.SubSupplyData.Max(p => p.List.Max(d => d.Key));
+				LeastChartTime = (time1 > time2 ? time1 : time2);
+			}
 			chartArea.AxisX.Maximum = LeastChartTime.ToOADate();
 			ChangeChartScale();
 			// ListViewを再描画する
@@ -215,7 +252,9 @@ namespace AzLH {
 				int maximumY1 = 0;
 				int maximumY2 = 0;
 				foreach (var data in SupplyStore.MainSupplyData) {
-					if (data.Type == "Diamond") {
+					if (data.Type == "Diamond")
+						continue;
+					if (data.Type == "Money") {
 						maximumY2 = Math.Max(maximumY2, data.List.Where(p => (LeastChartTime - p.Key).Days < chartScale).Max(p => p.Value));
 					}
 					else {
@@ -230,6 +269,11 @@ namespace AzLH {
 			else {
 				int maximumY1 = 0;
 				int maximumY2 = 0;
+				foreach (var data in SupplyStore.MainSupplyData) {
+					if (data.Type != "Diamond")
+						continue;
+					maximumY2 = Math.Max(maximumY2, data.List.Where(p => (LeastChartTime - p.Key).Days < chartScale).Max(p => p.Value));
+				}
 				foreach (var data in SupplyStore.SubSupplyData) {
 					if (data.List.Count(p => (LeastChartTime - p.Key).Days < chartScale) == 0)
 						continue;
